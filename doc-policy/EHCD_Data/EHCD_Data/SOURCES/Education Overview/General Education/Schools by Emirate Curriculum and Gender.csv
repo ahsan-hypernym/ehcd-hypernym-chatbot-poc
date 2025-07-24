@@ -1,0 +1,496 @@
+Academic Year _____,Education Type ___ _______ (AR),Education Type ___ _______ (EN), Region _______ _________ (AR), Region _______ _________ (EN),Curriculum _______(AR),Curriculum _______(EN),Students Gender ___ ______ (AR),Students Gender ___ ______ (EN),Schools Count ___ _______
+2024-2025,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2024-2025,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,20
+2024-2025,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,23
+2024-2025,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,46
+2024-2025,_______ ________ - _____,Public Ajyal,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2024-2025,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,3
+2024-2025,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,4
+2024-2025,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,7
+2024-2025,_______ ________ - _____,Public Ajyal,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2024-2025,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,10
+2024-2025,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,14
+2024-2025,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,32
+2024-2025,_______ ________ - _____,Public Ajyal,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2024-2025,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,10
+2024-2025,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,11
+2024-2025,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,15
+2024-2025,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,4
+2024-2025,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,10
+2024-2025,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,10
+2024-2025,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,18
+2024-2025,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,29
+2024-2025,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,49
+2024-2025,_______ ________ - _____,Public Ajyal,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2024-2025,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,11
+2024-2025,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,10
+2024-2025,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,24
+2024-2025,_______ ________ - _____,Public Ajyal,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,4
+2024-2025,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,13
+2024-2025,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,12
+2024-2025,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,23
+2024-2025,_______ ________ - _____,Public Ajyal,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,4
+2024-2025,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,13
+2024-2025,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,20
+2024-2025,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,29
+2024-2025,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2024-2025,_______ ________ - _____,Public Ajyal,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,3
+2024-2025,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,8
+2024-2025,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,9
+2024-2025,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,14
+2023-2024,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,19
+2023-2024,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,24
+2023-2024,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,42
+2023-2024,_______ ________ - _____,Public Ajyal,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2023-2024,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,3
+2023-2024,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,4
+2023-2024,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,7
+2023-2024,_______ ________ - _____,Public Ajyal,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2023-2024,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,10
+2023-2024,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,15
+2023-2024,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,32
+2023-2024,_______ ________ - _____,Public Ajyal,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2023-2024,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,10
+2023-2024,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,11
+2023-2024,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,16
+2023-2024,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,4
+2023-2024,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,10
+2023-2024,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,11
+2023-2024,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,19
+2023-2024,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,29
+2023-2024,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,46
+2023-2024,_______ ________ - _____,Public Ajyal,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2023-2024,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,11
+2023-2024,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,10
+2023-2024,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,24
+2023-2024,_______ ________ - _____,Public Ajyal,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,4
+2023-2024,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,13
+2023-2024,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,12
+2023-2024,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,23
+2023-2024,_______ ________ - _____,Public Ajyal,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,4
+2023-2024,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,12
+2023-2024,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,20
+2023-2024,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,31
+2023-2024,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2023-2024,_______ ________ - _____,Public Ajyal,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,3
+2023-2024,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,8
+2023-2024,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,9
+2023-2024,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,14
+2022-2023,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,20
+2022-2023,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,22
+2022-2023,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,44
+2022-2023,_______ ________ - _____,Public Ajyal,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,3
+2022-2023,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,4
+2022-2023,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,7
+2022-2023,_______ ________ - _____,Public Ajyal,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,12
+2022-2023,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,17
+2022-2023,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,31
+2022-2023,_______ ________ - _____,Public Ajyal,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,10
+2022-2023,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,11
+2022-2023,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,18
+2022-2023,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,5
+2022-2023,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,10
+2022-2023,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,12
+2022-2023,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,20
+2022-2023,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,29
+2022-2023,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,46
+2022-2023,_______ ________ - _____,Public Ajyal,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,12
+2022-2023,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,12
+2022-2023,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,29
+2022-2023,_______ ________ - _____,Public Ajyal,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2022-2023,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,15
+2022-2023,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,14
+2022-2023,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,31
+2022-2023,_______ ________ - _____,Public Ajyal,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,3
+2022-2023,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,12
+2022-2023,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,22
+2022-2023,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,35
+2022-2023,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_______ ________ - _____,Public Ajyal,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,8
+2022-2023,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,9
+2022-2023,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,16
+2021-2022,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,22
+2021-2022,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,24
+2021-2022,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,47
+2021-2022,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,3
+2021-2022,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,4
+2021-2022,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,8
+2021-2022,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,12
+2021-2022,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,17
+2021-2022,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,34
+2021-2022,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,1
+2021-2022,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,10
+2021-2022,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,10
+2021-2022,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,19
+2021-2022,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,5
+2021-2022,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,10
+2021-2022,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,13
+2021-2022,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,20
+2021-2022,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,29
+2021-2022,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,48
+2021-2022,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,12
+2021-2022,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,12
+2021-2022,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,30
+2021-2022,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,1
+2021-2022,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,15
+2021-2022,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,15
+2021-2022,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,34
+2021-2022,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,12
+2021-2022,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,23
+2021-2022,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,40
+2021-2022,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2021-2022,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,8
+2021-2022,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,9
+2021-2022,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,17
+2020-2021,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,23
+2020-2021,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,29
+2020-2021,_______ ________,Public,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,49
+2020-2021,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,3
+2020-2021,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,4
+2020-2021,_______ ________,Public,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,8
+2020-2021,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,12
+2020-2021,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,17
+2020-2021,_______ ________,Public,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,34
+2020-2021,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,10
+2020-2021,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,11
+2020-2021,_______ ________,Public,_______ / _______,Sharjah / Eastern,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,19
+2020-2021,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,5
+2020-2021,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,10
+2020-2021,_______ ________,Public,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,13
+2020-2021,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,22
+2020-2021,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,31
+2020-2021,_______ ________,Public,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,49
+2020-2021,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,12
+2020-2021,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,12
+2020-2021,_______ ________,Public,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,30
+2020-2021,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,1
+2020-2021,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,16
+2020-2021,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,16
+2020-2021,_______ ________,Public,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,32
+2020-2021,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,12
+2020-2021,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,23
+2020-2021,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,40
+2020-2021,_______ ________,Public,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2020-2021,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,8
+2020-2021,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,9
+2020-2021,_______ ________,Public,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,17
+2020-2021,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2020-2021,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,3
+2020-2021,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,1
+2020-2021,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2020-2021,_____ _______ _______,Continuous Education,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2020-2021,_____ _______ _______,Continuous Education,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2020-2021,_____ _______ _______,Continuous Education,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,2
+2020-2021,_____ _______ _______,Continuous Education,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2020-2021,_____ _______ _______,Continuous Education,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,3
+2020-2021,_____ _______ _______,Continuous Education,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2020-2021,_____ _______ _______,Continuous Education,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2020-2021,_____ _______ _______,Continuous Education,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,1
+2020-2021,_____ _______ _______,Continuous Education,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2020-2021,_____ _______ _______,Continuous Education,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2020-2021,_____ _______ _______,Continuous Education,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2020-2021,_____ _______ _______,Continuous Education,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,1
+2021-2022,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2021-2022,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,2
+2021-2022,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,1
+2021-2022,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2021-2022,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,2
+2021-2022,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2021-2022,_____ _______ _______,Continuous Education,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2021-2022,_____ _______ _______,Continuous Education,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2021-2022,_____ _______ _______,Continuous Education,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2021-2022,_____ _______ _______,Continuous Education,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2021-2022,_____ _______ _______,Continuous Education,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2021-2022,_____ _______ _______,Continuous Education,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2021-2022,_____ _______ _______,Continuous Education,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2021-2022,_____ _______ _______,Continuous Education,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2022-2023,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,1
+2022-2023,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,1
+2022-2023,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,2
+2022-2023,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_____ _______ _______,Continuous Education,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_____ _______ _______,Continuous Education,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_____ _______ _______,Continuous Education,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_____ _______ _______,Continuous Education,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_____ _______ _______,Continuous Education,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_____ _______ _______,Continuous Education,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2022-2023,_____ _______ _______,Continuous Education,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2023-2024,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2023-2024,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,1
+2023-2024,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,1
+2023-2024,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2023-2024,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,2
+2023-2024,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2023-2024,_____ _______ _______,Continuous Education,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2023-2024,_____ _______ _______,Continuous Education,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2023-2024,_____ _______ _______,Continuous Education,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2023-2024,_____ _______ _______,Continuous Education,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2023-2024,_____ _______ _______,Continuous Education,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2023-2024,_____ _______ _______,Continuous Education,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2023-2024,_____ _______ _______,Continuous Education,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2024-2025,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,2
+2024-2025,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,1
+2024-2025,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Boys,1
+2024-2025,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2024-2025,_____ _______ _______,Continuous Education,______,ABU DHABI,_____ _____ _______ ________,Ministry of Education Curriculum,____,Girls,2
+2024-2025,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2024-2025,_____ _______ _______,Continuous Education,_______,SHARJAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2024-2025,_____ _______ _______,Continuous Education,______,AL DHAFRA,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2024-2025,_____ _______ _______,Continuous Education,_____,AL AIN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2024-2025,_____ _______ _______,Continuous Education,_______,AL FUJAIRAH,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2024-2025,_____ _______ _______,Continuous Education,___,DUBAI,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2024-2025,_____ _______ _______,Continuous Education,___ ______,Ras Al Khaimah,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2024-2025,_____ _______ _______,Continuous Education,_____,AJMAN,_____ _____ _______ ________,Ministry of Education Curriculum,_____,Co Edu,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,______ ___________ _________,ATHS,____,Girls,5
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,______ ___________ _________,ATHS,____,Boys,5
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,______ ___________ _________,ATHS,____,Girls,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,______ ___________ _________,ATHS,____,Boys,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,______ ___________ _________,ATHS,____,Boys,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,______ ___________ _________,ATHS,____,Boys,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,______ ___________ _________,ATHS,____,Boys,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,______ ___________ _________,ATHS,____,Boys,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,______ ___________ _________,ATHS,____,Girls,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,______ ___________ _________,ATHS,____,Boys,1
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,_____ _____ _______ ________,U.A.E,_____,Co Edu,23
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,_____ _____ _______ ________;_______ ______ _______ _______ (GCSE),U.A.E;G.C.S.E,_____,Co Edu,1
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,_____ _____ _______ ________,U.A.E,_____,Co Edu,1
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_______ ______;_____ _____ _______ ________,Special education program;U.A.E,_____,Co Edu,1
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,____,Girls,1
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,____,Boys,2
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,_____,Co Edu,26
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,_____ _____ _______ ________,U.A.E,_____,Co Edu,3
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,_____ _____ _______ ________,U.A.E;Charter Schools-ADEK,_____,Co Edu,1
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,_____ _____ _______ ________,U.A.E,_____,Co Edu,20
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,_____ _____ _______ ________,U.A.E,_____,Co Edu,4
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,____,Girls,1
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,____,Boys,2
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,_____,Co Edu,16
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,____,Girls,2
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,____,Boys,2
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,_____,Co Edu,12
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,_____ _____ _______ ________,U.A.E,____,Boys,1
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,_____ _____ _______ ________,U.A.E,_____,Co Edu,13
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ ________,American,_____,Co Edu,2
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ _____,Special,_____,Co Edu,1
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ ______,Indian,_____,Co Edu,3
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,4
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ________,American,_____,Co Edu,2
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ __________,Pakistani,_____,Co Edu,1
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ______,Indian,_____,Co Edu,5
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,__________ _______,I.B.,_____,Co Edu,1
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,7
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ________,American,_____,Co Edu,3
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ __________,Pakistani,_____,Co Edu,1
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ___________,Bangladeshi,_____,Co Edu,1
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ _____,Special,_____,Co Edu,1
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ______,Indian,_____,Co Edu,6
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,__________ _______,I.B.,_____,Co Edu,1
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,7
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ________,American,_____,Co Edu,7
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ __________,Pakistani,_____,Co Edu,2
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ _____,Special,_____,Co Edu,1
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ______,Indian,_____,Co Edu,12
+2020-2021,_____ _______ _ _______ ______ (VEDC),Vocational Education Development Centers (VEDC),______,ABU DHABI,____ _______ ________ ______,VEDC,____,Boys,1
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,______ ___________ _________,ATHS,____,Girls,5
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,______ ___________ _________,ATHS,____,Boys,5
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,______ ___________ _________,ATHS,____,Girls,1
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,______ ___________ _________,ATHS,____,Boys,1
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,______ ___________ _________,ATHS,____,Boys,1
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,______ ___________ _________,ATHS,____,Boys,1
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,______ ___________ _________,ATHS,____,Boys,1
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,______ ___________ _________,ATHS,____,Boys,1
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,______ ___________ _________,ATHS,____,Girls,1
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,______ ___________ _________,ATHS,____,Boys,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,_____ _____ _______ ________,U.A.E,_____,Co Edu,23
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,_____ _____ _______ ________;_______ ______ _______ _______ (GCSE),U.A.E;G.C.S.E,_____,Co Edu,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,_____ _____ _______ ________,U.A.E,_____,Co Edu,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,____,Girls,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,____,Boys,2
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,_____,Co Edu,26
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,_____ _____ _______ ________,U.A.E,_____,Co Edu,2
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,_____ _____ _______ ________,U.A.E;Charter Schools-ADEK,_____,Co Edu,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,_____ _____ _______ ________,U.A.E,_____,Co Edu,20
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,_____ _____ _______ ________,U.A.E,_____,Co Edu,4
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,____,Girls,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,____,Boys,2
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,_____,Co Edu,11
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,____,Girls,2
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,____,Boys,2
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,_____,Co Edu,11
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,_____ _____ _______ ________,U.A.E,____,Boys,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,_____ _____ _______ ________,U.A.E,_____,Co Edu,13
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ ________,American,_____,Co Edu,2
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ _____,Special,_____,Co Edu,1
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ ______,Indian,_____,Co Edu,3
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,4
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ________,American,_____,Co Edu,2
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ __________,Pakistani,_____,Co Edu,1
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ______,Indian,_____,Co Edu,5
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,__________ _______,I.B.,_____,Co Edu,1
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,7
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ________,American,_____,Co Edu,3
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ __________,Pakistani,_____,Co Edu,1
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ___________,Bangladeshi,_____,Co Edu,1
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ _____,Special,_____,Co Edu,1
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ______,Indian,_____,Co Edu,7
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,__________ _______,I.B.,_____,Co Edu,1
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,7
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ________,American,_____,Co Edu,6
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ __________,Pakistani,_____,Co Edu,2
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ _____,Special,_____,Co Edu,1
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ______,Indian,_____,Co Edu,11
+2021-2022,_____ _______ _ _______ ______ (VEDC),Vocational Education Development Centers (VEDC),______,ABU DHABI,____ _______ ________ ______,VEDC,____,Boys,1
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,______ ___________ _________,ATHS,____,Girls,5
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,______ ___________ _________,ATHS,____,Boys,5
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,______ ___________ _________,ATHS,____,Girls,1
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,______ ___________ _________,ATHS,____,Boys,1
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,______ ___________ _________,ATHS,____,Boys,1
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,______ ___________ _________,ATHS,____,Boys,1
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,______ ___________ _________,ATHS,____,Boys,1
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,______ ___________ _________,ATHS,____,Boys,1
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,______ ___________ _________,ATHS,____,Girls,1
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,______ ___________ _________,ATHS,____,Boys,1
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,_____ _____ _______ ________,U.A.E,_____,Co Edu,20
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,_____ _____ _______ ________;_______ ______ _______ _______ (GCSE),U.A.E;G.C.S.E,_____,Co Edu,1
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,_____ _____ _______ ________,U.A.E,_____,Co Edu,2
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,____,Girls,2
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,____,Boys,3
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,_____,Co Edu,26
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,_____ _____ _______ ________,U.A.E,_____,Co Edu,2
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,_____ _____ _______ ________,U.A.E;Charter Schools-ADEK,_____,Co Edu,1
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,_____ _____ _______ ________,U.A.E,_____,Co Edu,20
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,_____ _____ _______ ________,U.A.E,_____,Co Edu,4
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,____,Girls,1
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,____,Boys,2
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,_____,Co Edu,11
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,____,Girls,2
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,____,Boys,2
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,_____,Co Edu,14
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,_____ _____ _______ ________,U.A.E,____,Boys,1
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,_____ _____ _______ ________,U.A.E,_____,Co Edu,13
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ ________,American,_____,Co Edu,2
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ _____,Special,_____,Co Edu,1
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ ______,Indian,_____,Co Edu,3
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,4
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ________,American,____,Boys,1
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ________,American,_____,Co Edu,2
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ __________,Pakistani,_____,Co Edu,1
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ______,Indian,_____,Co Edu,5
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,__________ _______,I.B.,_____,Co Edu,1
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,7
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ________,American,_____,Co Edu,3
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ __________,Pakistani,_____,Co Edu,1
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ___________,Bangladeshi,_____,Co Edu,1
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ _____,Special,_____,Co Edu,1
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ______,Indian,_____,Co Edu,7
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,__________ _______,I.B.,_____,Co Edu,1
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,8
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ________,American,_____,Co Edu,6
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ __________,Pakistani,_____,Co Edu,2
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ _____,Special,_____,Co Edu,1
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ______,Indian,_____,Co Edu,11
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,______ ___________ _________,ATHS,____,Girls,6
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,______ ___________ _________,ATHS,____,Boys,6
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,______ ___________ _________,ATHS,____,Girls,1
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,______ ___________ _________,ATHS,____,Boys,1
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,______ ___________ _________,ATHS,____,Boys,1
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,______ ___________ _________,ATHS,____,Boys,1
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,______ ___________ _________,ATHS,____,Boys,1
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,______ ___________ _________,ATHS,____,Boys,1
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,______ ___________ _________,ATHS,____,Girls,1
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,______ ___________ _________,ATHS,____,Boys,1
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,_____ _____ _______ ________,U.A.E,_____,Co Edu,22
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,_____ _____ _______ ________;_______ ______ _______ _______ (GCSE),U.A.E;G.C.S.E,_____,Co Edu,1
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,_____ _____ _______ ________,U.A.E,_____,Co Edu,3
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,____,Girls,2
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,____,Boys,3
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,_____,Co Edu,27
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,_____ _____ _______ ________,U.A.E,_____,Co Edu,2
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,_____ _____ _______ ________,U.A.E;Charter Schools-ADEK,_____,Co Edu,1
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,_____ _____ _______ ________,U.A.E,_____,Co Edu,21
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,_____ _____ _______ ________,U.A.E,_____,Co Edu,5
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,____,Girls,1
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,____,Boys,2
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,_____,Co Edu,12
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,____,Girls,2
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,____,Boys,2
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,_____,Co Edu,11
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,_____ _____ _______ ________,U.A.E,____,Boys,1
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,_____ _____ _______ ________,U.A.E,_____,Co Edu,15
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ ________,American,_____,Co Edu,2
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ _____,Special,_____,Co Edu,1
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ ______,Indian,_____,Co Edu,3
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,4
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ________,American,____,Boys,1
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ________,American,_____,Co Edu,2
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ __________,Pakistani,_____,Co Edu,1
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ______,Indian,_____,Co Edu,5
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,__________ _______,I.B.,_____,Co Edu,1
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,6
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ________,American,_____,Co Edu,4
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ __________,Pakistani,_____,Co Edu,1
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ___________,Bangladeshi,_____,Co Edu,1
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ _____,Special,_____,Co Edu,1
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ______,Indian,_____,Co Edu,7
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,__________ _______,I.B.,_____,Co Edu,1
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,9
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ________,American,_____,Co Edu,6
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ __________,Pakistani,_____,Co Edu,2
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ _____,Special,_____,Co Edu,1
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ______,Indian,_____,Co Edu,12
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,______ ___________ _________,ATHS,____,Girls,6
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,______ ___________ _________,ATHS,____,Boys,6
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,______ ___________ _________,ATHS,____,Girls,1
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,______ ___________ _________,ATHS,____,Boys,1
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,______ ___________ _________,ATHS,____,Boys,1
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,______ ___________ _________,ATHS,____,Boys,1
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,______ ___________ _________,ATHS,____,Boys,1
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,______ ___________ _________,ATHS,____,Boys,1
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,______ ___________ _________,ATHS,____,Girls,1
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,______ ___________ _________,ATHS,____,Boys,1
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,_____ _____ _______ ________,U.A.E,_____,Co Edu,23
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,_____ _____ _______ ________;_______ ______ _______ _______ (GCSE),U.A.E;G.C.S.E,_____,Co Edu,1
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,_____ _____ _______ ________,U.A.E,_____,Co Edu,2
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,____,Girls,2
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,____,Boys,3
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,_____ _____ _______ ________,U.A.E,_____,Co Edu,26
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,_____ _____ _______ ________,U.A.E,_____,Co Edu,2
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,_____ _____ _______ ________,U.A.E;Charter Schools-ADEK,_____,Co Edu,1
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,_____ _____ _______ ________,U.A.E,_____,Co Edu,20
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,_____ _____ _______ ________,U.A.E,_____,Co Edu,3
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,____,Girls,1
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,____,Boys,2
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,_____ _____ _______ ________,U.A.E,_____,Co Edu,10
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,____,Girls,2
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,____,Boys,2
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,_____ _____ _______ ________,U.A.E,_____,Co Edu,12
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,_____ _____ _______ ________,U.A.E,____,Boys,1
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,_____ _____ _______ ________,U.A.E,_____,Co Edu,13
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ ________,American,_____,Co Edu,2
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ _____,Special,_____,Co Edu,1
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,_______ ______,Indian,_____,Co Edu,3
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,4
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ________,American,____,Boys,1
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ________,American,_____,Co Edu,2
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ __________,Pakistani,_____,Co Edu,1
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,_______ ______,Indian,_____,Co Edu,5
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,__________ _______,I.B.,_____,Co Edu,1
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,6
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ________,American,_____,Co Edu,3
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ __________,Pakistani,_____,Co Edu,1
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ___________,Bangladeshi,_____,Co Edu,1
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ _____,Special,_____,Co Edu,1
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,_______ ______,Indian,_____,Co Edu,7
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,__________ _______,I.B.,_____,Co Edu,1
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ______ _______ _______ (GCSE),G.C.S.E,_____,Co Edu,10
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ________,American,_____,Co Edu,6
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ __________,Pakistani,_____,Co Edu,2
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ _____,Special,_____,Co Edu,1
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,_______ ______,Indian,_____,Co Edu,13

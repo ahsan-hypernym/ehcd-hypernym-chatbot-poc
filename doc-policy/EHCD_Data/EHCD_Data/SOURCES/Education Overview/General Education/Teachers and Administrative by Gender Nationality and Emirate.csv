@@ -1,0 +1,745 @@
+Academic Year _____,Education Type ___ _______ (AR),Education Type ___ _______ (EN), Region _______ _________ (AR), Region _______ _________ (EN),Gender _____ (AR),Gender _____ (EN),Emirati\Resident _______/____ (AR),Emirati\Resident _______/____ (EN),Staff Count ___ ______ _______,Teachers Count ___ ________
+2024-2025,_______ ________,Public,______,ABU DHABI,____,Female,_______,Emirati,2929,2115
+2024-2025,_______ ________,Public,______,ABU DHABI,____,Female,____,Resident,1656,1611
+2024-2025,_______ ________,Public,______,ABU DHABI,___,Male,_______,Emirati,372,182
+2024-2025,_______ ________,Public,______,ABU DHABI,___,Male,____,Resident,1108,989
+2024-2025,_______ ________,Public,__ _______,Umm Al Quwain,____,Female,_______,Emirati,297,191
+2024-2025,_______ ________,Public,__ _______,Umm Al Quwain,____,Female,____,Resident,117,117
+2024-2025,_______ ________,Public,__ _______,Umm Al Quwain,___,Male,_______,Emirati,11,2
+2024-2025,_______ ________,Public,__ _______,Umm Al Quwain,___,Male,____,Resident,111,105
+2024-2025,_______ ________ - _____,Public Ajyal,__ _______,Umm Al Quwain,____,Female,_______,Emirati,8,7
+2024-2025,_______ ________ - _____,Public Ajyal,__ _______,Umm Al Quwain,____,Female,____,Resident,36,35
+2024-2025,_______ ________ - _____,Public Ajyal,__ _______,Umm Al Quwain,___,Male,____,Resident,6,5
+2024-2025,_______ ________,Public,_______,SHARJAH,____,Female,_______,Emirati,952,633
+2024-2025,_______ ________,Public,_______,SHARJAH,____,Female,____,Resident,647,631
+2024-2025,_______ ________,Public,_______,SHARJAH,___,Male,_______,Emirati,75,13
+2024-2025,_______ ________,Public,_______,SHARJAH,___,Male,____,Resident,523,496
+2024-2025,_______ ________ - _____,Public Ajyal,_______,SHARJAH,____,Female,_______,Emirati,24,18
+2024-2025,_______ ________ - _____,Public Ajyal,_______,SHARJAH,____,Female,____,Resident,74,61
+2024-2025,_______ ________ - _____,Public Ajyal,_______,SHARJAH,___,Male,____,Resident,16,10
+2024-2025,_______ ________,Public,_______ / _______,Sharjah / Eastern,____,Female,_______,Emirati,834,598
+2024-2025,_______ ________,Public,_______ / _______,Sharjah / Eastern,____,Female,____,Resident,181,180
+2024-2025,_______ ________,Public,_______ / _______,Sharjah / Eastern,___,Male,_______,Emirati,83,22
+2024-2025,_______ ________,Public,_______ / _______,Sharjah / Eastern,___,Male,____,Resident,279,277
+2024-2025,_______ ________ - _____,Public Ajyal,_______ / _______,Sharjah / Eastern,____,Female,_______,Emirati,33,29
+2024-2025,_______ ________ - _____,Public Ajyal,_______ / _______,Sharjah / Eastern,____,Female,____,Resident,74,66
+2024-2025,_______ ________ - _____,Public Ajyal,_______ / _______,Sharjah / Eastern,___,Male,____,Resident,19,12
+2024-2025,_______ ________,Public,______,AL DHAFRA,____,Female,_______,Emirati,288,151
+2024-2025,_______ ________,Public,______,AL DHAFRA,____,Female,____,Resident,555,518
+2024-2025,_______ ________,Public,______,AL DHAFRA,___,Male,_______,Emirati,12,3
+2024-2025,_______ ________,Public,______,AL DHAFRA,___,Male,____,Resident,375,332
+2024-2025,_______ ________,Public,_____,AL AIN,____,Female,_______,Emirati,3219,2276
+2024-2025,_______ ________,Public,_____,AL AIN,____,Female,____,Resident,1412,1384
+2024-2025,_______ ________,Public,_____,AL AIN,___,Male,_______,Emirati,330,155
+2024-2025,_______ ________,Public,_____,AL AIN,___,Male,____,Resident,1014,948
+2024-2025,_______ ________,Public,_______,AL FUJAIRAH,____,Female,_______,Emirati,1304,980
+2024-2025,_______ ________,Public,_______,AL FUJAIRAH,____,Female,____,Resident,279,273
+2024-2025,_______ ________,Public,_______,AL FUJAIRAH,___,Male,_______,Emirati,69,19
+2024-2025,_______ ________,Public,_______,AL FUJAIRAH,___,Male,____,Resident,360,352
+2024-2025,_______ ________ - _____,Public Ajyal,_______,AL FUJAIRAH,____,Female,_______,Emirati,33,29
+2024-2025,_______ ________ - _____,Public Ajyal,_______,AL FUJAIRAH,____,Female,____,Resident,62,54
+2024-2025,_______ ________ - _____,Public Ajyal,_______,AL FUJAIRAH,___,Male,____,Resident,10,6
+2024-2025,_______ ________,Public,___,DUBAI,____,Female,_______,Emirati,924,611
+2024-2025,_______ ________,Public,___,DUBAI,____,Female,____,Resident,690,677
+2024-2025,_______ ________,Public,___,DUBAI,___,Male,_______,Emirati,52,18
+2024-2025,_______ ________,Public,___,DUBAI,___,Male,____,Resident,508,487
+2024-2025,_______ ________ - _____,Public Ajyal,___,DUBAI,____,Female,_______,Emirati,40,33
+2024-2025,_______ ________ - _____,Public Ajyal,___,DUBAI,____,Female,____,Resident,138,117
+2024-2025,_______ ________ - _____,Public Ajyal,___,DUBAI,___,Male,_______,Emirati,1,1
+2024-2025,_______ ________ - _____,Public Ajyal,___,DUBAI,___,Male,____,Resident,33,22
+2024-2025,_______ ________,Public,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,1741,1215
+2024-2025,_______ ________,Public,___ ______,Ras Al Khaimah,____,Female,____,Resident,423,416
+2024-2025,_______ ________,Public,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,114,28
+2024-2025,_______ ________,Public,___ ______,Ras Al Khaimah,___,Male,____,Resident,595,582
+2024-2025,_______ ________ - _____,Public Ajyal,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,59,45
+2024-2025,_______ ________ - _____,Public Ajyal,___ ______,Ras Al Khaimah,____,Female,____,Resident,128,104
+2024-2025,_______ ________ - _____,Public Ajyal,___ ______,Ras Al Khaimah,___,Male,____,Resident,38,22
+2024-2025,_______ ________,Public,_____,AJMAN,____,Female,_______,Emirati,604,413
+2024-2025,_______ ________,Public,_____,AJMAN,____,Female,____,Resident,341,326
+2024-2025,_______ ________,Public,_____,AJMAN,___,Male,_______,Emirati,32,6
+2024-2025,_______ ________,Public,_____,AJMAN,___,Male,____,Resident,334,314
+2024-2025,_______ ________ - _____,Public Ajyal,_____,AJMAN,____,Female,_______,Emirati,38,32
+2024-2025,_______ ________ - _____,Public Ajyal,_____,AJMAN,____,Female,____,Resident,109,89
+2024-2025,_______ ________ - _____,Public Ajyal,_____,AJMAN,___,Male,____,Resident,20,14
+2023-2024,_______ ________,Public,______,ABU DHABI,____,Female,_______,Emirati,2759,1966
+2023-2024,_______ ________,Public,______,ABU DHABI,____,Female,____,Resident,1517,1472
+2023-2024,_______ ________,Public,______,ABU DHABI,___,Male,_______,Emirati,383,195
+2023-2024,_______ ________,Public,______,ABU DHABI,___,Male,____,Resident,1107,993
+2023-2024,_______ ________,Public,__ _______,Umm Al Quwain,____,Female,_______,Emirati,308,201
+2023-2024,_______ ________,Public,__ _______,Umm Al Quwain,____,Female,____,Resident,112,112
+2023-2024,_______ ________,Public,__ _______,Umm Al Quwain,___,Male,_______,Emirati,9,2
+2023-2024,_______ ________,Public,__ _______,Umm Al Quwain,___,Male,____,Resident,113,105
+2023-2024,_______ ________ - _____,Public Ajyal,__ _______,Umm Al Quwain,____,Female,_______,Emirati,8,7
+2023-2024,_______ ________ - _____,Public Ajyal,__ _______,Umm Al Quwain,____,Female,____,Resident,33,30
+2023-2024,_______ ________ - _____,Public Ajyal,__ _______,Umm Al Quwain,___,Male,____,Resident,7,6
+2023-2024,_______ ________,Public,_______,SHARJAH,____,Female,_______,Emirati,1020,674
+2023-2024,_______ ________,Public,_______,SHARJAH,____,Female,____,Resident,610,592
+2023-2024,_______ ________,Public,_______,SHARJAH,___,Male,_______,Emirati,61,12
+2023-2024,_______ ________,Public,_______,SHARJAH,___,Male,____,Resident,527,499
+2023-2024,_______ ________ - _____,Public Ajyal,_______,SHARJAH,____,Female,_______,Emirati,23,20
+2023-2024,_______ ________ - _____,Public Ajyal,_______,SHARJAH,____,Female,____,Resident,80,66
+2023-2024,_______ ________ - _____,Public Ajyal,_______,SHARJAH,___,Male,____,Resident,15,12
+2023-2024,_______ ________,Public,_______ / _______,Sharjah / Eastern,____,Female,_______,Emirati,855,608
+2023-2024,_______ ________,Public,_______ / _______,Sharjah / Eastern,____,Female,____,Resident,151,150
+2023-2024,_______ ________,Public,_______ / _______,Sharjah / Eastern,___,Male,_______,Emirati,86,24
+2023-2024,_______ ________,Public,_______ / _______,Sharjah / Eastern,___,Male,____,Resident,279,277
+2023-2024,_______ ________ - _____,Public Ajyal,_______ / _______,Sharjah / Eastern,____,Female,_______,Emirati,30,28
+2023-2024,_______ ________ - _____,Public Ajyal,_______ / _______,Sharjah / Eastern,____,Female,____,Resident,76,67
+2023-2024,_______ ________ - _____,Public Ajyal,_______ / _______,Sharjah / Eastern,___,Male,____,Resident,20,11
+2023-2024,_______ ________,Public,______,AL DHAFRA,____,Female,_______,Emirati,296,155
+2023-2024,_______ ________,Public,______,AL DHAFRA,____,Female,____,Resident,545,506
+2023-2024,_______ ________,Public,______,AL DHAFRA,___,Male,_______,Emirati,12,3
+2023-2024,_______ ________,Public,______,AL DHAFRA,___,Male,____,Resident,380,335
+2023-2024,_______ ________,Public,_____,AL AIN,____,Female,_______,Emirati,3136,2199
+2023-2024,_______ ________,Public,_____,AL AIN,____,Female,____,Resident,1331,1306
+2023-2024,_______ ________,Public,_____,AL AIN,___,Male,_______,Emirati,339,162
+2023-2024,_______ ________,Public,_____,AL AIN,___,Male,____,Resident,1080,1007
+2023-2024,_______ ________,Public,_______,AL FUJAIRAH,____,Female,_______,Emirati,1319,995
+2023-2024,_______ ________,Public,_______,AL FUJAIRAH,____,Female,____,Resident,271,266
+2023-2024,_______ ________,Public,_______,AL FUJAIRAH,___,Male,_______,Emirati,61,20
+2023-2024,_______ ________,Public,_______,AL FUJAIRAH,___,Male,____,Resident,347,338
+2023-2024,_______ ________ - _____,Public Ajyal,_______,AL FUJAIRAH,____,Female,_______,Emirati,32,29
+2023-2024,_______ ________ - _____,Public Ajyal,_______,AL FUJAIRAH,____,Female,____,Resident,60,53
+2023-2024,_______ ________ - _____,Public Ajyal,_______,AL FUJAIRAH,___,Male,____,Resident,10,7
+2023-2024,_______ ________,Public,___,DUBAI,____,Female,_______,Emirati,965,651
+2023-2024,_______ ________,Public,___,DUBAI,____,Female,____,Resident,654,639
+2023-2024,_______ ________,Public,___,DUBAI,___,Male,_______,Emirati,48,18
+2023-2024,_______ ________,Public,___,DUBAI,___,Male,____,Resident,513,493
+2023-2024,_______ ________ - _____,Public Ajyal,___,DUBAI,____,Female,_______,Emirati,39,36
+2023-2024,_______ ________ - _____,Public Ajyal,___,DUBAI,____,Female,____,Resident,144,124
+2023-2024,_______ ________ - _____,Public Ajyal,___,DUBAI,___,Male,_______,Emirati,1,1
+2023-2024,_______ ________ - _____,Public Ajyal,___,DUBAI,___,Male,____,Resident,35,27
+2023-2024,_______ ________,Public,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,1745,1213
+2023-2024,_______ ________,Public,___ ______,Ras Al Khaimah,____,Female,____,Resident,395,388
+2023-2024,_______ ________,Public,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,106,30
+2023-2024,_______ ________,Public,___ ______,Ras Al Khaimah,___,Male,____,Resident,582,572
+2023-2024,_______ ________ - _____,Public Ajyal,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,54,43
+2023-2024,_______ ________ - _____,Public Ajyal,___ ______,Ras Al Khaimah,____,Female,____,Resident,128,108
+2023-2024,_______ ________ - _____,Public Ajyal,___ ______,Ras Al Khaimah,___,Male,____,Resident,40,26
+2023-2024,_______ ________,Public,_____,AJMAN,____,Female,_______,Emirati,612,411
+2023-2024,_______ ________,Public,_____,AJMAN,____,Female,____,Resident,318,302
+2023-2024,_______ ________,Public,_____,AJMAN,___,Male,_______,Emirati,24,6
+2023-2024,_______ ________,Public,_____,AJMAN,___,Male,____,Resident,315,296
+2023-2024,_______ ________ - _____,Public Ajyal,_____,AJMAN,____,Female,_______,Emirati,32,30
+2023-2024,_______ ________ - _____,Public Ajyal,_____,AJMAN,____,Female,____,Resident,129,110
+2023-2024,_______ ________ - _____,Public Ajyal,_____,AJMAN,___,Male,____,Resident,21,15
+2022-2023,_______ ________,Public,______,ABU DHABI,____,Female,_______,Emirati,2740,2015
+2022-2023,_______ ________,Public,______,ABU DHABI,____,Female,____,Resident,1443,1418
+2022-2023,_______ ________,Public,______,ABU DHABI,___,Male,_______,Emirati,342,174
+2022-2023,_______ ________,Public,______,ABU DHABI,___,Male,____,Resident,1033,941
+2022-2023,_______ ________,Public,__ _______,Umm Al Quwain,____,Female,_______,Emirati,312,210
+2022-2023,_______ ________,Public,__ _______,Umm Al Quwain,____,Female,____,Resident,109,109
+2022-2023,_______ ________,Public,__ _______,Umm Al Quwain,___,Male,_______,Emirati,8,3
+2022-2023,_______ ________,Public,__ _______,Umm Al Quwain,___,Male,____,Resident,112,106
+2022-2023,_______ ________ - _____,Public Ajyal,__ _______,Umm Al Quwain,____,Female,_______,Emirati,9,8
+2022-2023,_______ ________ - _____,Public Ajyal,__ _______,Umm Al Quwain,____,Female,____,Resident,27,20
+2022-2023,_______ ________ - _____,Public Ajyal,__ _______,Umm Al Quwain,___,Male,____,Resident,5,5
+2022-2023,_______ ________,Public,_______,SHARJAH,____,Female,_______,Emirati,1052,712
+2022-2023,_______ ________,Public,_______,SHARJAH,____,Female,____,Resident,559,543
+2022-2023,_______ ________,Public,_______,SHARJAH,___,Male,_______,Emirati,64,14
+2022-2023,_______ ________,Public,_______,SHARJAH,___,Male,____,Resident,501,476
+2022-2023,_______ ________ - _____,Public Ajyal,_______,SHARJAH,____,Female,_______,Emirati,12,11
+2022-2023,_______ ________ - _____,Public Ajyal,_______,SHARJAH,____,Female,____,Resident,31,24
+2022-2023,_______ ________ - _____,Public Ajyal,_______,SHARJAH,___,Male,____,Resident,4,4
+2022-2023,_______ ________,Public,_______ / _______,Sharjah / Eastern,____,Female,_______,Emirati,905,674
+2022-2023,_______ ________,Public,_______ / _______,Sharjah / Eastern,____,Female,____,Resident,153,150
+2022-2023,_______ ________,Public,_______ / _______,Sharjah / Eastern,___,Male,_______,Emirati,90,36
+2022-2023,_______ ________,Public,_______ / _______,Sharjah / Eastern,___,Male,____,Resident,274,272
+2022-2023,_______ ________ - _____,Public Ajyal,_______ / _______,Sharjah / Eastern,____,Female,_______,Emirati,13,12
+2022-2023,_______ ________ - _____,Public Ajyal,_______ / _______,Sharjah / Eastern,____,Female,____,Resident,20,17
+2022-2023,_______ ________ - _____,Public Ajyal,_______ / _______,Sharjah / Eastern,___,Male,____,Resident,7,5
+2022-2023,_______ ________,Public,______,AL DHAFRA,____,Female,_______,Emirati,258,138
+2022-2023,_______ ________,Public,______,AL DHAFRA,____,Female,____,Resident,474,440
+2022-2023,_______ ________,Public,______,AL DHAFRA,___,Male,_______,Emirati,11,2
+2022-2023,_______ ________,Public,______,AL DHAFRA,___,Male,____,Resident,332,296
+2022-2023,_______ ________,Public,_____,AL AIN,____,Female,_______,Emirati,3169,2304
+2022-2023,_______ ________,Public,_____,AL AIN,____,Female,____,Resident,1285,1268
+2022-2023,_______ ________,Public,_____,AL AIN,___,Male,_______,Emirati,343,168
+2022-2023,_______ ________,Public,_____,AL AIN,___,Male,____,Resident,1130,1059
+2022-2023,_______ ________,Public,_______,AL FUJAIRAH,____,Female,_______,Emirati,1320,1013
+2022-2023,_______ ________,Public,_______,AL FUJAIRAH,____,Female,____,Resident,238,235
+2022-2023,_______ ________,Public,_______,AL FUJAIRAH,___,Male,_______,Emirati,61,22
+2022-2023,_______ ________,Public,_______,AL FUJAIRAH,___,Male,____,Resident,343,334
+2022-2023,_______ ________ - _____,Public Ajyal,_______,AL FUJAIRAH,____,Female,_______,Emirati,13,11
+2022-2023,_______ ________ - _____,Public Ajyal,_______,AL FUJAIRAH,____,Female,____,Resident,22,19
+2022-2023,_______ ________ - _____,Public Ajyal,_______,AL FUJAIRAH,___,Male,____,Resident,11,7
+2022-2023,_______ ________,Public,___,DUBAI,____,Female,_______,Emirati,1032,732
+2022-2023,_______ ________,Public,___,DUBAI,____,Female,____,Resident,642,624
+2022-2023,_______ ________,Public,___,DUBAI,___,Male,_______,Emirati,58,25
+2022-2023,_______ ________,Public,___,DUBAI,___,Male,____,Resident,504,486
+2022-2023,_______ ________ - _____,Public Ajyal,___,DUBAI,____,Female,_______,Emirati,15,13
+2022-2023,_______ ________ - _____,Public Ajyal,___,DUBAI,____,Female,____,Resident,58,51
+2022-2023,_______ ________ - _____,Public Ajyal,___,DUBAI,___,Male,_______,Emirati,1,1
+2022-2023,_______ ________ - _____,Public Ajyal,___,DUBAI,___,Male,____,Resident,10,7
+2022-2023,_______ ________,Public,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,1753,1262
+2022-2023,_______ ________,Public,___ ______,Ras Al Khaimah,____,Female,____,Resident,392,386
+2022-2023,_______ ________,Public,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,117,40
+2022-2023,_______ ________,Public,___ ______,Ras Al Khaimah,___,Male,____,Resident,575,566
+2022-2023,_______ ________ - _____,Public Ajyal,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,30,25
+2022-2023,_______ ________ - _____,Public Ajyal,___ ______,Ras Al Khaimah,____,Female,____,Resident,78,62
+2022-2023,_______ ________ - _____,Public Ajyal,___ ______,Ras Al Khaimah,___,Male,____,Resident,29,16
+2022-2023,_______ ________,Public,_____,AJMAN,____,Female,_______,Emirati,623,447
+2022-2023,_______ ________,Public,_____,AJMAN,____,Female,____,Resident,309,293
+2022-2023,_______ ________,Public,_____,AJMAN,___,Male,_______,Emirati,25,6
+2022-2023,_______ ________,Public,_____,AJMAN,___,Male,____,Resident,291,272
+2022-2023,_______ ________ - _____,Public Ajyal,_____,AJMAN,____,Female,_______,Emirati,11,10
+2022-2023,_______ ________ - _____,Public Ajyal,_____,AJMAN,____,Female,____,Resident,31,26
+2022-2023,_______ ________ - _____,Public Ajyal,_____,AJMAN,___,Male,____,Resident,3,2
+2021-2022,_______ ________,Public,______,ABU DHABI,___ ____,Undefined,_______,Emirati,57,39
+2021-2022,_______ ________,Public,______,ABU DHABI,___ ____,Undefined,____,Resident,22,21
+2021-2022,_______ ________,Public,______,ABU DHABI,____,Female,_______,Emirati,3059,2257
+2021-2022,_______ ________,Public,______,ABU DHABI,____,Female,____,Resident,1819,1756
+2021-2022,_______ ________,Public,______,ABU DHABI,___,Male,_______,Emirati,457,234
+2021-2022,_______ ________,Public,______,ABU DHABI,___,Male,____,Resident,1368,1236
+2021-2022,_______ ________,Public,__ _______,Umm Al Quwain,___ ____,Undefined,_______,Emirati,1,0
+2021-2022,_______ ________,Public,__ _______,Umm Al Quwain,____,Female,_______,Emirati,360,235
+2021-2022,_______ ________,Public,__ _______,Umm Al Quwain,____,Female,____,Resident,119,115
+2021-2022,_______ ________,Public,__ _______,Umm Al Quwain,___,Male,_______,Emirati,11,3
+2021-2022,_______ ________,Public,__ _______,Umm Al Quwain,___,Male,____,Resident,125,117
+2021-2022,_______ ________,Public,_______,SHARJAH,____,Female,_______,Emirati,1187,759
+2021-2022,_______ ________,Public,_______,SHARJAH,____,Female,____,Resident,547,528
+2021-2022,_______ ________,Public,_______,SHARJAH,___,Male,_______,Emirati,74,13
+2021-2022,_______ ________,Public,_______,SHARJAH,___,Male,____,Resident,530,500
+2021-2022,_______ ________,Public,_______ / _______,Sharjah / Eastern,____,Female,_______,Emirati,966,696
+2021-2022,_______ ________,Public,_______ / _______,Sharjah / Eastern,____,Female,____,Resident,156,153
+2021-2022,_______ ________,Public,_______ / _______,Sharjah / Eastern,___,Male,_______,Emirati,108,42
+2021-2022,_______ ________,Public,_______ / _______,Sharjah / Eastern,___,Male,____,Resident,263,260
+2021-2022,_______ ________,Public,______,AL DHAFRA,___ ____,Undefined,____,Resident,1,0
+2021-2022,_______ ________,Public,______,AL DHAFRA,____,Female,_______,Emirati,259,140
+2021-2022,_______ ________,Public,______,AL DHAFRA,____,Female,____,Resident,557,508
+2021-2022,_______ ________,Public,______,AL DHAFRA,___,Male,_______,Emirati,16,4
+2021-2022,_______ ________,Public,______,AL DHAFRA,___,Male,____,Resident,449,385
+2021-2022,_______ ________,Public,_____,AL AIN,___ ____,Undefined,_______,Emirati,5,2
+2021-2022,_______ ________,Public,_____,AL AIN,___ ____,Undefined,____,Resident,12,11
+2021-2022,_______ ________,Public,_____,AL AIN,____,Female,_______,Emirati,3423,2471
+2021-2022,_______ ________,Public,_____,AL AIN,____,Female,____,Resident,1484,1441
+2021-2022,_______ ________,Public,_____,AL AIN,___,Male,_______,Emirati,401,195
+2021-2022,_______ ________,Public,_____,AL AIN,___,Male,____,Resident,1310,1207
+2021-2022,_______ ________,Public,_______,AL FUJAIRAH,____,Female,_______,Emirati,1390,1029
+2021-2022,_______ ________,Public,_______,AL FUJAIRAH,____,Female,____,Resident,262,258
+2021-2022,_______ ________,Public,_______,AL FUJAIRAH,___,Male,_______,Emirati,80,25
+2021-2022,_______ ________,Public,_______,AL FUJAIRAH,___,Male,____,Resident,359,346
+2021-2022,_______ ________,Public,___,DUBAI,____,Female,_______,Emirati,1198,810
+2021-2022,_______ ________,Public,___,DUBAI,____,Female,____,Resident,651,629
+2021-2022,_______ ________,Public,___,DUBAI,___,Male,_______,Emirati,70,25
+2021-2022,_______ ________,Public,___,DUBAI,___,Male,____,Resident,526,502
+2021-2022,_______ ________,Public,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,1885,1322
+2021-2022,_______ ________,Public,___ ______,Ras Al Khaimah,____,Female,____,Resident,413,409
+2021-2022,_______ ________,Public,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,153,37
+2021-2022,_______ ________,Public,___ ______,Ras Al Khaimah,___,Male,____,Resident,620,608
+2021-2022,_______ ________,Public,_____,AJMAN,____,Female,_______,Emirati,708,481
+2021-2022,_______ ________,Public,_____,AJMAN,____,Female,____,Resident,305,291
+2021-2022,_______ ________,Public,_____,AJMAN,___,Male,_______,Emirati,29,6
+2021-2022,_______ ________,Public,_____,AJMAN,___,Male,____,Resident,299,277
+2020-2021,_______ ________,Public,______,ABU DHABI,___ ____,Undefined,_______,Emirati,59,40
+2020-2021,_______ ________,Public,______,ABU DHABI,___ ____,Undefined,____,Resident,22,21
+2020-2021,_______ ________,Public,______,ABU DHABI,____,Female,_______,Emirati,2944,2072
+2020-2021,_______ ________,Public,______,ABU DHABI,____,Female,____,Resident,1657,1577
+2020-2021,_______ ________,Public,______,ABU DHABI,___,Male,_______,Emirati,492,234
+2020-2021,_______ ________,Public,______,ABU DHABI,___,Male,____,Resident,1417,1243
+2020-2021,_______ ________,Public,__ _______,Umm Al Quwain,___ ____,Undefined,_______,Emirati,1,0
+2020-2021,_______ ________,Public,__ _______,Umm Al Quwain,____,Female,_______,Emirati,370,249
+2020-2021,_______ ________,Public,__ _______,Umm Al Quwain,____,Female,____,Resident,117,115
+2020-2021,_______ ________,Public,__ _______,Umm Al Quwain,___,Male,_______,Emirati,10,3
+2020-2021,_______ ________,Public,__ _______,Umm Al Quwain,___,Male,____,Resident,123,118
+2020-2021,_______ ________,Public,_______,SHARJAH,____,Female,_______,Emirati,1165,749
+2020-2021,_______ ________,Public,_______,SHARJAH,____,Female,____,Resident,540,518
+2020-2021,_______ ________,Public,_______,SHARJAH,___,Male,_______,Emirati,72,14
+2020-2021,_______ ________,Public,_______,SHARJAH,___,Male,____,Resident,543,506
+2020-2021,_______ ________,Public,_______ / _______,Sharjah / Eastern,____,Female,_______,Emirati,949,677
+2020-2021,_______ ________,Public,_______ / _______,Sharjah / Eastern,____,Female,____,Resident,153,150
+2020-2021,_______ ________,Public,_______ / _______,Sharjah / Eastern,___,Male,_______,Emirati,111,45
+2020-2021,_______ ________,Public,_______ / _______,Sharjah / Eastern,___,Male,____,Resident,256,254
+2020-2021,_______ ________,Public,______,AL DHAFRA,___ ____,Undefined,____,Resident,1,0
+2020-2021,_______ ________,Public,______,AL DHAFRA,____,Female,_______,Emirati,296,157
+2020-2021,_______ ________,Public,______,AL DHAFRA,____,Female,____,Resident,558,497
+2020-2021,_______ ________,Public,______,AL DHAFRA,___,Male,_______,Emirati,17,4
+2020-2021,_______ ________,Public,______,AL DHAFRA,___,Male,____,Resident,420,352
+2020-2021,_______ ________,Public,_____,AL AIN,___ ____,Undefined,_______,Emirati,5,2
+2020-2021,_______ ________,Public,_____,AL AIN,___ ____,Undefined,____,Resident,12,11
+2020-2021,_______ ________,Public,_____,AL AIN,____,Female,_______,Emirati,3245,2236
+2020-2021,_______ ________,Public,_____,AL AIN,____,Female,____,Resident,1361,1305
+2020-2021,_______ ________,Public,_____,AL AIN,___,Male,_______,Emirati,413,195
+2020-2021,_______ ________,Public,_____,AL AIN,___,Male,____,Resident,1282,1156
+2020-2021,_______ ________,Public,_______,AL FUJAIRAH,____,Female,_______,Emirati,1393,1036
+2020-2021,_______ ________,Public,_______,AL FUJAIRAH,____,Female,____,Resident,246,242
+2020-2021,_______ ________,Public,_______,AL FUJAIRAH,___,Male,_______,Emirati,85,25
+2020-2021,_______ ________,Public,_______,AL FUJAIRAH,___,Male,____,Resident,359,348
+2020-2021,_______ ________,Public,___,DUBAI,____,Female,_______,Emirati,1182,812
+2020-2021,_______ ________,Public,___,DUBAI,____,Female,____,Resident,619,599
+2020-2021,_______ ________,Public,___,DUBAI,___,Male,_______,Emirati,67,28
+2020-2021,_______ ________,Public,___,DUBAI,___,Male,____,Resident,501,481
+2020-2021,_______ ________,Public,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,1884,1305
+2020-2021,_______ ________,Public,___ ______,Ras Al Khaimah,____,Female,____,Resident,406,403
+2020-2021,_______ ________,Public,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,155,39
+2020-2021,_______ ________,Public,___ ______,Ras Al Khaimah,___,Male,____,Resident,605,591
+2020-2021,_______ ________,Public,_____,AJMAN,____,Female,_______,Emirati,710,477
+2020-2021,_______ ________,Public,_____,AJMAN,____,Female,____,Resident,291,278
+2020-2021,_______ ________,Public,_____,AJMAN,___,Male,_______,Emirati,27,6
+2020-2021,_______ ________,Public,_____,AJMAN,___,Male,____,Resident,294,277
+2020-2021,_____ _______ _______,Continuous Education,______,ABU DHABI,___ ____,Undefined,____,Resident,1,1
+2020-2021,_____ _______ _______,Continuous Education,______,ABU DHABI,____,Female,_______,Emirati,67,48
+2020-2021,_____ _______ _______,Continuous Education,______,ABU DHABI,____,Female,____,Resident,53,46
+2020-2021,_____ _______ _______,Continuous Education,______,ABU DHABI,___,Male,_______,Emirati,10,7
+2020-2021,_____ _______ _______,Continuous Education,______,ABU DHABI,___,Male,____,Resident,23,20
+2020-2021,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,____,Female,_______,Emirati,1,1
+2020-2021,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,____,Female,____,Resident,1,0
+2020-2021,_____ _______ _______,Continuous Education,_______,SHARJAH,____,Female,_______,Emirati,2,1
+2020-2021,_____ _______ _______,Continuous Education,_______,SHARJAH,____,Female,____,Resident,1,0
+2020-2021,_____ _______ _______,Continuous Education,______,AL DHAFRA,____,Female,_______,Emirati,3,3
+2020-2021,_____ _______ _______,Continuous Education,_____,AL AIN,___ ____,Undefined,____,Resident,2,2
+2020-2021,_____ _______ _______,Continuous Education,_____,AL AIN,____,Female,_______,Emirati,70,51
+2020-2021,_____ _______ _______,Continuous Education,_____,AL AIN,____,Female,____,Resident,24,20
+2020-2021,_____ _______ _______,Continuous Education,_______,AL FUJAIRAH,___,Male,_______,Emirati,2,0
+2020-2021,_____ _______ _______,Continuous Education,_______,AL FUJAIRAH,___,Male,____,Resident,1,0
+2020-2021,_____ _______ _______,Continuous Education,___,DUBAI,____,Female,_______,Emirati,5,0
+2020-2021,_____ _______ _______,Continuous Education,___,DUBAI,____,Female,____,Resident,4,1
+2020-2021,_____ _______ _______,Continuous Education,___,DUBAI,___,Male,_______,Emirati,3,0
+2020-2021,_____ _______ _______,Continuous Education,___,DUBAI,___,Male,____,Resident,2,2
+2020-2021,_____ _______ _______,Continuous Education,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,1,0
+2020-2021,_____ _______ _______,Continuous Education,___ ______,Ras Al Khaimah,____,Female,____,Resident,2,0
+2020-2021,_____ _______ _______,Continuous Education,_____,AJMAN,____,Female,_______,Emirati,4,2
+2020-2021,_____ _______ _______,Continuous Education,_____,AJMAN,____,Female,____,Resident,24,22
+2021-2022,_____ _______ _______,Continuous Education,______,ABU DHABI,____,Female,_______,Emirati,76,55
+2021-2022,_____ _______ _______,Continuous Education,______,ABU DHABI,____,Female,____,Resident,3,2
+2021-2022,_____ _______ _______,Continuous Education,______,ABU DHABI,___,Male,_______,Emirati,9,7
+2021-2022,_____ _______ _______,Continuous Education,______,ABU DHABI,___,Male,____,Resident,21,20
+2021-2022,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,____,Female,____,Resident,1,0
+2021-2022,_____ _______ _______,Continuous Education,_______,SHARJAH,____,Female,_______,Emirati,1,1
+2021-2022,_____ _______ _______,Continuous Education,_______,SHARJAH,____,Female,____,Resident,1,0
+2021-2022,_____ _______ _______,Continuous Education,_____,AL AIN,____,Female,_______,Emirati,1,0
+2021-2022,_____ _______ _______,Continuous Education,_____,AL AIN,____,Female,____,Resident,1,0
+2021-2022,_____ _______ _______,Continuous Education,_______,AL FUJAIRAH,____,Female,_______,Emirati,1,0
+2021-2022,_____ _______ _______,Continuous Education,_______,AL FUJAIRAH,___,Male,_______,Emirati,4,0
+2021-2022,_____ _______ _______,Continuous Education,___,DUBAI,____,Female,_______,Emirati,2,0
+2021-2022,_____ _______ _______,Continuous Education,___,DUBAI,____,Female,____,Resident,1,0
+2021-2022,_____ _______ _______,Continuous Education,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,1,0
+2021-2022,_____ _______ _______,Continuous Education,___ ______,Ras Al Khaimah,____,Female,____,Resident,2,0
+2021-2022,_____ _______ _______,Continuous Education,_____,AJMAN,____,Female,_______,Emirati,1,0
+2021-2022,_____ _______ _______,Continuous Education,_____,AJMAN,____,Female,____,Resident,1,0
+2022-2023,_____ _______ _______,Continuous Education,______,ABU DHABI,____,Female,_______,Emirati,64,53
+2022-2023,_____ _______ _______,Continuous Education,______,ABU DHABI,____,Female,____,Resident,8,4
+2022-2023,_____ _______ _______,Continuous Education,______,ABU DHABI,___,Male,_______,Emirati,12,8
+2022-2023,_____ _______ _______,Continuous Education,______,ABU DHABI,___,Male,____,Resident,17,17
+2022-2023,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,____,Female,_______,Emirati,1,0
+2022-2023,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,____,Female,____,Resident,1,0
+2022-2023,_____ _______ _______,Continuous Education,_______,SHARJAH,____,Female,____,Resident,1,0
+2022-2023,_____ _______ _______,Continuous Education,______,AL DHAFRA,____,Female,____,Resident,1,0
+2022-2023,_____ _______ _______,Continuous Education,_____,AL AIN,____,Female,_______,Emirati,1,0
+2022-2023,_____ _______ _______,Continuous Education,_____,AL AIN,____,Female,____,Resident,1,0
+2022-2023,_____ _______ _______,Continuous Education,_______,AL FUJAIRAH,___,Male,_______,Emirati,2,0
+2022-2023,_____ _______ _______,Continuous Education,___,DUBAI,____,Female,____,Resident,1,0
+2022-2023,_____ _______ _______,Continuous Education,___,DUBAI,___,Male,_______,Emirati,1,0
+2022-2023,_____ _______ _______,Continuous Education,___ ______,Ras Al Khaimah,____,Female,____,Resident,1,0
+2023-2024,_____ _______ _______,Continuous Education,______,ABU DHABI,____,Female,_______,Emirati,63,51
+2023-2024,_____ _______ _______,Continuous Education,______,ABU DHABI,____,Female,____,Resident,3,0
+2023-2024,_____ _______ _______,Continuous Education,______,ABU DHABI,___,Male,_______,Emirati,12,7
+2023-2024,_____ _______ _______,Continuous Education,______,ABU DHABI,___,Male,____,Resident,12,12
+2023-2024,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,____,Female,____,Resident,1,0
+2023-2024,_____ _______ _______,Continuous Education,_______,SHARJAH,____,Female,____,Resident,1,0
+2023-2024,_____ _______ _______,Continuous Education,______,AL DHAFRA,____,Female,____,Resident,1,0
+2023-2024,_____ _______ _______,Continuous Education,_____,AL AIN,____,Female,_______,Emirati,1,0
+2023-2024,_____ _______ _______,Continuous Education,_____,AL AIN,____,Female,____,Resident,1,0
+2023-2024,_____ _______ _______,Continuous Education,_______,AL FUJAIRAH,___,Male,_______,Emirati,2,0
+2023-2024,_____ _______ _______,Continuous Education,___,DUBAI,____,Female,____,Resident,1,0
+2023-2024,_____ _______ _______,Continuous Education,___,DUBAI,___,Male,_______,Emirati,1,0
+2023-2024,_____ _______ _______,Continuous Education,___ ______,Ras Al Khaimah,____,Female,____,Resident,1,0
+2024-2025,_____ _______ _______,Continuous Education,______,ABU DHABI,____,Female,_______,Emirati,61,52
+2024-2025,_____ _______ _______,Continuous Education,______,ABU DHABI,____,Female,____,Resident,6,2
+2024-2025,_____ _______ _______,Continuous Education,______,ABU DHABI,___,Male,_______,Emirati,11,6
+2024-2025,_____ _______ _______,Continuous Education,______,ABU DHABI,___,Male,____,Resident,17,16
+2024-2025,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,____,Female,_______,Emirati,1,0
+2024-2025,_____ _______ _______,Continuous Education,__ _______,Umm Al Quwain,____,Female,____,Resident,1,0
+2024-2025,_____ _______ _______,Continuous Education,_______,SHARJAH,____,Female,____,Resident,1,0
+2024-2025,_____ _______ _______,Continuous Education,______,AL DHAFRA,____,Female,____,Resident,1,0
+2024-2025,_____ _______ _______,Continuous Education,_____,AL AIN,____,Female,_______,Emirati,1,0
+2024-2025,_____ _______ _______,Continuous Education,_____,AL AIN,____,Female,____,Resident,1,0
+2024-2025,_____ _______ _______,Continuous Education,_______,AL FUJAIRAH,____,Female,_______,Emirati,1,0
+2024-2025,_____ _______ _______,Continuous Education,___,DUBAI,____,Female,____,Resident,1,0
+2024-2025,_____ _______ _______,Continuous Education,___ ______,Ras Al Khaimah,____,Female,____,Resident,1,0
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,____,Female,_______,Emirati,54,11
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,____,Female,____,Resident,327,300
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,___,Male,_______,Emirati,6,4
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,___,Male,____,Resident,345,322
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,____,Female,_______,Emirati,5,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,____,Female,____,Resident,14,14
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,___,Male,_______,Emirati,5,2
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,___,Male,____,Resident,44,37
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,____,Female,_______,Emirati,11,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,____,Female,____,Resident,11,10
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,___,Male,_______,Emirati,4,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,___,Male,____,Resident,59,56
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,____,Female,_______,Emirati,10,6
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,____,Female,____,Resident,36,36
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,___,Male,_______,Emirati,2,0
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,___,Male,____,Resident,31,28
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,____,Female,_______,Emirati,5,0
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,____,Female,____,Resident,14,8
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,___,Male,_______,Emirati,3,0
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,___,Male,____,Resident,65,59
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,____,Female,_______,Emirati,8,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,____,Female,____,Resident,11,11
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,___,Male,_______,Emirati,4,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,___,Male,____,Resident,71,66
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,____,Female,_______,Emirati,21,8
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,____,Female,____,Resident,71,69
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,___,Male,_______,Emirati,3,1
+2020-2021,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,___,Male,____,Resident,47,39
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,____,Female,_______,Emirati,11,1
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,____,Female,____,Resident,2187,1638
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,___,Male,_______,Emirati,2,0
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,___,Male,____,Resident,835,614
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,____,Female,_______,Emirati,24,9
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,____,Female,____,Resident,1708,1421
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,___,Male,____,Resident,714,582
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,____,Female,_______,Emirati,2,1
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,____,Female,____,Resident,83,66
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,___,Male,____,Resident,31,23
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,____,Female,_______,Emirati,3,0
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,____,Female,____,Resident,1170,835
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,___,Male,_______,Emirati,1,0
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,___,Male,____,Resident,667,491
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,____,Female,_______,Emirati,12,4
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,____,Female,____,Resident,167,137
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,___,Male,____,Resident,101,83
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,____,Female,_______,Emirati,1,1
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,____,Female,____,Resident,95,75
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,___,Male,____,Resident,36,23
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,____,Female,_______,Emirati,35,11
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,____,Female,____,Resident,870,667
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,___,Male,_______,Emirati,3,1
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,___,Male,____,Resident,482,419
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,15,6
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,____,Female,____,Resident,696,579
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,4,0
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,___,Male,____,Resident,311,226
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,____,Female,_______,Emirati,16,4
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,____,Female,____,Resident,1133,859
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,___,Male,_______,Emirati,2,0
+2020-2021,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,___,Male,____,Resident,611,394
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,____,Female,_______,Emirati,48,28
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,____,Female,____,Resident,991,899
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,___,Male,_______,Emirati,1,0
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,___,Male,____,Resident,205,137
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,____,Female,_______,Emirati,3,1
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,____,Female,____,Resident,538,422
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,___,Male,_______,Emirati,1,0
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,___,Male,____,Resident,128,76
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,32,10
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,____,Female,____,Resident,1741,1389
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,3,0
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,___,Male,____,Resident,597,283
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,____,Female,_______,Emirati,9,2
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,____,Female,____,Resident,3001,2525
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,___,Male,_______,Emirati,2,0
+2020-2021,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,___,Male,____,Resident,716,354
+2020-2021,_____ _______ _ _______ ______ (VEDC),Vocational Education Development Centers (VEDC),______,ABU DHABI,____,Female,_______,Emirati,3,0
+2020-2021,_____ _______ _ _______ ______ (VEDC),Vocational Education Development Centers (VEDC),______,ABU DHABI,____,Female,____,Resident,5,3
+2020-2021,_____ _______ _ _______ ______ (VEDC),Vocational Education Development Centers (VEDC),______,ABU DHABI,___,Male,_______,Emirati,8,2
+2020-2021,_____ _______ _ _______ ______ (VEDC),Vocational Education Development Centers (VEDC),______,ABU DHABI,___,Male,____,Resident,43,39
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,____,Female,_______,Emirati,82,34
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,____,Female,____,Resident,289,263
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,___,Male,_______,Emirati,9,7
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,___,Male,____,Resident,310,287
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,____,Female,_______,Emirati,6,1
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,____,Female,____,Resident,8,8
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,___,Male,_______,Emirati,3,1
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,___,Male,____,Resident,38,31
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,____,Female,_______,Emirati,11,2
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,____,Female,____,Resident,11,10
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,___,Male,_______,Emirati,5,2
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,___,Male,____,Resident,45,41
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,____,Female,_______,Emirati,10,6
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,____,Female,____,Resident,32,31
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,___,Male,_______,Emirati,2,0
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,___,Male,____,Resident,23,20
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,____,Female,_______,Emirati,6,0
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,____,Female,____,Resident,10,3
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,___,Male,_______,Emirati,3,0
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,___,Male,____,Resident,49,42
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,____,Female,_______,Emirati,11,4
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,____,Female,____,Resident,4,4
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,___,Male,_______,Emirati,5,2
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,___,Male,____,Resident,48,43
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,____,Female,_______,Emirati,26,10
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,____,Female,____,Resident,58,57
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,___,Male,_______,Emirati,2,0
+2021-2022,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,___,Male,____,Resident,41,33
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,____,Female,_______,Emirati,12,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,____,Female,____,Resident,2459,1894
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,___,Male,_______,Emirati,2,0
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,___,Male,____,Resident,926,702
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,____,Female,_______,Emirati,40,24
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,____,Female,____,Resident,2149,1821
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,___,Male,_______,Emirati,1,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,___,Male,____,Resident,865,722
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,____,Female,_______,Emirati,1,0
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,____,Female,____,Resident,97,82
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,___,Male,____,Resident,42,34
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,____,Female,_______,Emirati,4,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,____,Female,____,Resident,1292,930
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,___,Male,_______,Emirati,2,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,___,Male,____,Resident,774,565
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,____,Female,_______,Emirati,16,7
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,____,Female,____,Resident,205,164
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,___,Male,____,Resident,128,106
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,____,Female,_______,Emirati,1,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,____,Female,____,Resident,111,86
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,___,Male,____,Resident,50,34
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,____,Female,_______,Emirati,28,11
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,____,Female,____,Resident,878,780
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,___,Male,_______,Emirati,3,1
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,___,Male,____,Resident,537,476
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,14,6
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,____,Female,____,Resident,795,655
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,4,0
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,___,Male,____,Resident,383,267
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,____,Female,_______,Emirati,17,4
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,____,Female,____,Resident,1500,1166
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,___,Male,_______,Emirati,2,0
+2021-2022,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,___,Male,____,Resident,707,474
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,____,Female,_______,Emirati,49,32
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,____,Female,____,Resident,997,908
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,___,Male,_______,Emirati,1,0
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,___,Male,____,Resident,201,135
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,____,Female,_______,Emirati,2,1
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,____,Female,____,Resident,524,406
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,___,Male,_______,Emirati,1,0
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,___,Male,____,Resident,138,77
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,23,7
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,____,Female,____,Resident,1623,1284
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,2,0
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,___,Male,____,Resident,549,259
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,____,Female,_______,Emirati,9,5
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,____,Female,____,Resident,2809,2359
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,___,Male,_______,Emirati,1,0
+2021-2022,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,___,Male,____,Resident,671,322
+2021-2022,_____ _______ _ _______ ______ (VEDC),Vocational Education Development Centers (VEDC),______,ABU DHABI,____,Female,_______,Emirati,1,0
+2021-2022,_____ _______ _ _______ ______ (VEDC),Vocational Education Development Centers (VEDC),______,ABU DHABI,___,Male,_______,Emirati,5,2
+2021-2022,_____ _______ _ _______ ______ (VEDC),Vocational Education Development Centers (VEDC),______,ABU DHABI,___,Male,____,Resident,28,26
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,____,Female,_______,Emirati,120,66
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,____,Female,____,Resident,298,272
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,___,Male,_______,Emirati,10,6
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,___,Male,____,Resident,304,277
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,____,Female,_______,Emirati,8,2
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,____,Female,____,Resident,12,12
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,___,Male,_______,Emirati,3,1
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,___,Male,____,Resident,39,32
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,____,Female,_______,Emirati,14,4
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,____,Female,____,Resident,11,10
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,___,Male,_______,Emirati,6,3
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,___,Male,____,Resident,40,37
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,____,Female,_______,Emirati,14,9
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,____,Female,____,Resident,35,34
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,___,Male,_______,Emirati,2,0
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,___,Male,____,Resident,27,22
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,____,Female,_______,Emirati,9,3
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,____,Female,____,Resident,15,8
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,___,Male,_______,Emirati,3,0
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,___,Male,____,Resident,55,46
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,____,Female,_______,Emirati,13,5
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,____,Female,____,Resident,10,10
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,___,Male,_______,Emirati,5,2
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,___,Male,____,Resident,46,41
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,____,Female,_______,Emirati,31,15
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,____,Female,____,Resident,62,61
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,___,Male,_______,Emirati,2,0
+2022-2023,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,___,Male,____,Resident,43,35
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,____,Female,_______,Emirati,26,13
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,____,Female,____,Resident,2085,1657
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,___,Male,_______,Emirati,2,0
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,___,Male,____,Resident,831,646
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,____,Female,_______,Emirati,61,34
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,____,Female,____,Resident,2128,1802
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,___,Male,_______,Emirati,4,1
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,___,Male,____,Resident,897,738
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,____,Female,____,Resident,87,73
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,___,Male,____,Resident,44,36
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,____,Female,_______,Emirati,13,1
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,____,Female,____,Resident,1245,922
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,___,Male,_______,Emirati,1,1
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,___,Male,____,Resident,733,549
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,____,Female,_______,Emirati,17,9
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,____,Female,____,Resident,178,147
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,___,Male,____,Resident,119,101
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,____,Female,_______,Emirati,1,1
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,____,Female,____,Resident,118,94
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,___,Male,____,Resident,39,35
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,____,Female,_______,Emirati,38,14
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,____,Female,____,Resident,818,730
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,___,Male,_______,Emirati,3,1
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,___,Male,____,Resident,484,433
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,21,9
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,____,Female,____,Resident,688,556
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,4,0
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,___,Male,____,Resident,339,234
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,____,Female,_______,Emirati,42,19
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,____,Female,____,Resident,1323,1051
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,___,Male,_______,Emirati,3,0
+2022-2023,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,___,Male,____,Resident,557,395
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,____,Female,_______,Emirati,59,27
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,____,Female,____,Resident,571,497
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,___,Male,_______,Emirati,1,0
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,___,Male,____,Resident,139,88
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,____,Female,_______,Emirati,9,2
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,____,Female,____,Resident,361,274
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,___,Male,____,Resident,107,65
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,32,10
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,____,Female,____,Resident,1292,1045
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,2,0
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,___,Male,____,Resident,390,191
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,____,Female,_______,Emirati,38,19
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,____,Female,____,Resident,2612,2235
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,___,Male,_______,Emirati,5,0
+2022-2023,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,___,Male,____,Resident,546,333
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,____,Female,_______,Emirati,107,64
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,____,Female,____,Resident,298,281
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,___,Male,_______,Emirati,9,5
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,___,Male,____,Resident,315,297
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,____,Female,_______,Emirati,3,1
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,____,Female,____,Resident,13,13
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,___,Male,_______,Emirati,3,1
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,___,Male,____,Resident,36,33
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,____,Female,_______,Emirati,10,6
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,____,Female,____,Resident,8,8
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,___,Male,_______,Emirati,3,3
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,___,Male,____,Resident,35,35
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,____,Female,_______,Emirati,11,10
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,____,Female,____,Resident,36,36
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,___,Male,____,Resident,26,26
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,____,Female,_______,Emirati,5,2
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,____,Female,____,Resident,17,12
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,___,Male,_______,Emirati,2,0
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,___,Male,____,Resident,55,48
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,____,Female,_______,Emirati,6,4
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,____,Female,____,Resident,13,13
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,___,Male,_______,Emirati,2,2
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,___,Male,____,Resident,46,43
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,____,Female,_______,Emirati,22,14
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,____,Female,____,Resident,64,63
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,___,Male,_______,Emirati,1,1
+2023-2024,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,___,Male,____,Resident,38,38
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,____,Female,_______,Emirati,62,42
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,____,Female,____,Resident,1989,1587
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,___,Male,_______,Emirati,2,0
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,___,Male,____,Resident,814,636
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,____,Female,_______,Emirati,105,47
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,____,Female,____,Resident,2316,1980
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,___,Male,_______,Emirati,2,1
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,___,Male,____,Resident,1011,850
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,____,Female,_______,Emirati,2,0
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,____,Female,____,Resident,100,82
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,___,Male,____,Resident,54,42
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,____,Female,_______,Emirati,31,12
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,____,Female,____,Resident,1304,984
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,___,Male,_______,Emirati,2,1
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,___,Male,____,Resident,796,607
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,____,Female,_______,Emirati,27,18
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,____,Female,____,Resident,193,154
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,___,Male,____,Resident,119,99
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,____,Female,_______,Emirati,1,1
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,____,Female,____,Resident,122,97
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,___,Male,____,Resident,53,44
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,____,Female,_______,Emirati,46,17
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,____,Female,____,Resident,875,761
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,___,Male,_______,Emirati,6,1
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,___,Male,____,Resident,508,449
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,29,12
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,____,Female,____,Resident,712,563
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,2,0
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,___,Male,____,Resident,316,194
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,____,Female,_______,Emirati,78,29
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,____,Female,____,Resident,1380,1103
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,___,Male,_______,Emirati,5,1
+2023-2024,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,___,Male,____,Resident,580,405
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,____,Female,_______,Emirati,74,39
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,____,Female,____,Resident,699,639
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,___,Male,____,Resident,164,119
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,____,Female,_______,Emirati,15,4
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,____,Female,____,Resident,366,263
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,___,Male,_______,Emirati,1,0
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,___,Male,____,Resident,109,62
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,61,22
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,____,Female,____,Resident,1491,1205
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,6,0
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,___,Male,____,Resident,433,230
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,____,Female,_______,Emirati,87,37
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,____,Female,____,Resident,3502,3039
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,___,Male,_______,Emirati,5,0
+2023-2024,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,___,Male,____,Resident,622,366
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,____,Female,_______,Emirati,121,66
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,____,Female,____,Resident,343,325
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,___,Male,_______,Emirati,9,4
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),______,ABU DHABI,___,Male,____,Resident,357,338
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,____,Female,_______,Emirati,7,1
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,____,Female,____,Resident,14,14
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,___,Male,_______,Emirati,3,1
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,SHARJAH,___,Male,____,Resident,42,37
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,____,Female,_______,Emirati,12,5
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,____,Female,____,Resident,7,7
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,___,Male,_______,Emirati,3,3
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_______,AL FUJAIRAH,___,Male,____,Resident,36,36
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,____,Female,_______,Emirati,12,10
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,____,Female,____,Resident,37,37
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,___,Male,_______,Emirati,1,0
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),__ _______,Umm Al Quwain,___,Male,____,Resident,26,26
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,____,Female,_______,Emirati,9,3
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,____,Female,____,Resident,18,13
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,___,Male,_______,Emirati,2,0
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___,DUBAI,___,Male,____,Resident,49,40
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,____,Female,_______,Emirati,7,5
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,____,Female,____,Resident,13,13
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,___,Male,_______,Emirati,3,2
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),___ ______,Ras Al Khaimah,___,Male,____,Resident,50,47
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,____,Female,_______,Emirati,21,12
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,____,Female,____,Resident,60,59
+2024-2025,_______ __________ _________ (ATHS),Applied Technology High School (ATHS),_____,AJMAN,___,Male,____,Resident,45,44
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,____,Female,_______,Emirati,75,52
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,____,Female,____,Resident,1999,1623
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,___,Male,_______,Emirati,2,0
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,______,ABU DHABI,___,Male,____,Resident,924,750
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,____,Female,_______,Emirati,120,43
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,____,Female,____,Resident,2161,1845
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,___,Male,_______,Emirati,3,2
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,SHARJAH,___,Male,____,Resident,988,838
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,____,Female,_______,Emirati,2,0
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,____,Female,____,Resident,103,92
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,______,AL DHAFRA,___,Male,____,Resident,52,45
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,____,Female,_______,Emirati,51,19
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,____,Female,____,Resident,1157,858
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,___,Male,_______,Emirati,2,1
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AL AIN,___,Male,____,Resident,736,566
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,____,Female,_______,Emirati,26,17
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,____,Female,____,Resident,160,132
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_______,AL FUJAIRAH,___,Male,____,Resident,101,88
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,____,Female,_______,Emirati,1,1
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,____,Female,____,Resident,125,100
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,__ _______,Umm Al Quwain,___,Male,____,Resident,64,54
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,____,Female,_______,Emirati,47,17
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,____,Female,____,Resident,796,694
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,___,Male,_______,Emirati,7,2
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___,DUBAI,___,Male,____,Resident,489,439
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,27,12
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,____,Female,____,Resident,742,581
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,2,0
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,___ ______,Ras Al Khaimah,___,Male,____,Resident,362,230
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,____,Female,_______,Emirati,111,51
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,____,Female,____,Resident,1320,1082
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,___,Male,_______,Emirati,6,2
+2024-2025,_____ ______ _____ _____,Private Schools MOE Curriculum,_____,AJMAN,___,Male,____,Resident,550,398
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,____,Female,_______,Emirati,68,34
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,____,Female,____,Resident,716,634
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,___,Male,_______,Emirati,1,0
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_______,AL FUJAIRAH,___,Male,____,Resident,168,114
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,____,Female,_______,Emirati,34,7
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,____,Female,____,Resident,540,393
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,___,Male,_______,Emirati,1,0
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,__ _______,Umm Al Quwain,___,Male,____,Resident,198,89
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,____,Female,_______,Emirati,96,33
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,____,Female,____,Resident,1365,1063
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,___,Male,_______,Emirati,5,0
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,___ ______,Ras Al Khaimah,___,Male,____,Resident,456,225
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,____,Female,_______,Emirati,142,64
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,____,Female,____,Resident,3822,3248
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,___,Male,_______,Emirati,10,0
+2024-2025,_____ ____ _____ ___ _____ __ ________ _______ ________,Private Schools Non MOE Curriculum in the four northern emirates,_____,AJMAN,___,Male,____,Resident,782,378

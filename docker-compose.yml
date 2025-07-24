@@ -1,0 +1,28 @@
+
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_RUN_HOST=0.0.0.0
+      - FLASK_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+    restart: always
+
+  redis:
+    image: redis:7.0
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+
+
+volumes:
+  redis_data:

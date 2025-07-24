@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VFQ AI Chat</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-uO3SX0wZq5iLE6fGXVlbN6V6yfOyvVfiH6r39G9fCQ6DUB1vpMsiudli9K/8k5ga" crossorigin="anonymous">
+
+    <!-- Custom Styles -->
+    <style>
+        
+        .chat-widget {
+            height: 100vh; 
+            max-height: 800px; 
+        }
+        #initial-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #888;
+            font-size: 1.25rem;
+            padding: 0 20px;
+        }
+        /* Ensure the chat box is positioned relative for absolute positioning of initial text */
+        #chat-box {
+            position: relative;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen m-0">
+    <div class="chat-widget w-full max-w-2xl flex flex-col bg-gray-100">
+        <!-- Header -->
+        <div class="bg-gray-100 text-gray-800 p-3 flex flex-col sm:flex-row items-center justify-between">
+            <img src="static/hy.png" alt="Your Logo" class="h-12 sm:h-18">
+            <div class="flex space-x-4 mt-3 sm:mt-0">
+                <a href="{{ url_for('list_documents') }}" target="_blank" class="px-3 py-2 text-sm text-white bg-gray-600 rounded-full cursor-pointer transition duration-300 ease-in-out hover:bg-gray-500 shadow-md">Document Library</a>
+                <form action="{{ url_for('logout') }}" method="get">
+                    <button type="submit" class="px-5 py-2 text-white bg-red-500 rounded-full cursor-pointer transition duration-300 ease-in-out hover:bg-red-400 shadow-lg">Logout</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Chat Box -->
+        <div id="chat-box" class="flex-1 p-4 overflow-y-auto bg-gray-100 flex flex-col">
+            <!-- Initial Text -->
+            <div id="initial-text"><strong>Welcome to AI Chat!</strong><br>
+                <strong>Start your conversation now.</strong></div>
+            <!-- Messages will be dynamically added here -->
+        </div>
+
+        <!-- Input Section -->
+        <div class="flex items-center bg-gray-100 p-3">
+            <textarea id="queryInput" placeholder="Type your query here." rows="1" style="line-height: 1.5;" class="flex-grow bg-white text-gray-800 border-none rounded-lg py-3 px-4 text-base outline-none cursor-text mb-3 overflow-hidden resize-none"></textarea>
+            <button onclick="sendMessage()" class="bg-gray-700 text-white border-none rounded-full p-4 ml-2 flex items-center justify-center cursor-pointer transition duration-200 ease-in-out hover:bg-gray-600 mb-3">
+                <!-- SVG Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3.293 12.707a1 1 0 011.414 0L10 7.414l5.293 5.293a1 1 0 111.414-1.414l-6-6a1 1 0 00-1.414 0l-6 6a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        async function sendMessage() {
+            const query = $('#queryInput').val();
+            if (query.trim() === '') return;
+
+             // Remove the initial text if it exists
+             $('#initial-text').remove();
+
+            // Append user message
+            $('#chat-box').append(`
+                <div class="bg-gray-300 text-gray-800 p-2 rounded-lg max-w-[100%] ml-auto mb-2 break-words">
+                    ${query}
+                </div>
+                `);
+
+            $('#queryInput').val('');
+            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+
+            // Show typing indicator
+            const typingElement = $('<div class="bg-gray-200 text-gray-800 p-2 rounded-lg max-w-[80%] self-start mb-2 text-left">Typing...</div>');
+            $('#chat-box').append(typingElement);
+
+            try {
+                const response = await fetch('/api/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query: query })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let result = '';
+                let isFinalHtmlRendered = false;
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    result += chunk;
+
+                    const match = result.match(/<replace>([\s\S]*)<\/replace>/);
+                    if (match && !isFinalHtmlRendered) {
+                        const finalHtml = match[1];
+                        const finalElement = $('<div class="bg-gray-200 text-gray-800 p-2 rounded-lg max-w-[80%] self-start mb-2 text-left break-words"></div>').html(finalHtml);
+                        typingElement.replaceWith(finalElement);
+                        isFinalHtmlRendered = true;
+                    } else if (!isFinalHtmlRendered) {
+                        typingElement.text(result.replace(/<\/?[^>]+(>|$)/g, ""));
+                    }
+
+                    $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+                }
+
+                if (!isFinalHtmlRendered) {
+                    typingElement.remove();
+                }
+            } catch (error) {
+                console.error('Error processing the request:', error);
+                typingElement.text('Error processing your request.');
+                $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const queryInput = document.getElementById('queryInput');
+            queryInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    sendMessage();
+                }
+            });
+        });
+
+    const textarea = document.getElementById('queryInput');
+
+    textarea.addEventListener('input', () => {
+        // Reset height so we can recalculate the scrollHeight
+        textarea.style.height = 'auto';
+        const maxHeight = parseInt(getComputedStyle(textarea).lineHeight) * 5;
+        
+        // Set height to the scroll height, or max height if scroll height exceeds it
+        textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
+    });
+
+    </script>
+</body>
+</html>
