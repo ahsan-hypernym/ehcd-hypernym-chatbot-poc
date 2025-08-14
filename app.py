@@ -38,7 +38,7 @@ AZURE_SEARCH_KEY = os.getenv('AZURE_SEARCH_API_KEY', 'put your Azure AI Search a
 AZURE_OPENAI_ENDPOINT = os.getenv('ENDPOINT_URL', 'https://ai-ehcd.openai.azure.com')
 AZURE_OPENAI_KEY = os.getenv('AZURE_OPENAI_API_KEY', 'REPLACE_WITH_YOUR_KEY_VALUE_HERE')
 AZURE_OPENAI_DEPLOYMENT = os.getenv('DEPLOYMENT_NAME', 'gpt-4o')
-SEARCH_INDEX_NAME = os.getenv('SEARCH_INDEX_NAME', 'rag-1753254571704')
+SEARCH_INDEX_NAME = os.getenv('SEARCH_INDEX_NAME', 'rag-1')
 
 # Initialize Azure OpenAI client
 logger.info("Initializing Azure OpenAI client")
@@ -79,8 +79,9 @@ def query_azure_search(query):
     payload = {
         'search': query,
         'queryType': 'semantic',
-        'top': 5,
-        'select': 'chunk,title,chunk_id'
+        'top': 10,  
+        'select': 'chunk,project_name,chunk_id',
+        'count': 'true'  
     }
     
     response = requests.post(search_url, headers=headers, json=payload)
@@ -231,14 +232,23 @@ def generate_gpt_response(context, query, conversation_history):
         response_stream = client.chat.completions.create(
             model=AZURE_OPENAI_DEPLOYMENT,
             messages=chat_prompt,
-            max_tokens=1500,
+            max_tokens=1000,
             temperature=0.7,
             top_p=0.95,
             frequency_penalty=0.2,
             presence_penalty=0,
             stop=None,
             stream=True
+            # stream_options={"include_usage": True}
         )
+
+
+
+        # for chunk in response_stream:
+        #     # final usage arrives here (one time, at the end)
+        #     if getattr(chunk, "usage", None):
+        #         print(f"Total tokens used: {int(getattr(chunk.usage, 'total_tokens', 0) or 0)}")
+        #         continue
         
         for chunk in response_stream:
             if chunk.choices and len(chunk.choices) > 0:
