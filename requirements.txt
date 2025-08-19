@@ -6,3 +6,7 @@ azure-identity==1.18.0
 flask-socketio
 flask_cors
 redis
+langchain
+langchain-community
+langchain-openai
+faiss-cpu # or faiss-gpu if using a GPU
