@@ -1,0 +1,712 @@
+# app_faiss.py
+# -*- coding: utf-8 -*-
+
+import os, json, re, time, hashlib, shutil, tempfile, logging, sqlite3, requests
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional, Tuple, Set
+from psycopg2 import sql
+from psycopg2.extras import RealDictCursor
+
+
+from dotenv import load_dotenv
+load_dotenv()
+
+import psycopg2
+from psycopg2.extras import RealDictCursor
+
+import redis
+from flask import Flask, request, jsonify, render_template, Response, stream_with_context, session, flash, redirect, url_for, send_file
+from functools import wraps
+
+from openai import AzureOpenAI                         # chat (stream)
+
+# FAISS + embeddings
+from langchain.schema import Document
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+from langchain_openai import AzureOpenAIEmbeddings
+
+# optional — your docs UI helper (kept as-is)
+from doc import Documents
+
+# ────────────────────────────────────────────────────────────────────────────────
+# CONFIG & LOGGING
+# ────────────────────────────────────────────────────────────────────────────────
+app = Flask(__name__)
+app.secret_key = 'fs78sf7s8d6v7sdy7sdbds7v'
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# Redis (for chat history)
+redis_client = redis.Redis(host=os.getenv('REDIS_HOST','localhost'),
+                           port=int(os.getenv('REDIS_PORT',6379)),
+                           db=0)
+
+@dataclass(frozen=True)
+class CFG:
+    # Postgres
+    PG_HOST: str = os.getenv("PG_HOST", "127.0.0.1")
+    PG_DB: str   = os.getenv("PG_DB", "postgres")
+    PG_USER: str = os.getenv("PG_USER", "postgres")
+    PG_PASS: str = os.getenv("PG_PASS", "postgres")
+    PG_PORT: int = int(os.getenv("PG_PORT", "5432"))
+
+
+
+    # Azure OpenAI (both chat + embeddings)
+    AZURE_OPENAI_ENDPOINT = os.getenv('ENDPOINT_URL', 'https://ai-ehcd.openai.azure.com')
+    AZURE_OPENAI_DEPLOYMENT = os.getenv('DEPLOYMENT_NAME', 'gpt-4o')
+    AZURE_OPENAI_KEY: str      = os.getenv("AZURE_OPENAI_API_KEY", "")
+    AZURE_OPENAI_API_VERSION: str = os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview")
+    AZURE_EMBED_DEPLOYMENT: str = os.getenv("AZURE_EMBEDDING_DEPLOYMENT", "text-embedding-ada-002")
+
+    # Local storage
+    ROOT: str = os.getenv("DATA_ROOT", "./data")
+    DOC_DIR: str = os.path.join(ROOT, "docs")
+    HASH_DIR: str = os.path.join(ROOT, "hashes")
+    FAISS_DIR: str = os.path.join(ROOT, "faiss")
+
+    # Chunking
+    CHUNK_SIZE: int = 900
+    CHUNK_OVERLAP: int = 120
+
+cfg = CFG()
+os.makedirs(cfg.DOC_DIR, exist_ok=True)
+os.makedirs(cfg.HASH_DIR, exist_ok=True)
+os.makedirs(cfg.FAISS_DIR, exist_ok=True)
+
+# Azure OpenAI clients
+client = AzureOpenAI(azure_endpoint=cfg.AZURE_OPENAI_ENDPOINT,
+                     api_key=cfg.AZURE_OPENAI_KEY,
+                     api_version=cfg.AZURE_OPENAI_API_VERSION)
+
+emb = AzureOpenAIEmbeddings(
+    azure_deployment=cfg.AZURE_EMBED_DEPLOYMENT,
+    openai_api_key=cfg.AZURE_OPENAI_KEY,
+    azure_endpoint=cfg.AZURE_OPENAI_ENDPOINT,
+    openai_api_version=cfg.AZURE_OPENAI_API_VERSION,
+)
+splitter = RecursiveCharacterTextSplitter(chunk_size=cfg.CHUNK_SIZE, chunk_overlap=cfg.CHUNK_OVERLAP)
+
+# optional docs UI
+documents = Documents()
+documents.save_local_files_to_db()
+
+# ────────────────────────────────────────────────────────────────────────────────
+# DB
+# ────────────────────────────────────────────────────────────────────────────────
+def pg_conn():
+    return psycopg2.connect(
+        host=cfg.PG_HOST, dbname=cfg.PG_DB, user=cfg.PG_USER, password=cfg.PG_PASS, port=cfg.PG_PORT
+    )
+
+# ────────────────────────────────────────────────────────────────────────────────
+# CHAT HISTORY (kept exactly like your version)
+# ────────────────────────────────────────────────────────────────────────────────
+def get_conversation_history(user_key):
+    h = redis_client.get(f"user_{user_key}_history")
+    return json.loads(h) if h else []
+
+def save_conversation_history(user_key, history):
+    redis_client.set(f"user_{user_key}_history", json.dumps(history), ex=3600)
+
+def trim_history(conversation_history, max_entries=5):
+    return conversation_history[-max_entries:]
+
+# ────────────────────────────────────────────────────────────────────────────────
+# RBAC (uses your tables: role_and_access_user_roles, role_and_access_role_features, etc.)
+# ────────────────────────────────────────────────────────────────────────────────
+USER_ROLES_TABLE = os.getenv("RBAC_USER_ROLES_TABLE", "user_management_user_roles")
+DB_SCHEMA = os.getenv("DB_SCHEMA", "public")
+
+def fetch_user_roles_features(conn, user_id: int):
+    roles, feats = [], set()
+    with conn.cursor(cursor_factory=RealDictCursor) as cur:
+        # roles for this user
+        cur.execute(sql.SQL("""
+            SELECT r.role_name
+            FROM {} ur
+            JOIN role_and_access_role r ON r.id = ur.role_id
+            WHERE ur.user_id = %s
+        """).format(sql.Identifier(DB_SCHEMA, USER_ROLES_TABLE)), (user_id,))
+        roles = [row["role_name"] for row in cur.fetchall()]
+
+        # features from those roles
+        cur.execute(sql.SQL("""
+            SELECT f.feature_name
+            FROM {} ur
+            JOIN role_and_access_role_features rf ON rf.role_id = ur.role_id
+            JOIN role_and_access_feature f ON f.id = rf.feature_id
+            WHERE ur.user_id = %s
+        """).format(sql.Identifier(DB_SCHEMA, USER_ROLES_TABLE)), (user_id,))
+        feats = {(row["feature_name"] or "").lower() for row in cur.fetchall()}
+
+        # superuser shortcut
+        cur.execute("SELECT is_superuser FROM user_management_user WHERE id=%s", (user_id,))
+        row = cur.fetchone()
+        if row and row.get("is_superuser"):
+            roles.append("Complete Access")
+            feats |= {"all project", "budget"}
+
+    return roles, feats
+
+def has_all_projects(role_names: List[str], features: Set[str]) -> bool:
+    if any(r.lower() in {"complete access", "senior management", "pmo"} for r in role_names):
+        return True
+    if any("all project" in f for f in features):
+        return True
+    return False
+
+def has_budget(role_names: List[str], features: Set[str]) -> bool:
+    if any(r.lower() in {"complete access", "senior management", "pmo"} for r in role_names):
+        return True
+    if any("budget" in f for f in features):
+        return True
+    return False
+
+def manager_project_ids(conn, manager_user_id: int) -> List[int]:
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT id
+            FROM project_management_project
+            WHERE project_manager_id = %s
+            ORDER BY id
+        """, (manager_user_id,))
+        return [r[0] for r in cur.fetchall()]
+
+# ────────────────────────────────────────────────────────────────────────────────
+# DATA → DOCS
+# ────────────────────────────────────────────────────────────────────────────────
+def fetch_project_bundle(conn, project_id: int) -> Optional[Dict[str, Any]]:
+    with conn.cursor(cursor_factory=RealDictCursor) as cur:
+        # 🔧 category_name comes from category_name_en/ar
+        cur.execute("""
+            SELECT p.*,
+                   COALESCE(c.category_name_en, c.category_name_ar) AS category_name
+            FROM project_management_project p
+            LEFT JOIN project_management_projectcategory c
+              ON c.id = p.project_category_id
+            WHERE p.id = %s
+        """, (project_id,))
+        project = cur.fetchone()
+        if not project:
+            return None
+
+        # 🔧 updaed_at → updated_at
+        cur.execute("""
+            SELECT
+                allocated_budget,
+                spent_budget,
+                budget_left,
+                created_at,
+                updaed_at AS updated_at   -- ← keep DB typo, expose clean alias
+            FROM project_management_projectbudget
+            WHERE project_id = %s
+            LIMIT 1
+        """, (project_id,))
+        budget = cur.fetchone()
+
+
+        cur.execute("""
+            SELECT id, name_en, name_ar, designation_en, designation_ar, created_at, updated_at
+            FROM project_management_teammember
+            WHERE project_id = %s
+            ORDER BY id
+        """, (project_id,))
+        team = cur.fetchall()
+
+    return {"project": project, "budget": budget, "team": team}
+
+
+def _fmt_jsonb(j: Any) -> str:
+    if j is None: return ""
+    if isinstance(j,(dict,list)): return json.dumps(j, ensure_ascii=False, indent=2)
+    return str(j)
+
+def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, audience_tag: str) -> List[Document]:
+    p, b, team = bundle["project"], bundle["budget"], bundle["team"]
+
+    def sec(title, body):
+        body = (body or "").strip()
+        return f"### {title} ###\n{body}\n\n"
+
+    overview = (
+        f"Project Name (EN): {p.get('project_name_en','')}\n"
+        f"Project Name (AR): {p.get('project_name_ar','')}\n"
+        f"Category: {p.get('category_name','')}\n"
+        f"Status (EN): {p.get('status_en','')}\n"
+        f"Status (AR): {p.get('status_ar','')}\n"
+        f"Start: {p.get('start_date')}  End: {p.get('end_date')}\n"
+        f"Manager User ID: {p.get('project_manager_id')}\n"
+    )
+
+    budget_txt = ""
+    if include_budget and b:
+        budget_txt = (
+            f"Allocated: {b.get('allocated_budget')}\n"
+            f"Spent: {b.get('spent_budget')}\n"
+            f"Left: {b.get('budget_left')}\n"
+        )
+
+    team_txt = "\n".join([
+        f"- {(m.get('name_en') or m.get('name_ar') or '-')}"
+        f" — {(m.get('designation_en') or m.get('designation_ar') or '-')}"
+        for m in team
+    ]) or "—"
+
+
+    content = (
+        sec("PROJECT OVERVIEW", overview) +
+        sec("SUMMARY HEADING (EN)", _fmt_jsonb(p.get("summary_heading_en"))) +
+        sec("SUMMARY HEADING (AR)", _fmt_jsonb(p.get("summary_heading_ar"))) +
+        sec("SUMMARY DESCRIPTION (EN)", _fmt_jsonb(p.get("summary_description_en"))) +
+        sec("SUMMARY DESCRIPTION (AR)", _fmt_jsonb(p.get("summary_description_ar"))) +
+        sec("PROGRESS TO DATE (EN)", _fmt_jsonb(p.get("progress_to_date_en"))) +
+        sec("PROGRESS TO DATE (AR)", _fmt_jsonb(p.get("progress_to_date_ar"))) +
+        sec("NEXT STEPS (EN)", _fmt_jsonb(p.get("next_step_en"))) +
+        sec("NEXT STEPS (AR)", _fmt_jsonb(p.get("next_step_ar"))) +
+        sec("NEXT STEP DUE DATE", _fmt_jsonb(p.get("next_step_due_date"))) +
+        sec("PROJECT DESCRIPTION (EN)", p.get("project_description_en") or "") +
+        sec("PROJECT DESCRIPTION (AR)", p.get("project_description_ar") or "") +
+        (sec("BUDGET", budget_txt) if include_budget else "") +
+        sec("TEAM MEMBERS", team_txt)
+    )
+
+    meta = {
+        "project_id": p["id"],
+        "project_manager_id": p.get("project_manager_id"),
+        "category": p.get("category_name"),
+        "audience_tag": audience_tag,
+        "updated_at": (p.get("updated_at") or p.get("created_at") or datetime.utcnow()).isoformat(),
+    }
+    return [Document(page_content=content, metadata=meta)]
+
+# ────────────────────────────────────────────────────────────────────────────────
+# FAISS: paths, hashing, build, load, search
+# ────────────────────────────────────────────────────────────────────────────────
+def _aud_admin_dir() -> str:         return os.path.join(cfg.FAISS_DIR, "admin")
+def _aud_manager_dir(uid: int) -> str:return os.path.join(cfg.FAISS_DIR, "manager", str(uid))
+
+def _hfile(audience: str) -> str:             return os.path.join(cfg.HASH_DIR, f"{audience}.json")
+def _aud_feature_file(audience: str) -> str:  return os.path.join(cfg.HASH_DIR, f"{audience}__features.sha")
+
+def _load_hashes(aud: str) -> Dict[str, str]:
+    p = _hfile(aud)
+    return json.load(open(p,"r",encoding="utf-8")) if os.path.exists(p) else {}
+def _save_hashes(aud: str, d: Dict[str,str]):
+    json.dump(d, open(_hfile(aud),"w",encoding="utf-8"), ensure_ascii=False, indent=2)
+
+def _feature_fp(role_names: List[str], features: Set[str]) -> str:
+    payload = {"roles": sorted([r.lower() for r in role_names]),
+               "features": sorted(list(features))}
+    s = json.dumps(payload, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(s.encode("utf-8")).hexdigest()
+
+def _bundle_hash(bundle: Dict[str, Any], include_budget: bool, audience: str) -> str:
+    s = json.dumps({"b": bundle, "include_budget": include_budget, "aud": audience},
+                   sort_keys=True, ensure_ascii=False, default=str)
+    return hashlib.sha256(s.encode("utf-8")).hexdigest()
+
+def _atomic_replace_dir(src: str, dst: str):
+    tmp = dst + ".tmp"
+    if os.path.exists(tmp): shutil.rmtree(tmp)
+    shutil.copytree(src, tmp)
+    if os.path.exists(dst): shutil.rmtree(dst)
+    os.rename(tmp, dst)
+
+def _build_index(index_dir: str, docs: List[Document]):
+    chunks: List[Document] = []
+    for d in docs:
+        for i, txt in enumerate(splitter.split_text(d.page_content)):
+            md = dict(d.metadata)
+            md["chunk_id"] = f"{md['project_id']}::{md['audience_tag']}::chunk::{i}"
+            chunks.append(Document(page_content=txt, metadata=md))
+    vs = FAISS.from_documents(chunks, emb)
+    tmp = tempfile.mkdtemp()
+    vs.save_local(tmp)
+    os.makedirs(os.path.dirname(index_dir) or ".", exist_ok=True)
+    _atomic_replace_dir(tmp, index_dir)
+    shutil.rmtree(tmp, ignore_errors=True)
+
+def _load_index(index_dir: str) -> Optional[FAISS]:
+    if not os.path.exists(index_dir): return None
+    return FAISS.load_local(index_dir, emb, allow_dangerous_deserialization=True)
+
+def _build_admin_index(conn, include_budget: bool):
+    aud = "admin"
+    hashes = _load_hashes(aud)
+    with conn.cursor() as cur:
+        cur.execute("SELECT id FROM project_management_project ORDER BY id")
+        pids = [r[0] for r in cur.fetchall()]
+    docs: List[Document] = []
+    for pid in pids:
+        b = fetch_project_bundle(conn, pid)
+        if not b: continue
+        h = _bundle_hash(b, include_budget, aud)
+        hashes[str(pid)] = h
+        docs.extend(build_project_documents(b, include_budget=include_budget, audience_tag=aud))
+    _build_index(_aud_admin_dir(), docs)
+    _save_hashes(aud, hashes)
+
+def _build_manager_index(conn, user_id: int, include_budget: bool):
+    aud = f"manager_{user_id}"
+    hashes = _load_hashes(aud)
+    pids = manager_project_ids(conn, user_id)
+    docs: List[Document] = []
+    for pid in pids:
+        b = fetch_project_bundle(conn, pid)
+        if not b: continue
+        h = _bundle_hash(b, include_budget, aud)
+        hashes[str(pid)] = h
+        docs.extend(build_project_documents(b, include_budget=include_budget, audience_tag=aud))
+    _build_index(_aud_manager_dir(user_id), docs)
+    _save_hashes(aud, hashes)
+
+def _ensure_fresh_index(conn, user_id: int) -> Tuple[str, bool, bool]:
+    """
+    Ensures the audience index exists and is refreshed if:
+      - any project bundle hash changed, or
+      - the user's features/roles changed (feature fingerprint).
+    """
+    role_names, features = fetch_user_roles_features(conn, user_id)
+    all_projects = has_all_projects(role_names, features)
+    budget_ok    = has_budget(role_names, features)
+
+    audience = "admin" if all_projects else f"manager_{user_id}"
+    idx_dir  = _aud_admin_dir() if all_projects else _aud_manager_dir(user_id)
+
+    # feature fingerprint
+    fp_now = _feature_fp(role_names, features)
+    fp_file = _aud_feature_file(audience)
+    fp_prev = open(fp_file).read().strip() if os.path.exists(fp_file) else None
+    feat_changed = (fp_now != fp_prev)
+
+    # per-project hashes
+    hashes = _load_hashes(audience)
+    dirty = feat_changed or (not os.path.exists(idx_dir))
+
+    if all_projects:
+        with conn.cursor() as cur:
+            cur.execute("SELECT id FROM project_management_project ORDER BY id")
+            pids = [r[0] for r in cur.fetchall()]
+    else:
+        pids = manager_project_ids(conn, user_id)
+
+    for pid in pids:
+        b = fetch_project_bundle(conn, pid)
+        if not b: continue
+        h = _bundle_hash(b, include_budget=budget_ok, audience=audience)
+        if hashes.get(str(pid)) != h:
+            dirty = True
+            hashes[str(pid)] = h
+
+    if dirty:
+        if all_projects:
+            _build_admin_index(conn, include_budget=budget_ok)
+        else:
+            _build_manager_index(conn, user_id, include_budget=budget_ok)
+        _save_hashes(audience, hashes)
+        with open(fp_file, "w", encoding="utf-8") as f:
+            f.write(fp_now)
+
+    return idx_dir, all_projects, budget_ok
+
+def faiss_search(index_dir: str, query: str, k: int = 8) -> List[Document]:
+    vs = _load_index(index_dir)
+    if not vs: return []
+    return vs.similarity_search(query, k=k)
+
+# ────────────────────────────────────────────────────────────────────────────────
+# GPT RESPONSE (kept — with history)
+# ────────────────────────────────────────────────────────────────────────────────
+def generate_gpt_response(context, query, conversation_history):
+    trimmed = trim_history(conversation_history)
+    history_prompt = "\n".join([f"{e['role']}: {e['content']}" for e in trimmed]) + f"\nuser: {query}"
+
+    chat_prompt = [
+        {
+            "role": "system",
+            "content": f"""
+`    You are an expert advisor for the Education, Human Development, and Community Development Council (EHCD).
+    The knowledge base is: "{context}". Use only this context. Use the following conversation history: {history_prompt}.
+    just answer ro the point exact what's being asked and only upto 1000 tokens , summarized and concised
+    User Objective:
+            The user seeks insights on ongoing or planned education projects, their budgets, strategies, timelines, or policy implications. Your task is to extract relevant information from the knowledge base and provide a clear, human-friendly explanation. Focus on delivering answers that are:
+
+                - Summarize without missing any relevant detail, necessary for the user.
+                - To the Point: Answer directly with what is specified in the knowledge base.
+                - Structured: Use bullet points, numbered lists, or tables as appropriate for clarity.
+                - After providing an overview, ask follow-up questions for example:
+                    - "Would you like more details on any specific aspect?"
+                    - "Is there a particular area you’d like to explore further?"
+                    - "Should I elaborate on this project's budget or scope?"
+                    - "Would you like examples or comparisons with other EHCD initiatives?"
+
+                Ensure that responses are well-structured but offer to provide more details in a conversational manner, allowing the user to guide the depth of the discussion.
+
+            Instructions:
+
+                Search the Knowledge Base:
+                    - Do not invent or create information by yourself if not provided in the context or knowledge base.
+                    - Understand the user query and the context provided, if the information is not valid for user query , just reply,  i dont't have such information regarding your query.
+                    - Identify the most relevant document(s) based on the user's question.
+                    - Always respond in the **same language** as the user's question (e.g., if asked in Arabic, respond fully in Arabic).
+                    - Extract only the information directly related to the user’s query.
+                    - If the knowledge base does not contain the requested information, respond with: "The requested information isn't directly available in the provided documents."
+                    - you can respond to the following question, if asked for more information, summarize the answer or engage in further dialogue using history Chat -> "History Conversation" to understand the query better.
+                    - Make the conversation feel human-like by engaging in back-and-forth interactions when necessary (e.g., ask clarifying questions if the user requests a table or detailed breakdown).
+                    - if user ask about image, provide the flowchart and answer respectively
+                    - Do not mention 
+                    
+
+                Answer Structuring:
+                    Use proper HTML for structuring and Styling your response: (Aesthetics are must)
+                        - Ensure all text formatting uses only HTML tags (e.g., `<h3>`, `<ul>`, `<strong>`, `<br>`, etc.) for headings, lists, emphasis, and line breaks. Avoid `\n` for spacing.
+                        - Headings
+                            Do Not Use: Markdown symbols like #, ##, etc.
+                            Use: HTML heading tags <h1> to <h6>.
+                        Example:
+
+                        <h1>Main Title</h1>
+                        <h2>Subheading</h2>
+                        <h3>Section Heading</h3>
+                        Create Lists Using Proper HTML Tags
+
+                        Unordered Lists (Bullet Points)
+                            Do Not Use: Dash (-) or asterisk (*) symbols.
+                            Use: <ul> for the list container and <li> for each list item.
+
+                            Example:
+
+                            <ul>
+                            <li>First item</li>
+                            <li>Second item</li>
+                            <li>Third item</li>
+                            </ul>
+
+                    Ordered Lists (Numbered Lists)
+
+                        Do Not Use: Numbers followed by periods (e.g., 1., 2.) in plain text.
+                        Use: <ol> for the list container and <li> for each list item.
+                        Example:
+
+                        <ol>
+                        <li>First step</li>
+                        <li>Second step</li>
+                        <li>Third step</li>
+                        </ol>
+
+
+                        - Wrap any table content in <table><tr><td>...</td></tr></table> tags for tabular data.
+                        - If User Ask for "Table" format the answer in table , If ask "flowchart" you have to provide the best flow chart with proper styling using html and css.
+                        - Do not include HTML tags that are not properly closed.
+                        - Ensure that the HTML content is easy to read and well-formatted for a better user experience.
+                        
+
+                Conversational Clarity:
+                    - If the user asks for more details or specifics (e.g., "Can you make a table for this?"), follow up with a question like "Sure, what data would you like in the table?" or "Which details should be included in the table?".
+                    - For general questions, summarize and then ask, "Would you like more details on any specific point?" to keep the interaction dynamic.
+                    - Aim for a tone that feels like a natural conversation rather than a strict Q&A format.
+
+                Clarity & Structure:
+                    - Ensure that all responses are well-structured, easy to read, and follow a logical flow.
+                    - Avoid using any unnecessary names or content not related to the provided context.
+                You have to remember:
+                    - Avoid Code Markers:" Do not use ''',** backticks (`), or any code block delimiters (like '''html or backticks)".
+
+                        
+                Example Query Handling:
+                    User: "What projects are currently being run by EHCD to improve school attendance?"
+                    Chatbot Response:
+
+                    <h3>EHCD Projects for Improving School Attendance</h3>
+                    <ul>
+                    <li><strong>Smart Attendance Monitoring System:</strong> Uses biometric and RFID tech to track attendance.</li>
+                    <li><strong>Parent-Engagement Workshops:</strong> Monthly sessions to engage parents on student participation.</li>
+                    <li><strong>Transportation Access Program:</strong> Providing buses for remote areas to ensure daily school access.</li>
+                    </ul>
+
+                    Would you like a table with timelines and allocated budgets for each initiative?
+
+                
+""".strip()
+        },
+        {"role": "user", "content": query},
+    ]
+
+    try:
+        stream = client.chat.completions.create(
+            model=cfg.AZURE_OPENAI_DEPLOYMENT,
+            messages=chat_prompt,
+            max_tokens=1500,
+            temperature=0.7,
+            top_p=0.95,
+            frequency_penalty=0.2,
+
+            presence_penalty=0,
+            stream=True,
+        )
+        for chunk in stream:
+            if chunk.choices and len(chunk.choices)>0:
+                content = chunk.choices[0].delta.content
+                if content:
+                    yield content
+    except Exception as e:
+        logger.error(f"Error generating GPT response: {e}")
+        yield "An error occurred while processing your request."
+
+# ────────────────────────────────────────────────────────────────────────────────
+# API
+# ────────────────────────────────────────────────────────────────────────────────
+@app.route('/api/query', methods=['POST'])
+def handle_query():
+    payload = request.get_json(force=True) or {}
+    query = (payload.get('query') or "").strip()
+    if not query:
+        return jsonify({"error":"Empty query"}), 400
+
+    # For RBAC we need the **real** numeric user id (you said you'll pass it)
+    rbac_user_id = int(payload.get("user_id", 145))  # default for quick test
+
+    # History key tied to session (kept same as your code)
+    if 'user_id' not in session:
+        session['user_id'] = os.urandom(16).hex()
+    history_key = session['user_id']
+
+    conversation_history = get_conversation_history(history_key)
+    conversation_history.append({"role":"user", "content": query})
+
+    # Retrieve relevant docs from FAISS (auto-build / auto-refresh per access)
+    with pg_conn() as conn:
+        index_dir, _, _ = _ensure_fresh_index(conn, rbac_user_id)
+        docs = faiss_search(index_dir, query, k=8)
+    context = "\n\n".join(d.page_content for d in docs) if docs else "."
+
+    try:
+        gpt_response_generator = generate_gpt_response(context, query, conversation_history)
+
+        def generate():
+            assistant_response = ''
+            for chunk in gpt_response_generator:
+                assistant_response += chunk
+                plain_text_chunk = re.sub(r'<[^>]*>', '', chunk)
+                yield plain_text_chunk
+            conversation_history.append({"role":"assistant","content":assistant_response})
+            save_conversation_history(history_key, conversation_history)
+            if assistant_response:
+                yield f"<replace>{assistant_response}</replace>"
+
+        return Response(stream_with_context(generate()), content_type='text/html',
+                        headers={'Content-Encoding': 'chunked'})
+    except Exception as e:
+        logger.error(f"Error while streaming GPT response: {e}")
+        return jsonify({'error': 'An error occurred while processing your request.'}), 500
+
+# ────────────────────────────────────────────────────────────────────────────────
+# LOGIN / SESSIONS (kept)
+# ────────────────────────────────────────────────────────────────────────────────
+credentials = {"hypernym1":"hyper@chatbot","hypernym2":"hyper@chatbot"}
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)
+
+def init_db():
+    conn = sqlite3.connect('sessions.db'); cur = conn.cursor()
+    cur.execute('''CREATE TABLE IF NOT EXISTS active_sessions (username TEXT PRIMARY KEY, last_active TIMESTAMP)''')
+    conn.commit(); conn.close()
+
+def add_session(username):
+    conn = sqlite3.connect('sessions.db'); cur = conn.cursor()
+    cur.execute("INSERT OR REPLACE INTO active_sessions (username, last_active) VALUES (?, ?)", (username, datetime.now()))
+    conn.commit(); conn.close()
+
+def remove_session(username):
+    conn = sqlite3.connect('sessions.db'); cur = conn.cursor()
+    cur.execute("DELETE FROM active_sessions WHERE username = ?", (username,))
+    conn.commit(); conn.close()
+
+def count_active_sessions():
+    cleanup_expired_sessions()
+    conn = sqlite3.connect('sessions.db'); cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM active_sessions"); c = cur.fetchone()[0]
+    conn.close(); return c
+
+def is_user_logged_in(username):
+    cleanup_expired_sessions()
+    conn = sqlite3.connect('sessions.db'); cur = conn.cursor()
+    cur.execute("SELECT 1 FROM active_sessions WHERE username = ?", (username,))
+    r = cur.fetchone(); conn.close(); return r is not None
+
+def cleanup_expired_sessions():
+    expiration_time = datetime.now() - app.config['PERMANENT_SESSION_LIFETIME']
+    conn = sqlite3.connect('sessions.db'); cur = conn.cursor()
+    cur.execute("DELETE FROM active_sessions WHERE last_active < ?", (expiration_time,))
+    conn.commit(); conn.close()
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in session or not is_user_logged_in(session['username']):
+            flash("Please log in to access this page.")
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+@app.route('/', methods=['GET','POST'])
+def login():
+    init_db()
+    if count_active_sessions() >= 2:
+        flash('Maximum number of users are currently logged in. Please wait until someone logs out.')
+        return render_template('login.html')
+    if request.method == 'POST':
+        username = request.form['username']; password = request.form['password']
+        if credentials.get(username) == password:
+            if is_user_logged_in(username):
+                flash('This user is already logged in from another session.')
+                return render_template('login.html')
+            session['username'] = username; session.permanent = True; add_session(username)
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid credentials. Please try again.')
+            return render_template('login.html')
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    username = session.pop('username', None)
+    if username: remove_session(username)
+    flash('You have been logged out.')
+    return redirect(url_for('login'))
+
+@app.route('/home')
+@login_required
+def index():
+    return render_template('index.html')
+
+# ────────────────────────────────────────────────────────────────────────────────
+# DOCS ROUTES (kept)
+# ────────────────────────────────────────────────────────────────────────────────
+@app.route('/documents')
+@login_required
+def list_documents():
+    if session.get("username") == "hypernym1":
+        document_list = documents.fetch_documents()
+        return render_template('documents.html', documents=document_list)
+    else:
+        return "Unauthorized", 401
+
+@app.route('/download/<int:document_id>')
+def download_document(document_id):
+    document = documents.get_document_path(document_id)
+    if document:
+        document_name, file_path = document
+        return send_file(file_path, as_attachment=True)
+    return "Document not found", 404
+
+# ────────────────────────────────────────────────────────────────────────────────
+# MAIN
+# ────────────────────────────────────────────────────────────────────────────────
+if __name__ == '__main__':
+    logger.info("Starting FAISS RAG web application")
+    app.run(host='0.0.0.0', port=8080, debug=True)
