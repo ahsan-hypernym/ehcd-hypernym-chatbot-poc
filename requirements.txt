@@ -9,4 +9,5 @@ redis
 langchain
 langchain-community
 langchain-openai
-faiss-cpu # or faiss-gpu if using a GPU
+faiss-cpu
+psycopg2-binary 
