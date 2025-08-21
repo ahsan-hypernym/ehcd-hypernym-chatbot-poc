@@ -4,7 +4,7 @@
     <!-- Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VFQ AI Chat</title>
+    <title>AI Chat</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- jQuery CDN -->
@@ -39,6 +39,17 @@
         <!-- Header -->
         <div class="bg-gray-100 text-gray-800 p-3 flex flex-col sm:flex-row items-center justify-between">
             <img src="static/hy.png" alt="Your Logo" class="h-12 sm:h-18">
+            <!-- NEW: User ID box -->
+            <div class="flex items-center gap-2 mt-3 sm:mt-0">
+                <label for="userIdInput" class="text-sm text-gray-700">User&nbsp;ID</label>
+                <input id="userIdInput" type="number" min="1"
+                    class="w-28 px-3 py-2 text-sm rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white"
+                    placeholder="e.g. 151" />
+                <button id="saveUserIdBtn"
+                        class="px-3 py-2 text-sm text-white bg-gray-700 rounded-md hover:bg-gray-600">
+                Save
+                </button>
+            </div>
             <div class="flex space-x-4 mt-3 sm:mt-0">
                 <a href="{{ url_for('list_documents') }}" target="_blank" class="px-3 py-2 text-sm text-white bg-gray-600 rounded-full cursor-pointer transition duration-300 ease-in-out hover:bg-gray-500 shadow-md">Document Library</a>
                 <form action="{{ url_for('logout') }}" method="get">
@@ -69,9 +80,72 @@
 
     <!-- JavaScript -->
     <script>
+        // --- User ID helpers ---
+    function getStoredUserId() {
+        return localStorage.getItem('rbac_user_id') || '';
+    }
+
+    function setStoredUserId(val) {
+        if (val && /^\d+$/.test(val)) {
+        localStorage.setItem('rbac_user_id', String(parseInt(val, 10)));
+        return true;
+        }
+        return false;
+    }
+
+    function ensureUserIdOrToast() {
+        const uid = getStoredUserId();
+        if (!uid) {
+        alert('Please enter and Save a numeric User ID first.');
+        document.getElementById('userIdInput').focus();
+        return null;
+        }
+        return uid;
+    }
+
+    // On load: hydrate input from localStorage
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('userIdInput');
+        const btn   = document.getElementById('saveUserIdBtn');
+
+        if (input && btn) {
+        input.value = getStoredUserId();
+
+        btn.addEventListener('click', () => {
+            const ok = setStoredUserId(input.value.trim());
+            if (ok) {
+            // quick visual feedback
+            btn.textContent = 'Saved';
+            setTimeout(() => (btn.textContent = 'Save'), 1200);
+            } else {
+            alert('Enter a valid numeric User ID (e.g., 151) and try again.');
+            input.focus();
+            }
+        });
+        }
+        const queryInput = document.getElementById('queryInput');
+            queryInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+            });
+
+            // Auto-resize textarea
+        const textarea = document.getElementById('queryInput');
+            textarea.addEventListener('input', () => {
+            textarea.style.height = 'auto';
+            const maxHeight = parseInt(getComputedStyle(textarea).lineHeight) * 5;
+            textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
+            });
+        });
         async function sendMessage() {
             const query = $('#queryInput').val();
             if (query.trim() === '') return;
+
+            const userId = ensureUserIdOrToast();
+            if (!userId) return; // stop if no user id
+
 
              // Remove the initial text if it exists
              $('#initial-text').remove();
@@ -96,7 +170,10 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ query: query })
+                    body: JSON.stringify({
+                            query: query,
+                            user_id: parseInt(userId, 10)  
+                        })
                 });
 
                 if (!response.ok) {
@@ -138,26 +215,6 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const queryInput = document.getElementById('queryInput');
-            queryInput.addEventListener('keydown', function(event) {
-                if (event.key === 'Enter' && !event.shiftKey) {
-                    event.preventDefault();
-                    sendMessage();
-                }
-            });
-        });
-
-    const textarea = document.getElementById('queryInput');
-
-    textarea.addEventListener('input', () => {
-        // Reset height so we can recalculate the scrollHeight
-        textarea.style.height = 'auto';
-        const maxHeight = parseInt(getComputedStyle(textarea).lineHeight) * 5;
-        
-        // Set height to the scroll height, or max height if scroll height exceeds it
-        textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
-    });
 
     </script>
 </body>

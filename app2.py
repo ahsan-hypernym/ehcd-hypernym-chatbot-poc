@@ -35,7 +35,8 @@ from doc import Documents
 # ────────────────────────────────────────────────────────────────────────────────
 app = Flask(__name__)
 app.secret_key = 'fs78sf7s8d6v7sdy7sdbds7v'
-
+USER_ROLES_TABLE = os.getenv("RBAC_USER_ROLES_TABLE", "user_management_user_roles")
+DB_SCHEMA = os.getenv("DB_SCHEMA", "public")
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -118,8 +119,57 @@ def trim_history(conversation_history, max_entries=5):
 # ────────────────────────────────────────────────────────────────────────────────
 # RBAC (uses your tables: role_and_access_user_roles, role_and_access_role_features, etc.)
 # ────────────────────────────────────────────────────────────────────────────────
-USER_ROLES_TABLE = os.getenv("RBAC_USER_ROLES_TABLE", "user_management_user_roles")
-DB_SCHEMA = os.getenv("DB_SCHEMA", "public")
+
+def fetch_all_users(conn) -> List[Dict[str, Any]]:
+    with conn.cursor(cursor_factory=RealDictCursor) as cur:
+        cur.execute("""
+            SELECT id, full_name_en, full_name_ar, email, department, designation,
+                   contact_no, is_active, is_staff, is_superuser, created_at, updated_at
+            FROM user_management_user
+            ORDER BY id
+        """)
+        return cur.fetchall() or []
+    
+class FeatureID:
+    USER_MANAGEMENT = 3
+
+def db_has_feature(conn, user_id: int, feature_id: int) -> bool:
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT EXISTS (
+              SELECT 1
+              FROM public.user_management_user_roles ur
+              JOIN public.role_and_access_role_features rf ON rf.role_id = ur.role_id
+              WHERE ur.user_id = %s AND rf.feature_id = %s
+            )
+        """, (user_id, feature_id))
+        return bool(cur.fetchone()[0])
+    
+def has_user_management(
+    role_names: List[str],
+    features: Set[str],
+    *,
+    conn=None,
+    user_id: Optional[int]=None
+    ) -> bool:
+    # role buckets
+    if any((r or "").lower() in {"complete access", "senior management", "pmo"} for r in role_names):
+        return True
+
+    # prefer numeric feature id when possible
+    if conn is not None and user_id is not None:
+        if db_has_feature(conn, user_id, FeatureID.USER_MANAGEMENT):
+            return True
+
+    # legacy/fallback: exact name (avoid substring grants)
+    features_lc = {(f or "").lower() for f in features}
+    return "user management" in features_lc
+
+
+
+
+
+
 
 def fetch_user_roles_features(conn, user_id: int):
     roles, feats = [], set()
@@ -225,6 +275,48 @@ def _fmt_jsonb(j: Any) -> str:
     if isinstance(j,(dict,list)): return json.dumps(j, ensure_ascii=False, indent=2)
     return str(j)
 
+
+def build_user_directory_documents(users: List[Dict[str,Any]], *, audience_tag: str) -> List[Document]:
+    docs: List[Document] = []
+    if not users:
+        return docs
+
+    # Index header (helps retrieval intent)
+    header = (
+        "### USER DIRECTORY ###\n"
+        "This section lists users with name, email, department, designation, and flags.\n"
+        "Use for queries like: who is <name>, list active users in department X, etc.\n"
+    )
+    docs.append(Document(page_content=header, metadata={"section":"user_directory", "audience_tag":audience_tag}))
+
+    for u in users:
+        # keep it concise and multilingual-friendly
+        text = (
+            f"User ID: {u.get('id')}\n"
+            f"Name (EN): {u.get('full_name_en') or ''}\n"
+            f"Name (AR): {u.get('full_name_ar') or ''}\n"
+            f"Email: {u.get('email') or ''}\n"
+            f"Department: {u.get('department') or ''}\n"
+            f"Designation: {u.get('designation') or ''}\n"
+            f"Contact: {u.get('contact_no') or ''}\n"
+            f"Is Active: {u.get('is_active')}\n"
+            f"Is Staff: {u.get('is_staff')}\n"
+            f"Is Superuser: {u.get('is_superuser')}\n"
+            f"Created: {u.get('created_at')}\n"
+            f"Updated: {u.get('updated_at')}\n"
+        )
+        docs.append(Document(
+            page_content=text,
+            metadata={
+                "section":"user_directory_entry",
+                "audience_tag":audience_tag,
+                "user_id": u.get("id"),
+                "email": (u.get("email") or "").lower()
+            }
+        ))
+    return docs
+
+
 def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, audience_tag: str) -> List[Document]:
     p, b, team = bundle["project"], bundle["budget"], bundle["team"]
 
@@ -321,8 +413,13 @@ def _build_index(index_dir: str, docs: List[Document]):
     for d in docs:
         for i, txt in enumerate(splitter.split_text(d.page_content)):
             md = dict(d.metadata)
-            md["chunk_id"] = f"{md['project_id']}::{md['audience_tag']}::chunk::{i}"
+            pid = md.get("project_id", "users")
+            md["chunk_id"] = f"{pid}::{md.get('audience_tag','aud')}::chunk::{i}"
+
             chunks.append(Document(page_content=txt, metadata=md))
+    if not chunks:
+        shutil.rmtree(index_dir, ignore_errors=True)
+        return
     vs = FAISS.from_documents(chunks, emb)
     tmp = tempfile.mkdtemp()
     vs.save_local(tmp)
@@ -330,11 +427,13 @@ def _build_index(index_dir: str, docs: List[Document]):
     _atomic_replace_dir(tmp, index_dir)
     shutil.rmtree(tmp, ignore_errors=True)
 
+
+
 def _load_index(index_dir: str) -> Optional[FAISS]:
     if not os.path.exists(index_dir): return None
     return FAISS.load_local(index_dir, emb, allow_dangerous_deserialization=True)
 
-def _build_admin_index(conn, include_budget: bool):
+def _build_admin_index(conn, include_budget: bool, include_users: bool = False):
     aud = "admin"
     hashes = _load_hashes(aud)
     with conn.cursor() as cur:
@@ -347,10 +446,19 @@ def _build_admin_index(conn, include_budget: bool):
         h = _bundle_hash(b, include_budget, aud)
         hashes[str(pid)] = h
         docs.extend(build_project_documents(b, include_budget=include_budget, audience_tag=aud))
-    _build_index(_aud_admin_dir(), docs)
+
+    if include_users:
+        users = fetch_all_users(conn)
+        docs.extend(build_user_directory_documents(users, audience_tag=aud))
+    
+    if not docs:
+        logger.info("Admin: no docs; clearing any stale index.")
+        shutil.rmtree(_aud_admin_dir(), ignore_errors=True)
+    else:
+        _build_index(_aud_admin_dir(), docs)
     _save_hashes(aud, hashes)
 
-def _build_manager_index(conn, user_id: int, include_budget: bool):
+def _build_manager_index(conn, user_id: int, include_budget: bool, include_users: bool = False):
     aud = f"manager_{user_id}"
     hashes = _load_hashes(aud)
     pids = manager_project_ids(conn, user_id)
@@ -361,7 +469,16 @@ def _build_manager_index(conn, user_id: int, include_budget: bool):
         h = _bundle_hash(b, include_budget, aud)
         hashes[str(pid)] = h
         docs.extend(build_project_documents(b, include_budget=include_budget, audience_tag=aud))
-    _build_index(_aud_manager_dir(user_id), docs)
+
+    if include_users:
+        users = fetch_all_users(conn)
+        docs.extend(build_user_directory_documents(users, audience_tag=aud))
+    
+    if not docs:
+        logger.info(f"Manager {user_id}: no docs; clearing index.")
+        shutil.rmtree(_aud_manager_dir(user_id), ignore_errors=True)
+    else:
+        _build_index(_aud_manager_dir(user_id), docs)
     _save_hashes(aud, hashes)
 
 def _ensure_fresh_index(conn, user_id: int) -> Tuple[str, bool, bool]:
@@ -373,6 +490,7 @@ def _ensure_fresh_index(conn, user_id: int) -> Tuple[str, bool, bool]:
     role_names, features = fetch_user_roles_features(conn, user_id)
     all_projects = has_all_projects(role_names, features)
     budget_ok    = has_budget(role_names, features)
+    user_mgmt_ok = has_user_management(role_names, features, conn=conn, user_id=user_id) 
 
     audience = "admin" if all_projects else f"manager_{user_id}"
     idx_dir  = _aud_admin_dir() if all_projects else _aud_manager_dir(user_id)
@@ -402,14 +520,31 @@ def _ensure_fresh_index(conn, user_id: int) -> Tuple[str, bool, bool]:
             dirty = True
             hashes[str(pid)] = h
 
+    old_users_fp = hashes.get("_users_fp")
+    new_users_fp = None
+    if user_mgmt_ok:
+        with conn.cursor() as cur:
+            cur.execute("SELECT max(updated_at) FROM user_management_user")
+            users_max_updated = cur.fetchone()[0]
+        new_users_fp = hashlib.sha256(str(users_max_updated).encode("utf-8")).hexdigest()
+        if new_users_fp != old_users_fp:
+            dirty = True
+            hashes["_users_fp"] = new_users_fp
+    else:
+
+        if "_users_fp" in hashes:
+            dirty = True
+            hashes.pop("_users_fp", None)
+
     if dirty:
         if all_projects:
-            _build_admin_index(conn, include_budget=budget_ok)
+            _build_admin_index(conn, include_budget=budget_ok, include_users=user_mgmt_ok)
         else:
-            _build_manager_index(conn, user_id, include_budget=budget_ok)
+            _build_manager_index(conn, user_id, include_budget=budget_ok, include_users=user_mgmt_ok)
         _save_hashes(audience, hashes)
         with open(fp_file, "w", encoding="utf-8") as f:
             f.write(fp_now)
+
 
     return idx_dir, all_projects, budget_ok
 
@@ -428,8 +563,7 @@ def generate_gpt_response(context, query, conversation_history):
     chat_prompt = [
         {
             "role": "system",
-            "content": f"""
-`    You are an expert advisor for the Education, Human Development, and Community Development Council (EHCD).
+            "content": f""" You are an expert advisor for the Education, Human Development, and Community Development Council (EHCD).
     The knowledge base is: "{context}". Use only this context. Use the following conversation history: {history_prompt}.
     just answer ro the point exact what's being asked and only upto 1000 tokens , summarized and concised
     User Objective:
@@ -568,7 +702,10 @@ def handle_query():
         return jsonify({"error":"Empty query"}), 400
 
     # For RBAC we need the **real** numeric user id (you said you'll pass it)
-    rbac_user_id = int(payload.get("user_id", 145))  # default for quick test
+    rbac_user_id_raw = payload.get("user_id")
+    if rbac_user_id_raw is None:
+        return jsonify({"error": "user_id is required"}), 400
+    rbac_user_id = int(rbac_user_id_raw)
 
     # History key tied to session (kept same as your code)
     if 'user_id' not in session:
