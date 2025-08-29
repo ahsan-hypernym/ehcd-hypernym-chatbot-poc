@@ -10,4 +10,7 @@ langchain
 langchain-community
 langchain-openai
 faiss-cpu
-psycopg2-binary 
+psycopg2-binary
+pandas
+azure-storage-blob
+openpyxl
