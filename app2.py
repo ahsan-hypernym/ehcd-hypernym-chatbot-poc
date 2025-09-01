@@ -115,15 +115,7 @@ EDU_CFG = TabularConfig(
     throttle_seconds=600,
 )
 
-def background_rebuilder():
-    while True:
-        try:
-            update_tabular_index_if_changed(EDU_CFG, embeddings)
-        except Exception as e:
-            logger.error(f"[BackgroundRebuilder] Failed: {e}")
-        time.sleep(7200)  
 
-threading.Thread(target=background_rebuilder, daemon=True).start()
 
 
 
@@ -147,6 +139,16 @@ emb = PacedEmbeddings(embeddings, tpm_limit=150_000, batch_size=32)
 # optional docs UI
 documents = Documents()
 documents.save_local_files_to_db()
+
+def background_rebuilder():
+    while True:
+        try:
+            update_tabular_index_if_changed(EDU_CFG, emb)
+        except Exception as e:
+            logger.error(f"[BackgroundRebuilder] Failed: {e}")
+        time.sleep(7200)  
+
+threading.Thread(target=background_rebuilder, daemon=True).start()
 
 # ────────────────────────────────────────────────────────────────────────────────
 # DB
