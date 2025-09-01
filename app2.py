@@ -805,13 +805,6 @@ def handle_query():
 
 
 
-            # always search the existing index (no rebuild here)
-            try:
-                docs_edu = search_tabular(EDU_CFG, emb, query, k=6)
-            except Exception as e:
-                logger.error(f"Education tabular search failed: {e}")
-
-
     # Merge: projects first (primary source), then education tabular
     docs = (docs_projects or []) + (docs_edu or [])
     context = "\n\n".join(d.page_content for d in docs) if docs else "."
