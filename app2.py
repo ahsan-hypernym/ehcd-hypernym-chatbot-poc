@@ -118,7 +118,7 @@ EDU_CFG = TabularConfig(
 def background_rebuilder():
     while True:
         try:
-            update_tabular_index_if_changed(cfg, embeddings)
+            update_tabular_index_if_changed(EDU_CFG, embeddings)
         except Exception as e:
             logger.error(f"[BackgroundRebuilder] Failed: {e}")
         time.sleep(7200)  
@@ -788,7 +788,7 @@ def handle_query():
         user_role = user_profile.get("designation") or "Guest"
         
         index_dir, _, _ = _ensure_fresh_index(conn, rbac_user_id)
-        docs_projects = faiss_search(index_dir, query, k=6)
+        docs_projects = faiss_search(index_dir, query, k=10)
 
 
         role_names, feats = fetch_user_roles_features(conn, rbac_user_id)
@@ -797,7 +797,7 @@ def handle_query():
         docs_edu = []
         if allow_edu:
             try:
-                docs_edu = search_tabular(EDU_CFG, emb, query, k=6)
+                docs_edu = search_tabular(EDU_CFG, emb, query, k=10)
             except Exception as e:
                 logger.error(f"Education tabular search failed: %s", e)
 
