@@ -270,6 +270,49 @@ def manager_project_ids(conn, manager_user_id: int) -> List[int]:
             ORDER BY id
         """, (manager_user_id,))
         return [r[0] for r in cur.fetchall()]
+    
+
+# ---- Status mapping helpers (ADD) ------------------------------------
+
+STATUS_MAP_EN = {
+    1: "In progress",
+    2: "Completed",
+    3: "Delayed",
+    4: "On hold",
+}
+STATUS_MAP_AR = {
+    1: "قيد التنفيذ",   # In progress
+    2: "مكتمل",         # Completed
+    3: "متأخر",         # Delayed
+    4: "معلّق",         # On hold
+}
+
+def _status_label_pair(val):
+    """Return (en_label, ar_label) for numeric status (1..4)."""
+    try:
+        i = int(val)
+    except (TypeError, ValueError):
+        return None, None
+    return STATUS_MAP_EN.get(i), STATUS_MAP_AR.get(i)
+
+def _aud_manager_id(audience_tag: str):
+
+    if not isinstance(audience_tag, str):
+        return None
+    if audience_tag.startswith("manager_"):
+        tail = audience_tag.split("_", 1)[1]
+    elif audience_tag.startswith("admin_for_"):
+        tail = audience_tag.split("_", 2)[2] if audience_tag.count("_") >= 2 else None
+    else:
+        return None
+    try:
+        return int(tail) if tail is not None else None
+    except Exception:
+        return None
+
+# ======================================================================
+
+
 
 # ────────────────────────────────────────────────────────────────────────────────
 # DATA → DOCS
@@ -312,7 +355,15 @@ def fetch_project_bundle(conn, project_id: int) -> Optional[Dict[str, Any]]:
         """, (project_id,))
         team = cur.fetchall()
 
-    return {"project": project, "budget": budget, "team": team}
+        cur.execute("""
+            SELECT id, title, note, user_id, date, created_at, updated_at
+            FROM project_management_projectnotes
+            WHERE project_id = %s
+            ORDER BY created_at DESC NULLS LAST, id DESC
+        """, (project_id,))
+        notes = cur.fetchall()
+
+    return {"project": project, "budget": budget, "team": team, "notes": notes}
 
 
 def _fmt_jsonb(j: Any) -> str:
@@ -385,20 +436,32 @@ def build_user_directory_documents(users: List[Dict[str,Any]], *, audience_tag: 
 
 def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, audience_tag: str) -> List[Document]:
     p, b, team = bundle["project"], bundle["budget"], bundle["team"]
+    notes = bundle.get("notes", [])
+
+    status_raw = p.get("status", p.get("status_en", p.get("status_ar")))
+    status_en, status_ar = _status_label_pair(status_raw)
+
+    # Figure out if this project belongs to the current manager audience
+    mgr_id = _aud_manager_id(audience_tag)
+    is_my_project = (mgr_id is not None and p.get("project_manager_id") == mgr_id)
 
     def sec(title, body):
         body = (body or "").strip()
         return f"### {title} ###\n{body}\n\n"
+    
+    
 
-    overview = (
-        f"Project Name (EN): {p.get('project_name_en','')}\n"
-        f"Project Name (AR): {p.get('project_name_ar','')}\n"
-        f"Category: {p.get('category_name','')}\n"
-        f"Status (EN): {p.get('status_en','')}\n"
-        f"Status (AR): {p.get('status_ar','')}\n"
-        f"Start: {p.get('start_date')}  End: {p.get('end_date')}\n"
-        f"Manager User ID: {p.get('project_manager_id')}\n"
-    )
+    overview_lines = [
+        f"Project Name (EN): {p.get('project_name_en','')}",
+        f"Project Name (AR): {p.get('project_name_ar','')}",
+        f"Category: {p.get('category_name','')}",
+        f"Status (EN): {status_en or ''}",
+        f"Status (AR): {status_ar or ''}",
+        f"Start: {p.get('start_date')}  End: {p.get('end_date')}",
+        f"Manager User ID: {p.get('project_manager_id')}",
+        ("Ownership: MY PROJECT" if is_my_project else "Ownership: Other project"),
+    ]
+    overview = "\n".join([ln for ln in overview_lines if ln])
 
     budget_txt = ""
     if include_budget and b:
@@ -415,6 +478,11 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
     ]) or "—"
 
 
+    notes_txt = "\n".join([
+        f"- {(n.get('title') or 'Note')} | by user {n.get('user_id')} | {n.get('created_at')}: {n.get('note')}"
+        for n in notes
+    ]) or "—"
+
     content = (
         sec("PROJECT OVERVIEW", overview) +
         sec("SUMMARY HEADING (EN)", _fmt_jsonb(p.get("summary_heading_en"))) +
@@ -429,7 +497,8 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
         sec("PROJECT DESCRIPTION (EN)", p.get("project_description_en") or "") +
         sec("PROJECT DESCRIPTION (AR)", p.get("project_description_ar") or "") +
         (sec("BUDGET", budget_txt) if include_budget else "") +
-        sec("TEAM MEMBERS", team_txt)
+        sec("TEAM MEMBERS", team_txt) +
+        sec("NOTES", notes_txt)
     )
 
     meta = {
@@ -437,6 +506,9 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
         "project_manager_id": p.get("project_manager_id"),
         "category": p.get("category_name"),
         "audience_tag": audience_tag,
+        "is_my_project": is_my_project,
+        "status_en": status_en,
+        "status_ar": status_ar,
         "updated_at": (p.get("updated_at") or p.get("created_at") or datetime.utcnow()).isoformat(),
     }
     return [Document(page_content=content, metadata=meta)]
@@ -499,13 +571,15 @@ def _load_index(index_dir: str) -> Optional[FAISS]:
     if not os.path.exists(index_dir): return None
     return FAISS.load_local(index_dir, emb, allow_dangerous_deserialization=True)
 
-def _build_admin_index(conn, include_budget: bool, include_users: bool = False):
+def _build_admin_index(conn, include_budget: bool, include_users: bool = False, viewer_user_id: Optional[int] = None):
     aud = "admin"
     hashes = _load_hashes(aud)
     with conn.cursor() as cur:
         cur.execute("SELECT id FROM project_management_project ORDER BY id")
         pids = [r[0] for r in cur.fetchall()]
     docs: List[Document] = []
+
+    aud_for_docs = f"admin_for_{viewer_user_id}" if viewer_user_id else aud
     for pid in pids:
         b = fetch_project_bundle(conn, pid)
         if not b: continue
@@ -603,7 +677,7 @@ def _ensure_fresh_index(conn, user_id: int) -> Tuple[str, bool, bool]:
 
     if dirty:
         if all_projects:
-            _build_admin_index(conn, include_budget=budget_ok, include_users=user_mgmt_ok)
+            _build_admin_index(conn, include_budget=budget_ok, include_users=user_mgmt_ok, viewer_user_id=user_id)
         else:
             _build_manager_index(conn, user_id, include_budget=budget_ok, include_users=user_mgmt_ok)
         _save_hashes(audience, hashes)
@@ -621,7 +695,7 @@ def faiss_search(index_dir: str, query: str, k: int = 8) -> List[Document]:
 # ────────────────────────────────────────────────────────────────────────────────
 # GPT RESPONSE (kept — with history)
 # ────────────────────────────────────────────────────────────────────────────────
-def generate_gpt_response(context, query, conversation_history,user_name="Unknown User", user_role="Guest"):
+def generate_gpt_response(context, query, conversation_history,user_name="Unknown User", user_role="",user_email=""):
     trimmed = trim_history(conversation_history)
     history_prompt = "\n".join([f"{e['role']}: {e['content']}" for e in trimmed]) + f"\nuser: {query}"
     today = datetime.now().strftime("%B %d, %Y")  
@@ -634,8 +708,9 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
     User information:
     - User Name: {user_name}
     - User Role: {user_role}
-    - Current Date: {today}
+    - User email: {user_email}
     User Objective:
+            - Current Date: {today}
             The user seeks insights on ongoing or planned education projects, their budgets, strategies, timelines, or policy implications. Your task is to extract relevant information from the knowledge base and provide a clear, human-friendly explanation. Focus on delivering answers that are:
             Greet User with their User Name provided to you.
             instructions:
@@ -704,9 +779,12 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
 
 
                         - Wrap any table content in <table><tr><td>...</td></tr></table> tags for tabular data.
-                        - If User Ask for "Table" format the answer in table , If ask "flowchart" you have to provide the best flow chart with proper styling using html and css.
+                        - If User Ask for "Table" format the answer in table , 
                         - Do not include HTML tags that are not properly closed.
                         - Ensure that the HTML content is easy to read and well-formatted for a better user experience.
+
+                    - If ask "flowchart" Use one consistent HTML flow chart format; do not alter structure, tags, or styles without missing anything.
+
                         
 
                 Conversational Clarity:
@@ -787,7 +865,8 @@ def handle_query():
     with pg_conn() as conn:
         user_profile = fetch_user_profile(conn, rbac_user_id)
         user_name = user_profile.get("full_name_en") or user_profile.get("full_name_ar") or "Unknown User"
-        user_role = user_profile.get("designation") or "Guest"
+        user_role = user_profile.get("designation") or ""
+        user_email = user_profile.get("email") or ""
         
         index_dir, _, _ = _ensure_fresh_index(conn, rbac_user_id)
         docs_projects = faiss_search(index_dir, query, k=10)
@@ -812,7 +891,7 @@ def handle_query():
 
     try:
         gpt_response_generator = generate_gpt_response(context, query, conversation_history, user_name=user_name,
-        user_role=user_role)
+        user_role=user_role, user_email = user_email)
 
         def generate():
             assistant_response = ''
