@@ -777,7 +777,7 @@ def _ensure_fresh_index(conn, user_id: int) -> Tuple[str, bool, bool]:
 
 
 
-def faiss_search(index_dir: str, query: str, k: int = 8) -> List[Document]:
+def faiss_search(index_dir: str, query: str, k: int = 12) -> List[Document]:
     vs = _load_index(index_dir)
     if not vs: return []
     return vs.similarity_search(query, k=k)
@@ -927,7 +927,7 @@ def handle_query():
         user_email = user_profile.get("email") or ""
         
         index_dir, _, _ = _ensure_fresh_index(conn, rbac_user_id)
-        docs_projects = faiss_search(index_dir, query, k=10)
+        docs_projects = faiss_search(index_dir, query, k=12)
 
 
         role_names, feats = fetch_user_roles_features(conn, rbac_user_id)
@@ -936,7 +936,7 @@ def handle_query():
         docs_edu = []
         if allow_edu:
             try:
-                docs_edu = search_tabular(EDU_CFG, emb, query, k=10)
+                docs_edu = search_tabular(EDU_CFG, emb, query, k=12)
             except Exception as e:
                 logger.error(f"Education tabular search failed: %s", e)
 
