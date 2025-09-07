@@ -494,6 +494,13 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
         for m in team
     ]) or "—"
 
+    team_block = (
+    "<<<TEAM_MEMBERS_START>>>\n"
+    f"Team members for project {p.get('project_name_en') or p.get('project_name_ar')}:\n"
+    f"{team_txt}\n"
+    "<<<TEAM_MEMBERS_END>>>"
+    )
+
 
     def _fmt_note(n, project_label: str) -> str:
         title = (n.get("title") or "Note").strip()
@@ -536,7 +543,7 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
         sec("PROJECT DESCRIPTION (EN)", p.get("project_description_en") or "") +
         sec("PROJECT DESCRIPTION (AR)", p.get("project_description_ar") or "") +
         (sec("BUDGET", budget_txt) if include_budget else "") +
-        sec("TEAM MEMBERS", team_txt) +
+        sec("TEAM MEMBERS", team_block) +
         my_notes_block
     )
 
@@ -575,7 +582,7 @@ def _feature_fp(role_names: List[str], features: Set[str]) -> str:
     s = json.dumps(payload, sort_keys=True, ensure_ascii=False)
     return hashlib.sha256(s.encode("utf-8")).hexdigest()
 
-DOC_FORMAT_REV = "v2"
+DOC_FORMAT_REV = "v4"
 
 def _bundle_hash(bundle: Dict[str, Any], include_budget: bool, audience: str,allow_notes: bool = False) -> str:
     s = json.dumps({
