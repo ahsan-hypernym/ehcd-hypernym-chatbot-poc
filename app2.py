@@ -938,7 +938,12 @@ def handle_query():
 
 
         role_names, feats = fetch_user_roles_features(conn, rbac_user_id)
-        allow_edu = user_has_education_access(role_names, list(feats), feature_ids=None)
+        superadmin = is_superadmin(conn, rbac_user_id)
+
+        if superadmin:
+            allow_edu = True
+        else:
+            allow_edu = user_has_education_access(role_names, list(feats), feature_ids=None)
 
         docs_edu = []
         if allow_edu:
