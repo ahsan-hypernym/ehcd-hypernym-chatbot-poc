@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple, Set
 from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
+from policy import update_policy_index_if_changed, search_policy, PolicyConfig
+
 
 
 from dotenv import load_dotenv
@@ -59,16 +61,6 @@ redis_client = redis.Redis(host=os.getenv('REDIS_HOST','localhost'),
 
 
 
-def try_acquire_tabular_lock(ttl=300) -> Optional[str]:
-    token = str(uuid.uuid4())
-    if redis_client.set("tabular_rebuild_lock", token, nx=True, ex=ttl):
-        return token
-    return None
-
-def release_tabular_lock(token: str):
-    val = redis_client.get("tabular_rebuild_lock")
-    if val and val.decode() == token:
-        redis_client.delete("tabular_rebuild_lock")
 
 
 
@@ -116,6 +108,15 @@ EDU_CFG = TabularConfig(
 )
 
 
+POLICY_CFG = PolicyConfig(
+    faiss_dir=os.path.join(cfg.FAISS_DIR, "policy"),
+    hash_json=os.path.join(cfg.HASH_DIR, "policy.sha.json"),
+    blob_conn_str=os.getenv("AZURE_BLOB_CONN_STR", ""),
+    blob_container=os.getenv("AZURE_BLOB_CONTAINER", ""),
+    blob_prefix="policies/",   # e.g. all PDFs under blob folder "policies/"
+    local_dir=os.path.join(cfg.DOC_DIR, "policies"),
+    throttle_seconds=600,
+)
 
 
 
@@ -170,6 +171,22 @@ def save_conversation_history(user_key, history):
 
 def trim_history(conversation_history, max_entries=5):
     return conversation_history[-max_entries:]
+
+
+POLICY_MIN_CHECK_SEC = 60 * 60 * 24 * 3  # every 3 days
+_last_policy_check = 0
+
+def maybe_update_policy_index():
+    global _last_policy_check
+    now = time.time()
+    if now - _last_policy_check > POLICY_MIN_CHECK_SEC:
+        try:
+            update_policy_index_if_changed(POLICY_CFG, splitter, emb)
+        except Exception as e:
+            logger.error(f"[PolicyIndex] Update failed: {e}")
+        _last_policy_check = now
+
+
 
 # ────────────────────────────────────────────────────────────────────────────────
 # RBAC (uses your tables: role_and_access_user_roles, role_and_access_role_features, etc.)
@@ -792,7 +809,7 @@ def faiss_search(index_dir: str, query: str, k: int = 12) -> List[Document]:
 # ────────────────────────────────────────────────────────────────────────────────
 # GPT RESPONSE (kept — with history)
 # ────────────────────────────────────────────────────────────────────────────────
-def generate_gpt_response(context, query, conversation_history,user_name="Unknown User", user_role="",user_email=""):
+def generate_gpt_response(context, query, conversation_history,user_name="Unknown User", user_role="",user_email="",user_contact_no=""):
     trimmed = trim_history(conversation_history)
     history_prompt = "\n".join([f"{e['role']}: {e['content']}" for e in trimmed]) + f"\nuser: {query}"
     today = datetime.now().strftime("%B %d, %Y")  
@@ -802,14 +819,15 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
             "content": f""" You are an expert advisor for the Education, Human Development, and Community Development Council (EHCD).
     The knowledge base is: "{context}". Use only this context. Use the following conversation history: {history_prompt}.
     just answer ro the point exact what's being asked and only upto 1000 tokens , summarized and concised
+    Below is the USER details who's in conversation with you.
     User information:
     - User Name: {user_name}
     - User Role: {user_role}
     - User email: {user_email}
+    - User contact No: {user_contact_no}
     User Objective:
             - Current Date: {today}
             The user seeks insights on ongoing or planned education projects, their budgets, strategies, timelines, or policy implications. Your task is to extract relevant information from the knowledge base and provide a clear, human-friendly explanation. Focus on delivering answers that are:
-            Greet User with their User Name provided to you.
 
                - Summarize without missing any relevant detail, necessary for the user.
                 - To the Point: Answer directly with what is specified in the knowledge base.
@@ -823,11 +841,11 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
 
                 Search the Knowledge Base:
                     - Do not invent or create information by yourself if not provided in the context or knowledge base.
-                    - Understand the user query and the context provided, if the information is not valid for user query , just reply,  i dont't have such information regarding your query.
+                    - Understand the user query and the context provided, if the information is not valid for user query , just reply,  i dont't have such information regarding your query por maybe you dont have it access.
                     - Identify the most relevant document(s) based on the user's question.
                     - Always respond in the **same language** as the user's question (e.g., if asked in Arabic, respond fully in Arabic).
                     - Extract only the information directly related to the user’s query.
-                    - If the knowledge base does not contain the requested information, respond with: "The requested information isn't directly available in the provided documents."
+                    - If the knowledge base does not contain the requested information, respond with: "The requested information isn't directly available in the provided documents. Maybe you don't have respective access for it"
                     - you can respond to the following question, if asked for more information, summarize the answer or engage in further dialogue using history Chat -> "History Conversation" to understand the query better.
                     - Make the conversation feel human-like by engaging in back-and-forth interactions when necessary (e.g., ask clarifying questions if the user requests a table or detailed breakdown).
                     - if user ask about image, provide the flowchart and answer respectively
@@ -836,7 +854,9 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
 
                 Answer Structuring:
                     Use proper HTML for structuring and Styling your response: (Aesthetics are must)
-                        - Ensure all text formatting uses only HTML tags (e.g., "<h3>", "<ul>", "<strong>", "<br>", etc.) for headings, lists, emphasis, and line breaks. Avoid `\n` for spacing.
+                        - Ensure all text formatting uses only HTML tags (e.g., "<h3>", "<ul>", "<strong>", "\n", etc.) for headings, lists, emphasis, and line breaks respectively.
+                        - Never forget closing tags, tags should bnever be incomplete or without closing tags
+                        - Stay Consistent in every response formating
                         - Headings
                             Do Not Use: Markdown symbols like #, ##, **, etc.
                             Use: HTML heading tags <h1> to <h6>.
@@ -932,6 +952,7 @@ def handle_query():
         user_name = user_profile.get("full_name_en") or user_profile.get("full_name_ar") or "Unknown User"
         user_role = user_profile.get("designation") or ""
         user_email = user_profile.get("email") or ""
+        user_contact_no = user_profile.get("contact_no") or ""
         
         index_dir, _, _ = _ensure_fresh_index(conn, rbac_user_id)
         docs_projects = faiss_search(index_dir, query, k=12)
@@ -953,15 +974,20 @@ def handle_query():
                 logger.error(f"Education tabular search failed: %s", e)
 
 
-
+        docs_policy = []
+        try:
+            maybe_update_policy_index()
+            docs_policy = search_policy(POLICY_CFG, emb, query, k=8)
+        except Exception as e:
+            logger.error(f"Policy search failed: %s", e)
     # Merge: projects first (primary source), then education tabular
-    docs = (docs_projects or []) + (docs_edu or [])
+    docs = (docs_projects or []) + (docs_edu or []) + (docs_policy or [])
     context = "\n\n".join(d.page_content for d in docs) if docs else "."
 
 
     try:
         gpt_response_generator = generate_gpt_response(context, query, conversation_history, user_name=user_name,
-        user_role=user_role, user_email = user_email)
+        user_role=user_role, user_email = user_email, user_contact_no = user_contact_no)
 
         def generate():
             assistant_response = ''
