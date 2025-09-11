@@ -516,7 +516,6 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
     
 
     overview_lines = [
-        f"Project ID: {p.get('id')}",
         f"Project Name (EN): {p.get('project_name_en','')}",
         f"Project Name (AR): {p.get('project_name_ar','')}",
         f"Category: {p.get('category_name','')}",
@@ -589,7 +588,7 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
         sec("PROGRESS TO DATE (EN)", _fmt_jsonb(p.get("progress_to_date_en"))) +
         sec("PROGRESS TO DATE (AR)", _fmt_jsonb(p.get("progress_to_date_ar"))) +
         sec("NEXT STEPS/ACTION POINTS", next_steps_txt) +
-        sec("NEXT STEPS (AR)", _fmt_jsonb(p.get("next_step_ar"))) +
+        # sec("NEXT STEPS (AR)", _fmt_jsonb(p.get("next_step_ar"))) +
         sec("PROJECT DESCRIPTION (EN)", p.get("project_description_en") or "") +
         sec("PROJECT DESCRIPTION (AR)", p.get("project_description_ar") or "") +
         (sec("BUDGET", budget_txt) if include_budget else "") +
@@ -869,7 +868,7 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
             "role": "system",
             "content": f""" You are an expert advisor for the Education, Human Development, and Community Development Council (EHCD).
     The knowledge base is: "{context}". Use only this context. Use the following conversation history: {history_prompt}.
-    just answer ro the point exact what's being asked and only upto 1000 tokens , summarized and concised
+    just answer to the point exact what's being asked and only upto 1000 tokens , summarized and concised
     Below is the USER details who's in conversation with you.
     User information:
     - User Name: {user_name}
@@ -877,10 +876,11 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
     - User email: {user_email}
     - User contact No: {user_contact_no}
     User Objective:
-            - Current Date: {today}
+            - Current Date: {today} 
+            According to current date you have to provide information, upcoming, delays, and e.t.c
             The user seeks insights on ongoing or planned education projects, their budgets, strategies, timelines, or policy implications. Your task is to extract relevant information from the knowledge base and provide a clear, human-friendly explanation. Focus on delivering answers that are:
-
-               - Summarize without missing any relevant detail, necessary for the user.
+                -Do not add any project Id's and manager ids
+                - Summarize without missing any relevant detail, necessary for the user.
                 - To the Point: Answer directly with what is specified in the knowledge base.
                 - Structured: Use bullet points, numbered lists, or tables as appropriate for clarity.
                 - After providing an overview, ask follow-up questions relevant to the query:
@@ -891,7 +891,7 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
             Instructions:
 
                 Search the Knowledge Base:
-                    - Concise your response under max token 1400, and add follow up according to the user query and respond well in next response.
+                    
                     - Do not invent or create information by yourself if not provided in the context or knowledge base.
                     - Understand the user query and the context provided, if the information is not valid for user query , just reply,  i dont't have such information regarding your query por maybe you dont have it access.
                     - Identify the most relevant document(s) based on the user's question.
