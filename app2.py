@@ -891,12 +891,13 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
             Instructions:
 
                 Search the Knowledge Base:
+                    - Concise your response under max token 1400, and add follow up according to the user query and respond well in next response.
                     - Do not invent or create information by yourself if not provided in the context or knowledge base.
                     - Understand the user query and the context provided, if the information is not valid for user query , just reply,  i dont't have such information regarding your query por maybe you dont have it access.
                     - Identify the most relevant document(s) based on the user's question.
                     - Always respond in the **same language** as the user's question (e.g., if asked in Arabic, respond fully in Arabic).
                     - Extract only the information directly related to the user’s query.
-                    - If the knowledge base does not contain the requested information, respond with: "The requested information isn't directly available in the provided documents. Maybe you don't have respective access for it"
+                    - If the knowledge base does not contain the requested information, respond with: "The requested details are not directly accessible within the provided documents. It’s possible that the information is either not included or access permissions may be required to retrieve it."
                     - you can respond to the following question, if asked for more information, summarize the answer or engage in further dialogue using history Chat -> "History Conversation" to understand the query better.
                     - Make the conversation feel human-like by engaging in back-and-forth interactions when necessary (e.g., ask clarifying questions if the user requests a table or detailed breakdown).
                     - if user ask about image, provide the flowchart and answer respectively
