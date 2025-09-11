@@ -5,6 +5,8 @@ from typing import Any, Dict, List, Optional, Tuple, Set
 from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
 from policy import update_policy_index_if_changed, search_policy, PolicyConfig
+import tiktoken
+
 
 
 
@@ -62,7 +64,11 @@ redis_client = redis.Redis(host=os.getenv('REDIS_HOST','localhost'),
 
 
 
+DOC_FORMAT_REV = "v5"
 
+enc = tiktoken.encoding_for_model("text-embedding-ada-002")
+def count_tokens(text: str) -> int:
+    return len(enc.encode(text))
 
 @dataclass(frozen=True)
 class CFG:
@@ -465,6 +471,31 @@ def build_user_directory_documents(users: List[Dict[str,Any]], *, audience_tag: 
         ))
     return docs
 
+def _format_next_steps(steps: Any, due_dates: Any) -> str:
+    """Format next steps paired with their due dates."""
+    if not steps:
+        return ""
+    try:
+        steps_list = steps if isinstance(steps, list) else json.loads(steps)
+        due_list = due_dates if due_dates else []
+        due_list = due_list if isinstance(due_list, list) else json.loads(due_list)
+    except Exception:
+        return str(steps)
+
+    lines = []
+    for i, step in enumerate(steps_list):
+        step_text = step.get("task") if isinstance(step, dict) else str(step)
+        due = ""
+        if i < len(due_list):
+            raw_due = due_list[i]
+            # Normalize date format
+            if raw_due:
+                try:
+                    due = datetime.fromisoformat(str(raw_due)).strftime("%Y-%m-%d")
+                except Exception:
+                    due = str(raw_due)
+        lines.append(f"- {step_text} — Due: {due}")
+    return "\n".join(lines)
 
 def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, audience_tag: str, allow_personal_notes: bool) -> List[Document]:
     p, b, team = bundle["project"], bundle["budget"], bundle["team"]
@@ -491,7 +522,7 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
         f"Category: {p.get('category_name','')}",
         f"Status (EN): {status_en or ''}",
         f"Status (AR): {status_ar or ''}",
-        f"Start: {p.get('start_date')}  End: {p.get('end_date')}",
+        f"Project Start Date: {p.get('start_date')}  Project End Date: {p.get('end_date')}",
         f"Manager User ID: {p.get('project_manager_id')}",
         ("Ownership: Managed By ME - MY PROJECT" if is_my_project else "Ownership: Other project"),
     ]
@@ -546,7 +577,10 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
             "<<<MY_NOTES>>>\n" + my_notes_txt + "\n<<<END_MY_NOTES>>>"
         )
 
+    next_steps_txt = _format_next_steps(p.get("next_step_en"), p.get("next_step_due_date"))
+
     content = (
+        f"<<<PROJECT_START::{p.get('id')}>>>\n" +
         sec("PROJECT OVERVIEW", overview) +
         sec("SUMMARY HEADING (EN)", _fmt_jsonb(p.get("summary_heading_en"))) +
         sec("SUMMARY HEADING (AR)", _fmt_jsonb(p.get("summary_heading_ar"))) +
@@ -554,14 +588,14 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
         sec("SUMMARY DESCRIPTION (AR)", _fmt_jsonb(p.get("summary_description_ar"))) +
         sec("PROGRESS TO DATE (EN)", _fmt_jsonb(p.get("progress_to_date_en"))) +
         sec("PROGRESS TO DATE (AR)", _fmt_jsonb(p.get("progress_to_date_ar"))) +
-        sec("NEXT STEPS (EN)", _fmt_jsonb(p.get("next_step_en"))) +
+        sec("NEXT STEPS/ACTION POINTS", next_steps_txt) +
         sec("NEXT STEPS (AR)", _fmt_jsonb(p.get("next_step_ar"))) +
-        sec("NEXT STEP DUE DATE", _fmt_jsonb(p.get("next_step_due_date"))) +
         sec("PROJECT DESCRIPTION (EN)", p.get("project_description_en") or "") +
         sec("PROJECT DESCRIPTION (AR)", p.get("project_description_ar") or "") +
         (sec("BUDGET", budget_txt) if include_budget else "") +
         sec("TEAM MEMBERS", team_block) +
-        my_notes_block
+        my_notes_block +
+        f"<<<PROJECT_END::{p.get('id')}>>>\n"
     )
 
     meta = {
@@ -599,7 +633,7 @@ def _feature_fp(role_names: List[str], features: Set[str]) -> str:
     s = json.dumps(payload, sort_keys=True, ensure_ascii=False)
     return hashlib.sha256(s.encode("utf-8")).hexdigest()
 
-DOC_FORMAT_REV = "v4"
+
 
 def _bundle_hash(bundle: Dict[str, Any], include_budget: bool, audience: str,allow_notes: bool = False) -> str:
     s = json.dumps({
@@ -619,24 +653,41 @@ def _atomic_replace_dir(src: str, dst: str):
     if os.path.exists(dst): shutil.rmtree(dst)
     os.rename(tmp, dst)
 
-def _build_index(index_dir: str, docs: List[Document]):
-    chunks: List[Document] = []
-    for d in docs:
-        for i, txt in enumerate(splitter.split_text(d.page_content)):
-            md = dict(d.metadata)
-            pid = md.get("project_id", "users")
-            md["chunk_id"] = f"{pid}::{md.get('audience_tag','aud')}::chunk::{i}"
+def _build_index(index_dir: str, docs: List[Document], max_chunk_tokens: int = 7000):
 
-            chunks.append(Document(page_content=txt, metadata=md))
+    chunks: List[Document] = []
+
+    for d in docs:
+        text = d.page_content
+        md = dict(d.metadata)
+        pid = md.get("project_id", "unknown")
+
+
+        token_est = count_tokens(text)
+
+
+        if token_est <= max_chunk_tokens:
+
+            md["chunk_id"] = f"{pid}::{md.get('audience_tag','aud')}::full"
+            chunks.append(Document(page_content=text, metadata=md))
+        else:
+
+            for i, txt in enumerate(splitter.split_text(text)):
+                sub_md = dict(md)
+                sub_md["chunk_id"] = f"{pid}::{md.get('audience_tag','aud')}::chunk::{i}"
+                chunks.append(Document(page_content=txt, metadata=sub_md))
+
     if not chunks:
         shutil.rmtree(index_dir, ignore_errors=True)
         return
+
     vs = FAISS.from_documents(chunks, emb)
     tmp = tempfile.mkdtemp()
     vs.save_local(tmp)
     os.makedirs(os.path.dirname(index_dir) or ".", exist_ok=True)
     _atomic_replace_dir(tmp, index_dir)
     shutil.rmtree(tmp, ignore_errors=True)
+
 
 
 
@@ -893,7 +944,7 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
                     - Ensure that all responses are well-structured, easy to read, and follow a logical flow.
                     - Avoid using any unnecessary names or content not related to the provided context.
                 You have to remember:
-                    - Avoid Code Markers:" Do not use ''',** backticks (`), or any code block delimiters (like '''html or backticks)".
+                    - Avoid Code Markers:" Do not use ''',**, backticks (`), or any code block delimiters (like '''html or ```svg or backticks)".
 
                 
 """.strip()
