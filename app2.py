@@ -64,7 +64,7 @@ redis_client = redis.Redis(host=os.getenv('REDIS_HOST','localhost'),
 
 
 
-DOC_FORMAT_REV = "v5"
+DOC_FORMAT_REV = "v7"
 
 enc = tiktoken.encoding_for_model("text-embedding-ada-002")
 def count_tokens(text: str) -> int:
@@ -82,7 +82,7 @@ class CFG:
 
 
     # Azure OpenAI (both chat + embeddings)
-    AZURE_OPENAI_ENDPOINT = os.getenv('ENDPOINT_URL', 'https://ai-ehcd.openai.azure.com')
+    AZURE_OPENAI_ENDPOINT = os.getenv('ENDPOINT_URL', 'https://app-openai-uk.openai.azure.com/')
     AZURE_OPENAI_DEPLOYMENT = os.getenv('DEPLOYMENT_NAME', 'gpt-4o')
     AZURE_OPENAI_KEY: str      = os.getenv("AZURE_OPENAI_API_KEY", "")
     AZURE_OPENAI_API_VERSION: str = os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview")
@@ -175,7 +175,7 @@ def get_conversation_history(user_key):
 def save_conversation_history(user_key, history):
     redis_client.set(f"user_{user_key}_history", json.dumps(history), ex=3600)
 
-def trim_history(conversation_history, max_entries=5):
+def trim_history(conversation_history, max_entries=3):
     return conversation_history[-max_entries:]
 
 
@@ -447,18 +447,18 @@ def build_user_directory_documents(users: List[Dict[str,Any]], *, audience_tag: 
     for u in users:
         # keep it concise and multilingual-friendly
         text = (
-            f"User ID: {u.get('id')}\n"
+            # f"User ID: {u.get('id')}\n"
             f"Name (EN): {u.get('full_name_en') or ''}\n"
-            f"Name (AR): {u.get('full_name_ar') or ''}\n"
+            # f"Name (AR): {u.get('full_name_ar') or ''}\n"
             f"Email: {u.get('email') or ''}\n"
             f"Department: {u.get('department') or ''}\n"
             f"Designation: {u.get('designation') or ''}\n"
             f"Contact: {u.get('contact_no') or ''}\n"
             f"Is Active: {u.get('is_active')}\n"
-            f"Is Staff: {u.get('is_staff')}\n"
-            f"Is Superuser: {u.get('is_superuser')}\n"
-            f"Created: {u.get('created_at')}\n"
-            f"Updated: {u.get('updated_at')}\n"
+            # f"Is Staff: {u.get('is_staff')}\n"
+            # f"Is Superuser: {u.get('is_superuser')}\n"
+            # f"Created: {u.get('created_at')}\n"
+            # f"Updated: {u.get('updated_at')}\n"
         )
         docs.append(Document(
             page_content=text,
@@ -536,14 +536,14 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
         )
 
     team_txt = "\n".join([
-        f"- {(m.get('name_en') or m.get('name_ar') or '-')}"
-        f" — {(m.get('designation_en') or m.get('designation_ar') or '-')}"
+        f"- {(m.get('name_en') or '-')}"
+        f" — {(m.get('designation_en') or '-')}"
         for m in team
     ]) or "—"
 
     team_block = (
     "<<<TEAM_MEMBERS_START>>>\n"
-    f"Team members for project {p.get('project_name_en') or p.get('project_name_ar')}:\n"
+    f"Team members for project {p.get('project_name_en')}:\n"
     f"{team_txt}\n"
     "<<<TEAM_MEMBERS_END>>>"
     )
@@ -564,7 +564,7 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
 
     # Gate by Feature 7:
     proj_label = (
-    p.get("project_name_en") or p.get("project_name_ar") or f"Project #{p['id']}"
+    p.get("project_name_en") or f"Project #{p['id']}"
     )
 
     my_notes_block = ""
@@ -604,7 +604,6 @@ def build_project_documents(bundle: Dict[str, Any], *, include_budget: bool, aud
         "audience_tag": audience_tag,
         "is_my_project": is_my_project,
         "status_en": status_en,
-        "status_ar": status_ar,
         "updated_at": (p.get("updated_at") or p.get("created_at") or datetime.utcnow()).isoformat(),
     }
     return [Document(page_content=content, metadata=meta)]
@@ -652,7 +651,7 @@ def _atomic_replace_dir(src: str, dst: str):
     if os.path.exists(dst): shutil.rmtree(dst)
     os.rename(tmp, dst)
 
-def _build_index(index_dir: str, docs: List[Document], max_chunk_tokens: int = 7000):
+def _build_index(index_dir: str, docs: List[Document], max_chunk_tokens: int = 20000):
 
     chunks: List[Document] = []
 
@@ -856,6 +855,17 @@ def faiss_search(index_dir: str, query: str, k: int = 12) -> List[Document]:
     if not vs: return []
     return vs.similarity_search(query, k=k)
 
+
+enc1 = tiktoken.encoding_for_model("gpt-4o")
+
+def count_tokens_for_messages(messages, model="gpt-4o"):
+    enc1 = tiktoken.encoding_for_model(model)
+    text = ""
+    for m in messages:
+        text += m["role"] + ": " + m["content"] + "\n"
+    return len(enc1.encode(text))
+
+
 # ────────────────────────────────────────────────────────────────────────────────
 # GPT RESPONSE (kept — with history)
 # ────────────────────────────────────────────────────────────────────────────────
@@ -868,7 +878,6 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
             "role": "system",
             "content": f""" You are an expert advisor for the Education, Human Development, and Community Development Council (EHCD).
     The knowledge base is: "{context}". Use only this context. Use the following conversation history: {history_prompt}.
-    just answer to the point exact what's being asked and only upto 1000 tokens , summarized and concised
     Below is the USER details who's in conversation with you.
     User information:
     - User Name: {user_name}
@@ -879,21 +888,22 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
             - Current Date: {today} 
             According to current date you have to provide information, upcoming, delays, and e.t.c
             The user seeks insights on ongoing or planned education projects, their budgets, strategies, timelines, or policy implications. Your task is to extract relevant information from the knowledge base and provide a clear, human-friendly explanation. Focus on delivering answers that are:
-                - Do not add any project Id's and manager ids
                 - Summarize without missing any relevant detail, necessary for the user.
                 - To the Point: Answer directly with what is specified in the knowledge base consized and summarized.
                 - Structured: Use bullet points, numbered lists, or tables as appropriate for clarity.
                 - After providing an overview, ask follow-up questions relevant to the query:
                 - understand the user query , history and the knowlegebase, if you confused or its incomplete you should ask respectively.
                 - After follow up question if user reply accordingly then do answer appropriately according to the follow up question or if confused then ask user.
-                - if a vague query or incomplete ask what user want, thorugh suggestions. or ask user to specify what information they need
+                - if a vague query or incomplete ask what user want, thorugh suggestions. or ask user to specify what information they need, for example data , date or project , 2 or any irrelavant or incomplete or any query that doesnt give you complete meaning, incomplete queries you can ask what imformation on what specific project you need details.
+                - Always ask user to be specific what he wants, do not provide response only based of history or context.
                 Ensure that responses are well-structured but offer to provide more details in a conversational manner, allowing the user to guide the depth of the discussion.
 
             Instructions:
 
                 Search the Knowledge Base:
+                    
                     - Do not invent or create information by yourself if not provided in the context or knowledge base.
-                    - Understand the user query and the context provided, if the information is not valid for user query , just reply,  i dont't have such information regarding your query por maybe you dont have it access.
+                    - if asked about all projects or list, provide a summarized response
                     - Identify the most relevant document(s) based on the user's question.
                     - Always respond in the **same language** as the user's question (e.g., if asked in Arabic, respond fully in Arabic).
                     - Extract only the information directly related to the user’s query.
@@ -930,16 +940,21 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
                         - Do not include HTML tags that are not properly closed.
                         - Ensure that the HTML content is easy to read and well-formatted for a better user experience.
                     FlowChart structure must follow
-                    If ask "flowchart" always provide it in svg tags <svg></svg> with missing any tag or instructions
-                    Instruction for Flowcharts in SVG:
-                    Always output a complete <svg> element with:
-                    width="600", height="400", viewBox="0 0 600 400".
-                    Use only <rect>, <circle>, <text>, <line>, and <path>.
-                    no <foreignObject>.
-                    Center text inside shapes with <text> using text-anchor="middle" and font-size="11".
-
-                        
-
+                    If the user asks for a "flowchart":
+                        - Always output a complete <svg> element with width="600" height="400" viewBox="0 0 600 400".
+                        - Use only <rect>, <circle>, <text>, <line>, and <path>.
+                        - No <foreignObject> tags.
+                        - For each <rect>, dynamically adjust width and height to fit the text inside:
+                            - width = (number_of_characters * 6) + 20
+                            - height = 20
+                        - Place <text> inside the box centered both vertically and horizontally:
+                            - Use text-anchor="middle"
+                            - Use dominant-baseline="middle"
+                            - font-size="10"
+                        - Ensure the text never overflows or is cut off.
+                        - Do not leave empty boxes.
+                        - Connect shapes with <line> or <path> as needed.
+                        - Never miss any required closing tag.
                 Conversational Clarity:
                     - If the user asks for more details or specifics (e.g., "Can you make a table for this?"), follow up with a question like "Sure, what data would you like in the table?" or "Which details should be included in the table?".
                     - For general questions, summarize and then ask, "Would you like more details on any specific point?" to keep the interaction dynamic.
@@ -949,14 +964,12 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
                     - Ensure that all responses are well-structured, easy to read, and follow a logical flow.
                     - Avoid using any unnecessary names or content not related to the provided context.
                 You have to remember:
-                    - Avoid Code Markers:" Do not use ''',**, backticks (`), or any code block delimiters (like '''html or ```svg or '''svg or backticks)".
-
-                
+                    - Avoid Code Markers:" Do not use ''',**, backticks (`), or any code block delimiters (like '''html or ```svg or '''svg or backticks)".                
 """.strip()
         },
         {"role": "user", "content": query},
     ]
-
+    print("Prompt tokens:", count_tokens_for_messages(chat_prompt))
     try:
         stream = client.chat.completions.create(
             model=cfg.AZURE_OPENAI_DEPLOYMENT,
@@ -978,6 +991,10 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
         logger.error(f"Error generating GPT response: {e}")
         yield "I cannot provide a response to that request. If you’d like, we can continue discussing approved topics such as education, projects, or development initiatives."
 
+
+
+
+
 # ────────────────────────────────────────────────────────────────────────────────
 # API
 # ────────────────────────────────────────────────────────────────────────────────
@@ -988,13 +1005,13 @@ def handle_query():
     if not query:
         return jsonify({"error":"Empty query"}), 400
 
-    # For RBAC we need the **real** numeric user id (you said you'll pass it)
+
     rbac_user_id_raw = payload.get("user_id")
     if rbac_user_id_raw is None:
         return jsonify({"error": "user_id is required"}), 400
     rbac_user_id = int(rbac_user_id_raw)
 
-    # History key tied to session (kept same as your code)
+
 
     conv_id = (payload.get("conversation_id") or "default").strip()
     history_key = f"uid:{rbac_user_id}:conv:{conv_id}"
@@ -1002,7 +1019,7 @@ def handle_query():
     conversation_history = get_conversation_history(history_key)
     conversation_history.append({"role":"user", "content": query})
 
-    # Retrieve relevant docs from FAISS (auto-build / auto-refresh per access)
+    # Retrieve relevant docs from FAISS
     with pg_conn() as conn:
         user_profile = fetch_user_profile(conn, rbac_user_id)
         user_name = user_profile.get("full_name_en") or user_profile.get("full_name_ar") or "Unknown User"
@@ -1036,7 +1053,7 @@ def handle_query():
             docs_policy = search_policy(POLICY_CFG, emb, query, k=8)
         except Exception as e:
             logger.error(f"Policy search failed: %s", e)
-    # Merge: projects first (primary source), then education tabular
+
     docs = (docs_projects or []) + (docs_edu or []) + (docs_policy or [])
     context = "\n\n".join(d.page_content for d in docs) if docs else "."
 
