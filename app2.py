@@ -856,14 +856,14 @@ def faiss_search(index_dir: str, query: str, k: int = 12) -> List[Document]:
     return vs.similarity_search(query, k=k)
 
 
-enc1 = tiktoken.encoding_for_model("gpt-4o")
+# enc1 = tiktoken.encoding_for_model("gpt-4o")
 
-def count_tokens_for_messages(messages, model="gpt-4o"):
-    enc1 = tiktoken.encoding_for_model(model)
-    text = ""
-    for m in messages:
-        text += m["role"] + ": " + m["content"] + "\n"
-    return len(enc1.encode(text))
+# def count_tokens_for_messages(messages, model="gpt-4o"):
+#     enc1 = tiktoken.encoding_for_model(model)
+#     text = ""
+#     for m in messages:
+#         text += m["role"] + ": " + m["content"] + "\n"
+#     return len(enc1.encode(text))
 
 
 # ────────────────────────────────────────────────────────────────────────────────
@@ -969,7 +969,7 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
         },
         {"role": "user", "content": query},
     ]
-    print("Prompt tokens:", count_tokens_for_messages(chat_prompt))
+    # print("Prompt tokens:", count_tokens_for_messages(chat_prompt))
     try:
         stream = client.chat.completions.create(
             model=cfg.AZURE_OPENAI_DEPLOYMENT,
