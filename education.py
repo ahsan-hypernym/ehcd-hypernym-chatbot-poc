@@ -780,11 +780,13 @@ def update_tabular_index_if_changed(cfg: TabularConfig, embeddings) -> bool:
     logger.info(f"Education tabular FAISS rebuilt: {len(docs)} docs from {len(paths)} files.")
     return True
 
-def search_tabular(cfg: TabularConfig, embeddings, query:str, k:int=8)->List[Document]:
+def search_tabular(cfg: TabularConfig, embeddings, query:str, k:int=8,query_embedding: Optional[List[float]] = None)->List[Document]:
     vs=load_faiss(cfg.faiss_dir,embeddings)
     if not vs: return []
     try:
-        return vs.similarity_search(query,k=k)
+        if query_embedding is not None:
+            return vs.similarity_search_by_vector(query_embedding, k=k)
+        return vs.similarity_search(query, k=k)
     except Exception as e:
         logger.error(f"FAISS search error: {e}")
         return []

@@ -1,5 +1,5 @@
 import os, json, hashlib, shutil, tempfile, logging
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Optional
 from dataclasses import dataclass
 from langchain.schema import Document
 from langchain_community.vectorstores import FAISS
@@ -77,7 +77,7 @@ def update_policy_index_if_changed(cfg: PolicyConfig, splitter, emb: PacedEmbedd
     else:
         logger.info("[PolicyIndex] No new/changed PDFs found in blob prefix '%s'", cfg.blob_prefix)
 
-def search_policy(cfg: PolicyConfig, emb: PacedEmbeddings, query: str, k: int = 8) -> List[Document]:
+def search_policy(cfg: PolicyConfig, emb: PacedEmbeddings, query: str, k: int = 8, query_embedding: Optional[List[float]] = None) -> List[Document]:
     """
     Search the global policy FAISS index (if available).
     """
@@ -85,6 +85,8 @@ def search_policy(cfg: PolicyConfig, emb: PacedEmbeddings, query: str, k: int = 
         return []
     try:
         vs = FAISS.load_local(cfg.faiss_dir, emb, allow_dangerous_deserialization=True)
+        if query_embedding is not None and hasattr(vs, "similarity_search_by_vector"):
+            return vs.similarity_search_by_vector(query_embedding, k=k)
         return vs.similarity_search(query, k=k)
     except Exception as e:
         logger.error(f"[PolicySearch] Failed: {e}")

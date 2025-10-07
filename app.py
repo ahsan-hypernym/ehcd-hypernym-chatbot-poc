@@ -957,6 +957,36 @@ def faiss_search(index_dir: str, query: str, k: int = 12) -> List[Document]:
     return [] if not vs else vs.similarity_search(query, k=k)
 
 
+# ────────────────────────────────────────────────────────────────────────────────
+# SINGLE-EMBED PER QUERY
+# ────────────────────────────────────────────────────────────────────────────────
+class QueryEmbedCache:
+
+    def __init__(self):
+        self._cache = {}
+
+    def get(self, q: str):
+        return self._cache.get(q)
+
+    def set(self, q: str, vec):
+        self._cache[q] = vec
+
+QEC = QueryEmbedCache()
+
+def embed_query_once(query: str):
+
+    v = QEC.get(query)
+    if v is not None:
+        return v
+    # IMPORTANT: use embed_query (not embed_documents) for a single vector
+    v = emb.embed_query(query)
+    QEC.set(query, v)
+    return v
+
+def faiss_search_by_vector(index_dir: str, query_vector, k: int = 12) -> List[Document]:
+    vs = get_vs_cached(index_dir)
+    return [] if not vs else vs.similarity_search_by_vector(query_vector, k=k)
+
 
 
 # ────────────────────────────────────────────────────────────────────────────────
@@ -1122,7 +1152,11 @@ def handle_query():
         
         index_dir, _, _ = ensure_index_fast(conn, rbac_user_id)
 
-        docs_projects = faiss_search(index_dir, query, k=12)
+        qvec = embed_query_once(query)
+
+        docs_projects = faiss_search_by_vector(index_dir, qvec, k=12)
+
+        # docs_projects = faiss_search(index_dir, query, k=12)
 
 
         role_names, feats = fetch_user_roles_features(conn, rbac_user_id)
@@ -1136,14 +1170,14 @@ def handle_query():
         docs_edu = []
         if allow_edu:
             try:
-                docs_edu = search_tabular(EDU_CFG, emb, query, k=12)
+                docs_edu = search_tabular(EDU_CFG, emb, query, k=8, query_embedding=qvec)
             except Exception as e:
                 logger.error(f"Education tabular search failed: %s", e)
 
 
         docs_policy = []
         try:
-            docs_policy = search_policy(POLICY_CFG, emb, query, k=8)
+            docs_policy = search_policy(POLICY_CFG, emb, query, k=3, query_embedding=qvec)
         except Exception as e:
             logger.error(f"Policy search failed: %s", e)
 
@@ -1157,7 +1191,6 @@ def handle_query():
         user_role=user_role, user_email = user_email, user_contact_no = user_contact_no)
 
         def generate():
-            yield " "
             assistant_response = ''
             for chunk in gpt_response_generator:
                 assistant_response += chunk
