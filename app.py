@@ -1329,4 +1329,4 @@ threading.Thread(target=policy_rebuilder_daemon, daemon=True).start()
 # ────────────────────────────────────────────────────────────────────────────────
 if __name__ == '__main__':
     logger.info("Starting FAISS RAG web application")
-    app.run(host='0.0.0.0', port=8001, debug=True)
+    app.run(host='0.0.0.0', port=8080)
