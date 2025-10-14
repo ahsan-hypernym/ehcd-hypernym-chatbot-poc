@@ -1028,7 +1028,7 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
                     - Do not invent or create information by yourself if not provided in the context or knowledge base.
                     - if asked about all projects or list, provide a summarized response
                     - Identify the most relevant document(s) based on the user's question.
-                    - Always respond in the **same language** as the user's question (e.g., if asked in Arabic, respond fully in Arabic).
+                    - Always respond in the "same language" as the user's question (e.g., if asked in Arabic, respond fully in Arabic).
                     - Extract only the information directly related to the user’s query.
                     - If the knowledge base does not contain the requested information, respond with: "The requested details are not directly accessible within the provided documents. It’s possible that the information is either not included or access permissions may be required to retrieve it."
                     - you can respond to the following question, if asked for more information, summarize the answer or engage in further dialogue using history Chat -> "History Conversation" to understand the query better.
@@ -1062,8 +1062,12 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
                         - If User Ask for "Table" format the answer in table , 
                         - Do not include HTML tags that are not properly closed.
                         - Ensure that the HTML content is easy to read and well-formatted for a better user experience.
+
+                    Do Not use " ** and  " ### " for headings or in any description for graphs or chart or etc.
                     FlowChart structure must follow
                     If the user asks for a "flowchart":
+                        - Never use " ** or ### " in any description 
+                        - Color fsmily: Brown
                         - Always output a complete <svg> element with width="600" height="400" viewBox="0 0 600 400".
                         - Use only <rect>, <circle>, <text>, <line>, and <path>.
                         - No <foreignObject> tags.
@@ -1078,6 +1082,11 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
                         - Do not leave empty boxes.
                         - Connect shapes with <line> or <path> as needed.
                         - Never miss any required closing tag.
+                For any type of Charts, like bar, pie or e.t.c:
+                    Do Not use " ** and  " ### " for headings or in any description or in text tag for graphs or chart or etc.
+                    ALWAYS DO:
+                    You have to provide , legends and proper numbers for charts
+                    color family: Brown
                 Conversational Clarity:
                     - If the user asks for more details or specifics (e.g., "Can you make a table for this?"), follow up with a question like "Sure, what data would you like in the table?" or "Which details should be included in the table?".
                     - For general questions, summarize and then ask, "Would you like more details on any specific point?" to keep the interaction dynamic.
@@ -1087,7 +1096,7 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
                     - Ensure that all responses are well-structured, easy to read, and follow a logical flow.
                     - Avoid using any unnecessary names or content not related to the provided context.
                 You have to remember:
-                    - Avoid Code Markers:" Do not use ''',**, backticks (`), or any code block delimiters (like '''html or ```svg or '''svg or backticks)".                
+                    - Avoid Code Markers:" Do not use ''',**, backticks (`)," ### " or any code block delimiters (like '''html or ```svg or '''svg or backticks)".                
 """.strip()
         },
         {"role": "user", "content": query},
@@ -1118,7 +1127,7 @@ def generate_gpt_response(context, query, conversation_history,user_name="Unknow
 
 
 
-# ────────────────────────────────────────────────────────────────────────────────
+
 # API
 # ────────────────────────────────────────────────────────────────────────────────
 @app.route('/api/query', methods=['POST'])
@@ -1329,4 +1338,4 @@ threading.Thread(target=policy_rebuilder_daemon, daemon=True).start()
 # ────────────────────────────────────────────────────────────────────────────────
 if __name__ == '__main__':
     logger.info("Starting FAISS RAG web application")
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8001, debug = True)
