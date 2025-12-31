@@ -68,7 +68,7 @@ redis_client = redis.Redis(host=os.getenv('REDIS_HOST','localhost'),
 
 DOC_FORMAT_REV = "v7"
 
-enc = tiktoken.encoding_for_model("text-embedding-ada-002")
+enc = tiktoken.encoding_for_model("text-embedding-3-small")
 def count_tokens(text: str) -> int:
     return len(enc.encode(text))
 
@@ -88,7 +88,7 @@ class CFG:
     AZURE_OPENAI_DEPLOYMENT = os.getenv('DEPLOYMENT_NAME', 'gpt-4o')
     AZURE_OPENAI_KEY: str      = os.getenv("AZURE_OPENAI_API_KEY", "")
     AZURE_OPENAI_API_VERSION: str = os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview")
-    AZURE_EMBED_DEPLOYMENT: str = os.getenv("AZURE_EMBEDDING_DEPLOYMENT", "text-embedding-ada-002")
+    AZURE_EMBED_DEPLOYMENT: str = os.getenv("AZURE_EMBEDDING_DEPLOYMENT", "text-embedding-3-small")
 
     # Local storage
     ROOT: str = os.getenv("DATA_ROOT", "./data")
