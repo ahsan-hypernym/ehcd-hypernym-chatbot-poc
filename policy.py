@@ -3,7 +3,7 @@ from typing import List, Any, Dict, Optional
 from dataclasses import dataclass
 from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
-from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
 from emb_pace import PacedEmbeddings
 
 logger = logging.getLogger(__name__)

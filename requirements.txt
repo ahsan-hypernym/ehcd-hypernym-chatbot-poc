@@ -16,3 +16,4 @@ pandas
 azure-storage-blob
 openpyxl
 pypdf
+tiktoken

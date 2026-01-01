@@ -2,7 +2,8 @@
 import time
 from typing import List
 from math import ceil
-from langchain.embeddings.base import Embeddings
+from langchain_core.embeddings import Embeddings
+
 
 class PacedEmbeddings(Embeddings):
     def __init__(self, base: Embeddings, tpm_limit: int = 150_000, batch_size: int = 32, cushion_sec: float = 0.25):
