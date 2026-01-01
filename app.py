@@ -84,7 +84,7 @@ class CFG:
 
 
     # Azure OpenAI (both chat + embeddings)
-    AZURE_OPENAI_ENDPOINT = os.getenv('ENDPOINT_URL', 'https://app-openai-uk.openai.azure.com/')
+    AZURE_OPENAI_ENDPOINT = os.getenv('ENDPOINT_URL', 'https://app-openai-uae.cognitiveservices.azure.com/')
     AZURE_OPENAI_DEPLOYMENT = os.getenv('DEPLOYMENT_NAME', 'gpt-4o')
     AZURE_OPENAI_KEY: str      = os.getenv("AZURE_OPENAI_API_KEY", "")
     AZURE_OPENAI_API_VERSION: str = os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview")
