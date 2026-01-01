@@ -9,6 +9,7 @@ redis
 langchain
 langchain-community
 langchain-openai
+langchain-core
 faiss-cpu
 psycopg2-binary
 pandas

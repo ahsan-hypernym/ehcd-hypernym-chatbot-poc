@@ -1,7 +1,7 @@
 import os, json, hashlib, shutil, tempfile, logging
 from typing import List, Any, Dict, Optional
 from dataclasses import dataclass
-from langchain.schema import Document
+from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
 from langchain.document_loaders import PyPDFLoader
 from emb_pace import PacedEmbeddings
