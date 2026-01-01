@@ -78,7 +78,7 @@ class CFG:
     PG_HOST: str = os.getenv("PG_HOST", "127.0.0.1")
     PG_DB: str   = os.getenv("PG_DB", "postgres")
     PG_USER: str = os.getenv("PG_USER", "postgres")
-    PG_PASS: str = os.getenv("PG_PASS", "postgres")
+    PG_PASS: str = os.getenv("PG_PASS", "wgRV|X&77:8#")
     PG_PORT: int = int(os.getenv("PG_PORT", "5432"))
 
 
@@ -144,7 +144,7 @@ embeddings = AzureOpenAIEmbeddings(
     openai_api_version=cfg.AZURE_OPENAI_API_VERSION,
 )
 splitter = RecursiveCharacterTextSplitter(chunk_size=cfg.CHUNK_SIZE, chunk_overlap=cfg.CHUNK_OVERLAP)
-emb = PacedEmbeddings(embeddings, tpm_limit=150_000, batch_size=32)
+emb = PacedEmbeddings(embeddings, tpm_limit=200_000, batch_size=32)
 # optional docs UI
 documents = Documents()
 documents.save_local_files_to_db()
@@ -164,7 +164,7 @@ def background_rebuilder():
 # ────────────────────────────────────────────────────────────────────────────────
 def pg_conn():
     return psycopg2.connect(
-        host=cfg.PG_HOST, dbname=cfg.PG_DB, user=cfg.PG_USER, password=cfg.PG_PASS, port=cfg.PG_PORT
+        host=cfg.PG_HOST, dbname=cfg.PG_DB, user=cfg.PG_USER, password=cfg.PG_PASS, port=cfg.PG_PORT, sslmode="require"
     )
 
 # ────────────────────────────────────────────────────────────────────────────────
