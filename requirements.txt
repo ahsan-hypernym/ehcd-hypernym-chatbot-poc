@@ -10,6 +10,7 @@ langchain
 langchain-community
 langchain-openai
 langchain-core
+langchain-text-splitters
 faiss-cpu
 psycopg2-binary
 pandas

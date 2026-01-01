@@ -24,7 +24,7 @@ from openai import AzureOpenAI
 
 # FAISS + embeddings
 from langchain_core.documents import Document
-from langchain_core.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_openai import AzureOpenAIEmbeddings
 import uuid
