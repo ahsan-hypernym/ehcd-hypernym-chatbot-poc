@@ -10,13 +10,14 @@
     <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-uO3SX0wZq5iLE6fGXVlbN6V6yfOyvVfiH6r39G9fCQ6DUB1vpMsiudli9K/8k5ga" crossorigin="anonymous">
+    <!-- Plotly.js for charts -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 
     <!-- Custom Styles -->
     <style>
-        
         .chat-widget {
-            height: 100vh; 
-            max-height: 800px; 
+            height: 100vh;
+            max-height: 800px;
         }
         #initial-text {
             position: absolute;
@@ -28,9 +29,16 @@
             font-size: 1.25rem;
             padding: 0 20px;
         }
-        /* Ensure the chat box is positioned relative for absolute positioning of initial text */
         #chat-box {
             position: relative;
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 600px;
+            height: 380px;
+            margin: 8px 0;
+            border-radius: 8px;
+            background: #fff;
         }
     </style>
 </head>
@@ -194,10 +202,36 @@
 
                     const match = result.match(/<replace>([\s\S]*)<\/replace>/);
                     if (match && !isFinalHtmlRendered) {
-                        const finalHtml = match[1];
+                        const raw = match[1];
+                        let finalHtml = raw;
+                        let chartData = null;
+
+                        // Check if it's JSON (has chart_data) or plain HTML
+                        if (raw.trimStart().startsWith('{')) {
+                            try {
+                                const parsed = JSON.parse(raw);
+                                finalHtml = parsed.html || raw;
+                                chartData = parsed.chart_data || null;
+                            } catch (e) {
+                                finalHtml = raw;
+                            }
+                        }
+
                         const finalElement = $('<div class="bg-gray-200 text-gray-800 p-2 rounded-lg max-w-[80%] self-start mb-2 text-left break-words"></div>').html(finalHtml);
                         typingElement.replaceWith(finalElement);
                         isFinalHtmlRendered = true;
+
+                        // Render Plotly chart if present
+                        if (chartData && chartData.plotly_data && chartData.plotly_layout) {
+                            const chartId = 'chart_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+                            const chartDiv = $('<div id="' + chartId + '" class="chart-container"></div>');
+                            finalElement.after(chartDiv);
+                            try {
+                                Plotly.newPlot(chartId, chartData.plotly_data, chartData.plotly_layout, {responsive: true});
+                            } catch (e) {
+                                console.error('Chart render error:', e);
+                            }
+                        }
                     } else if (!isFinalHtmlRendered) {
                         typingElement.text(result.replace(/<\/?[^>]+(>|$)/g, ""));
                     }

@@ -339,7 +339,16 @@ def update_tabular_index_if_changed(cfg: TabularConfig, embeddings) -> bool:
     for p in paths:
         frames=_read_excel_all_sheets(p)
         for s, raw in frames.items():
-            df=df._append(_normalize_df(raw).assign(_source_file=os.path.basename(p),_source_sheet=s),ignore_index=True)
+            df = pd.concat(
+                [
+                    df,
+                    _normalize_df(raw).assign(
+                        _source_file=os.path.basename(p),
+                        _source_sheet=s
+                    ),
+                ],
+                ignore_index=True,
+            )
 
     docs=build_tabular_documents(paths,cfg)
     save_faiss(docs,embeddings,cfg.faiss_dir)
