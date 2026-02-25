@@ -1,0 +1,271 @@
+"""
+RBAC (Role-Based Access Control) module for EHCD Chatbot.
+Handles user roles, features, and ownership-based access for all modules.
+"""
+
+import os
+from typing import Any, Dict, List, Optional, Set, Tuple
+
+from psycopg2 import sql
+from psycopg2.extras import RealDictCursor
+
+USER_ROLES_TABLE = os.getenv("RBAC_USER_ROLES_TABLE", "user_management_user_roles")
+DB_SCHEMA = os.getenv("DB_SCHEMA", "public")
+
+
+class FeatureID:
+    USER_MANAGEMENT = 3
+    BUDGET_INFO     = 4
+    EDUCATION_DASH  = 5
+    ALL_PROJECTS    = 6
+    NOTES           = 7
+    PROJECT_DOCS    = 8
+    AI_CHATBOT      = 9
+
+
+def is_superadmin(conn, user_id: int) -> bool:
+    with conn.cursor() as cur:
+        cur.execute("SELECT is_superuser FROM user_management_user WHERE id = %s", (user_id,))
+        row = cur.fetchone()
+    return bool(row and row[0])
+
+
+def db_has_feature(conn, user_id: int, feature_id: int) -> bool:
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT 1
+            FROM user_management_user_roles ur
+            JOIN role_and_access_role_features rf ON rf.role_id = ur.role_id
+            WHERE ur.user_id = %s AND rf.feature_id = %s
+            LIMIT 1
+        """, (user_id, feature_id))
+        return cur.fetchone() is not None
+
+
+def fetch_user_roles_features(conn, user_id: int) -> Tuple[List[str], Set[str]]:
+    roles, feats = [], set()
+    with conn.cursor(cursor_factory=RealDictCursor) as cur:
+        cur.execute(sql.SQL("""
+            SELECT ur.role_id
+            FROM {} ur
+            WHERE ur.user_id = %s
+        """).format(sql.Identifier(DB_SCHEMA, USER_ROLES_TABLE)), (user_id,))
+        roles = [str(row["role_id"]) for row in cur.fetchall()]
+
+        cur.execute(sql.SQL("""
+            SELECT f.id as feature_id, f.feature_name
+            FROM {} ur
+            JOIN role_and_access_role_features rf ON rf.role_id = ur.role_id
+            JOIN role_and_access_feature f ON f.id = rf.feature_id
+            WHERE ur.user_id = %s
+        """).format(sql.Identifier(DB_SCHEMA, USER_ROLES_TABLE)), (user_id,))
+        feats = {row["feature_name"].lower() for row in cur.fetchall()}
+    return roles, feats
+
+
+def fetch_user_profile(conn, user_id: int) -> Dict[str, Any]:
+    with conn.cursor(cursor_factory=RealDictCursor) as cur:
+        cur.execute(sql.SQL("""
+            SELECT u.full_name_en, u.full_name_ar, u.email, u.department,
+                   u.designation, u.contact_no
+            FROM {}.user_management_user u
+            WHERE u.id = %s
+        """).format(sql.Identifier(DB_SCHEMA)), (user_id,))
+        return cur.fetchone() or {}
+
+
+def fetch_all_users(conn) -> List[Dict[str, Any]]:
+    with conn.cursor(cursor_factory=RealDictCursor) as cur:
+        cur.execute("""
+            SELECT id, full_name_en, full_name_ar, email, department, designation,
+                   contact_no, is_active, is_staff, is_superuser, created_at, updated_at
+            FROM user_management_user
+            ORDER BY id
+        """)
+        return cur.fetchall() or []
+
+
+def has_all_projects(conn, user_id: int) -> bool:
+    return db_has_feature(conn, user_id, FeatureID.ALL_PROJECTS)
+
+
+def has_budget(conn, user_id: int) -> bool:
+    return db_has_feature(conn, user_id, FeatureID.BUDGET_INFO)
+
+
+def has_education_access(conn, user_id: int) -> bool:
+    return db_has_feature(conn, user_id, FeatureID.EDUCATION_DASH)
+
+
+def has_notes(conn, user_id: int) -> bool:
+    return db_has_feature(conn, user_id, FeatureID.NOTES)
+
+
+def has_user_management(conn, user_id: int) -> bool:
+    return db_has_feature(conn, user_id, FeatureID.USER_MANAGEMENT)
+
+
+# ---------------------------------------------------------------------------
+# Ownership-based access helpers for new modules
+# ---------------------------------------------------------------------------
+
+def _is_admin_or_super(conn, user_id: int) -> bool:
+    return is_superadmin(conn, user_id) or db_has_feature(conn, user_id, FeatureID.ALL_PROJECTS)
+
+
+def _table_has_column(conn, table_name: str, column_name: str) -> bool:
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT 1
+            FROM information_schema.columns
+            WHERE table_schema = %s
+              AND table_name = %s
+              AND column_name = %s
+            LIMIT 1
+            """,
+            (DB_SCHEMA, table_name, column_name),
+        )
+        return cur.fetchone() is not None
+
+
+def accessible_sg_office_ids(conn, user_id: int) -> Optional[List[int]]:
+    """Return list of sg_office IDs the user can see. None means all."""
+    if _is_admin_or_super(conn, user_id):
+        return None
+    with conn.cursor() as cur:
+        if _table_has_column(conn, "sg_office_sgofficeteammember", "user_id"):
+            cur.execute("""
+                SELECT id FROM sg_office_sgoffice WHERE sg_office_manager_id = %s
+                UNION
+                SELECT sg_office_id
+                FROM sg_office_sgofficeteammember
+                WHERE user_id = %s
+            """, (user_id, user_id))
+        else:
+            cur.execute("""
+                SELECT id FROM sg_office_sgoffice WHERE sg_office_manager_id = %s
+                UNION
+                SELECT sg_office_id
+                FROM sg_office_sgofficeteammember
+                WHERE name_en IN (
+                    SELECT full_name_en FROM user_management_user WHERE id = %s
+                )
+            """, (user_id, user_id))
+        return [r[0] for r in cur.fetchall()]
+
+
+def user_can_access_sg_office(conn, user_id: int, sg_office_id: int) -> bool:
+    if _is_admin_or_super(conn, user_id):
+        return True
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT 1 FROM sg_office_sgoffice
+            WHERE id = %s AND sg_office_manager_id = %s
+            LIMIT 1
+        """, (sg_office_id, user_id))
+        if cur.fetchone():
+            return True
+        if _table_has_column(conn, "sg_office_sgofficeteammember", "user_id"):
+            cur.execute("""
+                SELECT 1 FROM sg_office_sgofficeteammember
+                WHERE sg_office_id = %s AND user_id = %s
+                LIMIT 1
+            """, (sg_office_id, user_id))
+        else:
+            cur.execute("""
+                SELECT 1 FROM sg_office_sgofficeteammember
+                WHERE sg_office_id = %s
+                  AND name_en IN (
+                      SELECT full_name_en FROM user_management_user WHERE id = %s
+                  )
+                LIMIT 1
+            """, (sg_office_id, user_id))
+        if cur.fetchone():
+            return True
+    return False
+
+
+def accessible_task_ids(conn, user_id: int) -> Optional[List[int]]:
+    """Return list of task IDs the user can see. None means all."""
+    if _is_admin_or_super(conn, user_id):
+        return None
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT id FROM task_management_task WHERE owner_id = %s
+            UNION
+            SELECT id FROM task_management_task WHERE created_by_id = %s
+            UNION
+            SELECT t.id FROM task_management_task t
+            JOIN task_management_committeemember cm ON cm.committee_id = t.proposed_committee_id
+            WHERE cm.user_id = %s
+        """, (user_id, user_id, user_id))
+        return [r[0] for r in cur.fetchall()]
+
+
+def user_can_access_task(conn, user_id: int, task_id: int) -> bool:
+    if _is_admin_or_super(conn, user_id):
+        return True
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT 1 FROM task_management_task
+            WHERE id = %s AND (owner_id = %s OR created_by_id = %s)
+            LIMIT 1
+        """, (task_id, user_id, user_id))
+        if cur.fetchone():
+            return True
+        cur.execute("""
+            SELECT 1 FROM task_management_committeemember cm
+            JOIN task_management_task t ON t.proposed_committee_id = cm.committee_id
+            WHERE t.id = %s AND cm.user_id = %s
+            LIMIT 1
+        """, (task_id, user_id))
+        return cur.fetchone() is not None
+
+
+def accessible_resolution_ids(conn, user_id: int) -> Optional[List[int]]:
+    """Return list of resolution IDs the user can see. None means all."""
+    if _is_admin_or_super(conn, user_id):
+        return None
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT id FROM resolution_management_resolution
+            WHERE resolution_owner_id = %s OR created_by_id = %s
+            UNION
+            SELECT resolution_id FROM resolution_management_resolutionsupportingteam
+            WHERE user_id = %s
+        """, (user_id, user_id, user_id))
+        return [r[0] for r in cur.fetchall()]
+
+
+def user_can_access_resolution(conn, user_id: int, resolution_id: int) -> bool:
+    if _is_admin_or_super(conn, user_id):
+        return True
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT 1 FROM resolution_management_resolution
+            WHERE id = %s AND (resolution_owner_id = %s OR created_by_id = %s)
+            LIMIT 1
+        """, (resolution_id, user_id, user_id))
+        if cur.fetchone():
+            return True
+        cur.execute("""
+            SELECT 1 FROM resolution_management_resolutionsupportingteam
+            WHERE resolution_id = %s AND user_id = %s
+            LIMIT 1
+        """, (resolution_id, user_id))
+        return cur.fetchone() is not None
+
+
+def get_user_access_flags(conn, user_id: int) -> Dict[str, bool]:
+    """Get all access flags for a user in one call."""
+    sa = is_superadmin(conn, user_id)
+    return {
+        "superadmin": sa,
+        "all_projects": sa or db_has_feature(conn, user_id, FeatureID.ALL_PROJECTS),
+        "budget": sa or db_has_feature(conn, user_id, FeatureID.BUDGET_INFO),
+        "user_management": sa or db_has_feature(conn, user_id, FeatureID.USER_MANAGEMENT),
+        "notes": sa or db_has_feature(conn, user_id, FeatureID.NOTES),
+        "education": sa or db_has_feature(conn, user_id, FeatureID.EDUCATION_DASH),
+        "project_docs": sa or db_has_feature(conn, user_id, FeatureID.PROJECT_DOCS),
+    }
