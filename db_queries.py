@@ -187,7 +187,7 @@ def get_project_details(conn, user_id: int, project_id: int = None,
         if budget_ok:
             cur.execute("""
                 SELECT allocated_budget, spent_budget, budget_left, created_at,
-                       updated_at
+                       updaed_at AS updated_at
                 FROM project_management_projectbudget WHERE project_id = %s LIMIT 1
             """, (pid,))
             result["budget"] = dict(cur.fetchone()) if cur.rowcount else None
@@ -316,7 +316,7 @@ def get_sg_office_details(conn, user_id: int, sg_office_id: int = None,
         # Budget
         cur.execute("""
             SELECT allocated_budget, spent_budget, budget_left, created_at,
-                   updated_at
+                   updaed_at AS updated_at
             FROM sg_office_sgofficebudget WHERE sg_office_id = %s LIMIT 1
         """, (oid,))
         row = cur.fetchone()

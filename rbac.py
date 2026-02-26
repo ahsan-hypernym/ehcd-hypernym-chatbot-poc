@@ -4,6 +4,7 @@ Handles user roles, features, and ownership-based access for all modules.
 """
 
 import os
+from functools import lru_cache
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from psycopg2 import sql
@@ -113,7 +114,12 @@ def _is_admin_or_super(conn, user_id: int) -> bool:
     return is_superadmin(conn, user_id) or db_has_feature(conn, user_id, FeatureID.ALL_PROJECTS)
 
 
+_column_check_cache: Dict[str, bool] = {}
+
 def _table_has_column(conn, table_name: str, column_name: str) -> bool:
+    cache_key = f"{table_name}.{column_name}"
+    if cache_key in _column_check_cache:
+        return _column_check_cache[cache_key]
     with conn.cursor() as cur:
         cur.execute(
             """
@@ -126,7 +132,9 @@ def _table_has_column(conn, table_name: str, column_name: str) -> bool:
             """,
             (DB_SCHEMA, table_name, column_name),
         )
-        return cur.fetchone() is not None
+        result = cur.fetchone() is not None
+    _column_check_cache[cache_key] = result
+    return result
 
 
 def accessible_sg_office_ids(conn, user_id: int) -> Optional[List[int]]:
@@ -258,14 +266,31 @@ def user_can_access_resolution(conn, user_id: int, resolution_id: int) -> bool:
 
 
 def get_user_access_flags(conn, user_id: int) -> Dict[str, bool]:
-    """Get all access flags for a user in one call."""
-    sa = is_superadmin(conn, user_id)
+    """Get all access flags for a user in a single DB query."""
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT u.is_superuser,
+                   ARRAY_AGG(DISTINCT rf.feature_id) FILTER (WHERE rf.feature_id IS NOT NULL) AS feature_ids
+            FROM user_management_user u
+            LEFT JOIN user_management_user_roles ur ON ur.user_id = u.id
+            LEFT JOIN role_and_access_role_features rf ON rf.role_id = ur.role_id
+            WHERE u.id = %s
+            GROUP BY u.id, u.is_superuser
+        """, (user_id,))
+        row = cur.fetchone()
+
+    if not row:
+        return {k: False for k in ["superadmin", "all_projects", "budget",
+                                    "user_management", "notes", "education", "project_docs"]}
+
+    sa = bool(row[0])
+    feature_ids = set(row[1] or [])
     return {
         "superadmin": sa,
-        "all_projects": sa or db_has_feature(conn, user_id, FeatureID.ALL_PROJECTS),
-        "budget": sa or db_has_feature(conn, user_id, FeatureID.BUDGET_INFO),
-        "user_management": sa or db_has_feature(conn, user_id, FeatureID.USER_MANAGEMENT),
-        "notes": sa or db_has_feature(conn, user_id, FeatureID.NOTES),
-        "education": sa or db_has_feature(conn, user_id, FeatureID.EDUCATION_DASH),
-        "project_docs": sa or db_has_feature(conn, user_id, FeatureID.PROJECT_DOCS),
+        "all_projects": sa or FeatureID.ALL_PROJECTS in feature_ids,
+        "budget": sa or FeatureID.BUDGET_INFO in feature_ids,
+        "user_management": sa or FeatureID.USER_MANAGEMENT in feature_ids,
+        "notes": sa or FeatureID.NOTES in feature_ids,
+        "education": sa or FeatureID.EDUCATION_DASH in feature_ids,
+        "project_docs": sa or FeatureID.PROJECT_DOCS in feature_ids,
     }

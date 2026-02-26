@@ -41,15 +41,13 @@ from functools import wraps
 
 from openai import AzureOpenAI
 
-# FAISS + embeddings (still needed for education & policy searches)
+# FAISS + embeddings (still needed for policy searches)
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import AzureOpenAIEmbeddings
 
 from doc import Documents
-from education import (
-    TabularConfig,
-    update_tabular_index_if_changed,
-)
+from education import TabularConfig
+from edu_pg import load_excel_to_sqlite
 from policy import update_policy_index_if_changed, PolicyConfig
 from emb_pace import PacedEmbeddings
 
@@ -189,15 +187,10 @@ def pg_conn():
     """Get a connection from the pool with auto-commit/rollback."""
     conn = _pool.getconn()
     try:
-        # Pre-ping to avoid reusing stale SSL connections from pool.
-        try:
-            with conn.cursor() as cur:
-                cur.execute("SELECT 1")
-        except (OperationalError, InterfaceError):
+        # Only pre-ping if the connection looks potentially stale (closed status).
+        if conn.closed:
             _pool.putconn(conn, close=True)
             conn = _pool.getconn()
-            with conn.cursor() as cur:
-                cur.execute("SELECT 1")
 
         yield conn
         conn.commit()
@@ -233,7 +226,9 @@ def save_conversation_history(user_key: str, history: list):
 def background_education_rebuilder():
     while True:
         try:
-            update_tabular_index_if_changed(EDU_CFG, emb)
+            changed = load_excel_to_sqlite(EDU_CFG)
+            if changed:
+                logger.info("[EducationRebuilder] Education SQLite tables reloaded.")
         except Exception as e:
             logger.error(f"[EducationRebuilder] Failed: {e}")
         time.sleep(7200)  # every 2 hours
@@ -269,7 +264,7 @@ def handle_query():
     conversation_history = get_conversation_history(history_key)
     conversation_history.append({"role": "user", "content": query})
 
-    # Fetch user info and available tools
+    # Fetch user info and available tools in one connection
     with pg_conn() as conn:
         user_profile = fetch_user_profile(conn, rbac_user_id)
         user_name = (
@@ -281,6 +276,7 @@ def handle_query():
         user_email = user_profile.get("email") or ""
         user_contact_no = user_profile.get("contact_no") or ""
 
+        # build_available_tools internally calls get_user_access_flags (1 query now)
         available_tools = build_available_tools(conn, rbac_user_id)
 
     def generate():
@@ -497,6 +493,15 @@ def download_document(document_id):
 # ────────────────────────────────────────────────────────────────────────────────
 # START BACKGROUND THREADS
 # ────────────────────────────────────────────────────────────────────────────────
+# Initial load of education data into SQLite (non-blocking)
+def _startup_edu_load():
+    try:
+        load_excel_to_sqlite(EDU_CFG)
+        logger.info("[Startup] Education SQLite tables initialized.")
+    except Exception as e:
+        logger.warning(f"[Startup] Education table init failed (will retry): {e}")
+
+threading.Thread(target=_startup_edu_load, daemon=True).start()
 threading.Thread(target=background_education_rebuilder, daemon=True).start()
 threading.Thread(target=background_policy_rebuilder, daemon=True).start()
 

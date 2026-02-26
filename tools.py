@@ -26,6 +26,7 @@ from db_queries import (
     list_resolutions,
     get_resolution_details,
 )
+from edu_pg import execute_education_sql, EDU_SCHEMA_FOR_TOOL
 
 logger = logging.getLogger(__name__)
 
@@ -248,22 +249,32 @@ TOOL_DEFINITIONS = [
     {
         "type": "function",
         "function": {
-            "name": "search_education_data",
+            "name": "query_education_data",
             "description": (
-                "Search education statistics and tabular data from EHCD. "
+                "Query education statistics from EHCD's SQLite database using SQL. "
                 "Use for questions about schools, students, enrollment, "
                 "test scores (PISA, TIMSS, PIRLS), higher education, "
-                "staff distribution, pass/fail rates, people of determination."
+                "staff distribution, pass/fail rates, people of determination, "
+                "education finance, labour statistics.\n\n"
+                "You MUST generate a valid SQLite SELECT query using the schema below.\n\n"
+                + EDU_SCHEMA_FOR_TOOL
             ),
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "query": {
+                    "sql": {
                         "type": "string",
-                        "description": "The search query for education data",
+                        "description": (
+                            "A valid SQLite SELECT query against edu_* tables. "
+                            "Must start with SELECT. No DDL/DML. "
+                            "Use LIKE for text matching. Include LIMIT (max 200). "
+                            "Example: SELECT year, region, SUM(total_students) "
+                            "FROM edu_general_education WHERE year = 2022 "
+                            "GROUP BY year, region LIMIT 50"
+                        ),
                     },
                 },
-                "required": ["query"],
+                "required": ["sql"],
             },
         },
     },
@@ -304,10 +315,10 @@ def execute_tool(
     conn,
     user_id: int,
     *,
-    edu_cfg=None,
     policy_cfg=None,
     emb=None,
     qvec=None,
+    edu_cfg=None,  # deprecated, kept for backward compatibility
 ) -> str:
     """Execute a tool call and return JSON string result."""
 
@@ -344,8 +355,8 @@ def execute_tool(
                 resolution_id=arguments.get("resolution_id"),
                 resolution_topic=arguments.get("resolution_topic"),
             )
-        elif tool_name == "search_education_data":
-            result = _search_education(arguments.get("query", ""), edu_cfg, emb, qvec)
+        elif tool_name == "query_education_data":
+            result = execute_education_sql(arguments.get("sql", ""))
         elif tool_name == "search_policy":
             result = _search_policy(arguments.get("query", ""), policy_cfg, emb, qvec)
         else:
@@ -357,14 +368,6 @@ def execute_tool(
         logger.error(f"Tool execution error [{tool_name}]: {e}")
         return json.dumps({"error": f"Tool execution failed: {str(e)}"})
 
-
-def _search_education(query: str, edu_cfg, emb, qvec=None) -> List[Dict]:
-    from education import search_tabular
-
-    if not edu_cfg or not emb:
-        return [{"error": "Education search not configured"}]
-    docs = search_tabular(edu_cfg, emb, query, k=8, query_embedding=qvec)
-    return [{"content": d.page_content, "source": d.metadata.get("source", "")} for d in docs]
 
 
 def _search_policy(query: str, policy_cfg, emb, qvec=None) -> List[Dict]:
@@ -397,7 +400,7 @@ def build_available_tools(conn, user_id: int) -> List[Dict]:
     ]
 
     if flags.get("education"):
-        tools.append(TOOL_DEFS_BY_NAME["search_education_data"])
+        tools.append(TOOL_DEFS_BY_NAME["query_education_data"])
 
     return tools
 
@@ -411,7 +414,7 @@ SYSTEM_PROMPT = """You are an expert advisor for the Education, Human Developmen
 You have access to tools that can query EHCD databases and knowledge bases. When the user asks questions:
 1. Use the appropriate tool(s) to retrieve data before answering.
 2. For structured data (projects, SG offices, tasks, resolutions), use the list/get tools.
-3. For education statistics, use search_education_data.
+3. For education statistics, use query_education_data (generate a SQLite SELECT query).
 4. For policy questions, use search_policy.
 5. You may call multiple tools if the question spans multiple domains.
 6. NEVER invent or fabricate data — only use what the tools return.
@@ -521,16 +524,17 @@ def generate_tool_response(
             # Model wants to call tool(s)
             messages.append(choice.message)
 
-            for tool_call in choice.message.tool_calls:
-                fn_name = tool_call.function.name
-                try:
-                    fn_args = json.loads(tool_call.function.arguments)
-                except json.JSONDecodeError:
-                    fn_args = {}
+            # Reuse one connection for all tool calls in this round
+            with pg_conn_fn() as conn:
+                for tool_call in choice.message.tool_calls:
+                    fn_name = tool_call.function.name
+                    try:
+                        fn_args = json.loads(tool_call.function.arguments)
+                    except json.JSONDecodeError:
+                        fn_args = {}
 
-                logger.info(f"Tool call: {fn_name}({fn_args})")
+                    logger.info(f"Tool call: {fn_name}({fn_args})")
 
-                with pg_conn_fn() as conn:
                     result_str = execute_tool(
                         fn_name,
                         fn_args,
@@ -541,45 +545,27 @@ def generate_tool_response(
                         emb=emb,
                     )
 
-                # Collect tool results for chart detection
-                if tool_results_collector is not None:
-                    try:
-                        parsed = json.loads(result_str)
-                        if isinstance(parsed, list):
-                            tool_results_collector.extend(parsed)
-                        elif isinstance(parsed, dict) and "error" not in parsed:
-                            tool_results_collector.append(parsed)
-                    except (json.JSONDecodeError, TypeError):
-                        pass
+                    # Collect tool results for chart detection
+                    if tool_results_collector is not None:
+                        try:
+                            parsed = json.loads(result_str)
+                            if isinstance(parsed, list):
+                                tool_results_collector.extend(parsed)
+                            elif isinstance(parsed, dict) and "error" not in parsed:
+                                tool_results_collector.append(parsed)
+                        except (json.JSONDecodeError, TypeError):
+                            pass
 
-                messages.append({
-                    "role": "tool",
-                    "tool_call_id": tool_call.id,
-                    "content": result_str,
-                })
+                    messages.append({
+                        "role": "tool",
+                        "tool_call_id": tool_call.id,
+                        "content": result_str,
+                    })
         else:
-            # Model produced a final text response or stopped
-            # If we have content already, yield it
+            # Model produced a final text response — yield it directly
+            # (no second API call needed)
             if choice.message.content:
-                # Now re-issue as streaming for the final response
-                # to maintain the streaming UX
-                try:
-                    final_stream = client.chat.completions.create(
-                        model=model,
-                        messages=messages,
-                        max_tokens=4000,
-                        temperature=0.7,
-                        top_p=0.95,
-                        frequency_penalty=0.2,
-                        stream=True,
-                    )
-                    for chunk in final_stream:
-                        if chunk.choices and chunk.choices[0].delta.content:
-                            yield chunk.choices[0].delta.content
-                except Exception as e:
-                    logger.error(f"Streaming error: {e}")
-                    # Fall back to non-streamed content
-                    yield choice.message.content
+                yield choice.message.content
             return
 
     # Max rounds reached

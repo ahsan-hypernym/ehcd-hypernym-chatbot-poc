@@ -1,3 +1,11 @@
+"""
+Education data helpers.
+NOTE: FAISS-based search (build_tabular_documents, save_faiss, load_faiss,
+search_tabular, update_tabular_index_if_changed) is DEPRECATED.
+Education data now uses SQLite via edu_pg.py.
+Still used: TabularConfig, _sync_blob_into_local, _sha256_file,
+_load_hashes, _save_hashes, _read_excel_all_sheets, _normalize_df, _normalize_colname.
+"""
 from __future__ import annotations
 import os, re, io, json, time, shutil, tempfile, hashlib, logging
 from dataclasses import dataclass, field
