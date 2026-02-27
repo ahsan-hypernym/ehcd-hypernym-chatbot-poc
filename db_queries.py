@@ -110,6 +110,19 @@ def list_projects(conn, user_id: int, filters: dict = None) -> List[Dict[str, An
         cur.execute(query, params)
         rows = cur.fetchall()
 
+    # Batch-fetch budgets in one query instead of N+1
+    budget_map = {}
+    if budget_ok and rows:
+        project_ids = [r["id"] for r in rows]
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("""
+                SELECT project_id, allocated_budget, spent_budget, budget_left
+                FROM project_management_projectbudget
+                WHERE project_id = ANY(%s)
+            """, (project_ids,))
+            for b in cur.fetchall():
+                budget_map[b["project_id"]] = b
+
     result = []
     for r in rows:
         item = dict(r)
@@ -117,7 +130,7 @@ def list_projects(conn, user_id: int, filters: dict = None) -> List[Dict[str, An
         item["start_date"] = str(item["start_date"]) if item.get("start_date") else None
         item["end_date"] = str(item["end_date"]) if item.get("end_date") else None
         if budget_ok:
-            budget = _get_project_budget(conn, item["id"])
+            budget = budget_map.get(item["id"])
             if budget:
                 item["allocated_budget"] = budget.get("allocated_budget")
                 item["spent_budget"] = budget.get("spent_budget")

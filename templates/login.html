@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <style>
     .flash-messages {
@@ -25,17 +25,13 @@
         <h2>Login</h2>
         
         <!-- Flash Messages for Incorrect Credentials -->
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="flash-messages">
-                    {% for message in messages %}
-                        <p class="error">{{ message }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
+        {% if error_message %}
+            <div class="flash-messages">
+                <p class="error">{{ error_message }}</p>
+            </div>
+        {% endif %}
         
-        <form action="{{ url_for('login') }}" method="POST">
+        <form action="/" method="POST">
             <div class="input-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required>

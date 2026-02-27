@@ -8,7 +8,7 @@
     <h2>Document Library</h2>
     <ul>
         {% for document in documents %}
-            <li>{{ document[1] }} - <a href="{{ url_for('download_document', document_id=document[0]) }}">Download</a></li>
+            <li>{{ document[1] }} - <a href="/download/{{ document[0] }}">Download</a></li>
         {% endfor %}
     </ul>
 </body>

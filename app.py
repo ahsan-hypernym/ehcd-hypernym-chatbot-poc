@@ -1,6 +1,6 @@
 """
-EHCD Hypernym Chatbot — Main Flask Application
-Tool-based architecture with Azure OpenAI function calling.
+EHCD Hypernym Chatbot — FastAPI Application
+LangGraph-based architecture with Azure OpenAI function calling.
 """
 
 import os
@@ -13,7 +13,6 @@ import threading
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional, Tuple
 
 from dotenv import load_dotenv
 
@@ -24,20 +23,20 @@ from psycopg2 import InterfaceError, OperationalError
 from psycopg2.pool import ThreadedConnectionPool
 
 import redis
-from flask import (
-    Flask,
-    request,
-    jsonify,
-    render_template,
-    Response,
-    stream_with_context,
-    session,
-    flash,
-    redirect,
-    url_for,
-    send_file,
+import jwt
+from fastapi import FastAPI, Request, Form, WebSocket, WebSocketDisconnect, Depends, HTTPException
+from fastapi.responses import (
+    HTMLResponse,
+    RedirectResponse,
+    StreamingResponse,
+    FileResponse,
+    JSONResponse,
 )
-from functools import wraps
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from pydantic import BaseModel
+from starlette.middleware.sessions import SessionMiddleware
 
 from openai import AzureOpenAI
 
@@ -51,21 +50,25 @@ from edu_pg import load_excel_to_sqlite
 from policy import update_policy_index_if_changed, PolicyConfig
 from emb_pace import PacedEmbeddings
 
-# New modular imports
-from rbac import fetch_user_profile, get_user_access_flags
-from tools import build_available_tools, generate_tool_response
+# Modular imports
+from rbac import fetch_user_profile
+from tools import build_available_tools, run_chatbot_graph
 from chart_engine import detect_chart_opportunity
 
 # ────────────────────────────────────────────────────────────────────────────────
 # CONFIG & LOGGING
 # ────────────────────────────────────────────────────────────────────────────────
-app = Flask(__name__)
-app.secret_key = "fs78sf7s8d6v7sdy7sdbds7v"
-
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+
+app = FastAPI(title="EHCD Hypernym Chatbot")
+app.add_middleware(SessionMiddleware, secret_key="fs78sf7s8d6v7sdy7sdbds7v")
+
+# Static files & templates
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
 # Redis (for chat history)
 redis_client = redis.Redis(
@@ -96,6 +99,12 @@ class CFG:
     AZURE_EMBED_DEPLOYMENT: str = os.getenv(
         "AZURE_EMBEDDING_DEPLOYMENT", "text-embedding-3-small"
     )
+
+    # JWT
+    JWT_SECRET: str = os.getenv("JWT_SECRET")
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRY_HOURS: int = int(os.getenv("JWT_EXPIRY_HOURS", "24"))
+    USER_ID_CLAIM: str = os.getenv("USER_ID_CLAIM", "sub/user_id/id")
 
     # Local storage
     ROOT: str = os.getenv("DATA_ROOT", "./data")
@@ -164,34 +173,50 @@ documents.save_local_files_to_db()
 # ────────────────────────────────────────────────────────────────────────────────
 # DATABASE CONNECTION POOL
 # ────────────────────────────────────────────────────────────────────────────────
-_pool = ThreadedConnectionPool(
-    minconn=2,
-    maxconn=10,
-    host=cfg.PG_HOST,
-    dbname=cfg.PG_DB,
-    user=cfg.PG_USER,
-    password=cfg.PG_PASS,
-    port=cfg.PG_PORT,
-    sslmode="require",
-    connect_timeout=10,
-    keepalives=1,
-    keepalives_idle=30,
-    keepalives_interval=10,
-    keepalives_count=5,
-    application_name="ehcd-hypernym-chatbot",
-)
+_pool = None
+
+
+def _init_pg_pool():
+    global _pool
+    if _pool is not None:
+        return
+    _pool = ThreadedConnectionPool(
+        minconn=2,
+        maxconn=10,
+        host=cfg.PG_HOST,
+        dbname=cfg.PG_DB,
+        user=cfg.PG_USER,
+        password=cfg.PG_PASS,
+        port=cfg.PG_PORT,
+        sslmode="require",
+        connect_timeout=10,
+        keepalives=1,
+        keepalives_idle=30,
+        keepalives_interval=10,
+        keepalives_count=5,
+        application_name="ehcd-hypernym-chatbot",
+    )
+    logger.info("[PG] Connection pool initialized.")
+
+
+# Try to connect at startup, but don't crash if PG is temporarily unreachable
+try:
+    _init_pg_pool()
+except Exception as e:
+    logger.warning(f"[PG] Pool init failed at startup (will retry on first request): {e}")
 
 
 @contextmanager
 def pg_conn():
     """Get a connection from the pool with auto-commit/rollback."""
+    global _pool
+    if _pool is None:
+        _init_pg_pool()
     conn = _pool.getconn()
     try:
-        # Only pre-ping if the connection looks potentially stale (closed status).
         if conn.closed:
             _pool.putconn(conn, close=True)
             conn = _pool.getconn()
-
         yield conn
         conn.commit()
     except Exception as e:
@@ -211,13 +236,17 @@ def pg_conn():
 # ────────────────────────────────────────────────────────────────────────────────
 # CHAT HISTORY (Redis)
 # ────────────────────────────────────────────────────────────────────────────────
+MAX_HISTORY_MESSAGES = 20
+
+
 def get_conversation_history(user_key: str) -> list:
     h = redis_client.get(f"user_{user_key}_history")
     return json.loads(h) if h else []
 
 
 def save_conversation_history(user_key: str, history: list):
-    redis_client.set(f"user_{user_key}_history", json.dumps(history), ex=3600)
+    trimmed = history[-MAX_HISTORY_MESSAGES:] if len(history) > MAX_HISTORY_MESSAGES else history
+    redis_client.set(f"user_{user_key}_history", json.dumps(trimmed), ex=3600)
 
 
 # ────────────────────────────────────────────────────────────────────────────────
@@ -231,7 +260,7 @@ def background_education_rebuilder():
                 logger.info("[EducationRebuilder] Education SQLite tables reloaded.")
         except Exception as e:
             logger.error(f"[EducationRebuilder] Failed: {e}")
-        time.sleep(7200)  # every 2 hours
+        time.sleep(7200)
 
 
 def background_policy_rebuilder():
@@ -240,25 +269,106 @@ def background_policy_rebuilder():
             update_policy_index_if_changed(POLICY_CFG, splitter, emb)
         except Exception as e:
             logger.error(f"[PolicyRebuilder] Failed: {e}")
-        time.sleep(86400 * 3)  # every 3 days
+        time.sleep(86400 * 3)
 
 
 # ────────────────────────────────────────────────────────────────────────────────
-# MAIN API ENDPOINT (Tool-based)
+# HEALTH CHECK
 # ────────────────────────────────────────────────────────────────────────────────
-@app.route("/api/query", methods=["POST"])
-def handle_query():
-    payload = request.get_json(force=True) or {}
-    query = (payload.get("query") or "").strip()
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+
+# ────────────────────────────────────────────────────────────────────────────────
+# JWT VERIFICATION
+# ────────────────────────────────────────────────────────────────────────────────
+# The main backend handles login and issues JWTs.
+# This chatbot service ONLY verifies the token and extracts user_id.
+# Both services must share the same JWT_SECRET (set via env var).
+# ────────────────────────────────────────────────────────────────────────────────
+security = HTTPBearer()
+
+
+def _create_test_token(user_id: int) -> str:
+    """Generate a test JWT token for development/testing."""
+    from datetime import timezone
+    payload = {
+        "sub": user_id,
+        "exp": datetime.now(timezone.utc) + timedelta(hours=cfg.JWT_EXPIRY_HOURS),
+        "iat": datetime.now(timezone.utc),
+    }
+    return jwt.encode(payload, cfg.JWT_SECRET, algorithm=cfg.JWT_ALGORITHM)
+
+
+def _decode_jwt(token: str) -> dict:
+    """Decode and verify a JWT token. Raises on invalid/expired."""
+    return jwt.decode(token, cfg.JWT_SECRET, algorithms=[cfg.JWT_ALGORITHM])
+
+
+def _extract_user_id(payload: dict) -> int | None:
+    """
+    Extract user ID from JWT payload using configured claim chain.
+    Example USER_ID_CLAIM: "sub/user_id/id"
+    """
+    claim_chain = [c.strip() for c in (cfg.USER_ID_CLAIM or "").split("/") if c.strip()]
+    if not claim_chain:
+        claim_chain = ["sub", "user_id", "id"]
+
+    for claim in claim_chain:
+        val = payload.get(claim)
+        if val is not None and val != "":
+            try:
+                return int(val)
+            except (TypeError, ValueError):
+                return None
+    return None
+
+
+# ── Test endpoint: generate a token for testing (disable in production) ──
+# @app.post("/api/test/token")
+# async def generate_test_token(user_id: int = 151):
+#     """
+#     DEV ONLY: Generate a test JWT for a given user_id.
+#     Remove or disable this in production.
+#     """
+#     token = _create_test_token(user_id)
+#     return {"access_token": token, "user_id": user_id}
+
+
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> int:
+    """FastAPI dependency: extract user_id from Bearer token."""
+    try:
+        payload = _decode_jwt(credentials.credentials)
+        user_id = _extract_user_id(payload)
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Token missing user_id")
+        return user_id
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+
+# ────────────────────────────────────────────────────────────────────────────────
+# MAIN API ENDPOINT (LangGraph-based)
+# ────────────────────────────────────────────────────────────────────────────────
+class QueryRequest(BaseModel):
+    query: str
+    conversation_id: str = "default"
+
+
+@app.post("/api/query")
+async def handle_query(
+    payload: QueryRequest,
+    user_id: int = Depends(get_current_user),
+):
+    query = payload.query.strip()
     if not query:
-        return jsonify({"error": "Empty query"}), 400
+        return JSONResponse({"error": "Empty query"}, status_code=400)
 
-    rbac_user_id_raw = payload.get("user_id")
-    if rbac_user_id_raw is None:
-        return jsonify({"error": "user_id is required"}), 400
-    rbac_user_id = int(rbac_user_id_raw)
-
-    conv_id = (payload.get("conversation_id") or "default").strip()
+    rbac_user_id = user_id
+    conv_id = payload.conversation_id.strip()
     history_key = f"uid:{rbac_user_id}:conv:{conv_id}"
 
     conversation_history = get_conversation_history(history_key)
@@ -275,8 +385,6 @@ def handle_query():
         user_role = user_profile.get("designation") or ""
         user_email = user_profile.get("email") or ""
         user_contact_no = user_profile.get("contact_no") or ""
-
-        # build_available_tools internally calls get_user_access_flags (1 query now)
         available_tools = build_available_tools(conn, rbac_user_id)
 
     def generate():
@@ -284,7 +392,7 @@ def handle_query():
         tool_results_for_chart = []
 
         try:
-            for chunk in generate_tool_response(
+            for chunk in run_chatbot_graph(
                 query=query,
                 conversation_history=conversation_history,
                 available_tools=available_tools,
@@ -296,13 +404,11 @@ def handle_query():
                 client=client,
                 model=cfg.AZURE_OPENAI_DEPLOYMENT,
                 pg_conn_fn=pg_conn,
-                edu_cfg=EDU_CFG,
                 policy_cfg=POLICY_CFG,
                 emb=emb,
                 tool_results_collector=tool_results_for_chart,
             ):
                 assistant_response += chunk
-                # Stream plain text (strip HTML for progressive display)
                 plain_text_chunk = re.sub(r"<[^>]*>", "", chunk)
                 yield plain_text_chunk
 
@@ -342,18 +448,138 @@ def handle_query():
             else:
                 yield f"<replace>{assistant_response}</replace>"
 
-    return Response(
-        stream_with_context(generate()),
-        content_type="text/html",
-        headers={"Content-Encoding": "chunked"},
-    )
+    return StreamingResponse(generate(), media_type="text/html")
 
 
 # ────────────────────────────────────────────────────────────────────────────────
-# LOGIN / SESSIONS
+# WEBSOCKET ENDPOINT (for Flutter / mobile clients)
+# ────────────────────────────────────────────────────────────────────────────────
+@app.websocket("/ws/chat")
+async def websocket_chat(ws: WebSocket):
+    """
+    WebSocket for real-time streaming chat.
+
+    Client flow:
+    1. Connect to ws://host/ws/chat
+    2. Send JSON: {"token": "<jwt>", "query": "...", "conversation_id": "default"}
+    3. Receive streamed JSON messages:
+       - {"type": "chunk", "content": "..."} — partial plain text
+       - {"type": "done",  "html": "...", "chart_data": {...} | null} — final result
+       - {"type": "error", "message": "..."} — on failure
+    4. Send another query or close connection
+    """
+    await ws.accept()
+
+    try:
+        while True:
+            data = await ws.receive_json()
+
+            # ── Auth via JWT token ──
+            token = data.get("token", "")
+            try:
+                jwt_payload = _decode_jwt(token)
+                rbac_user_id = _extract_user_id(jwt_payload)
+                if rbac_user_id is None:
+                    await ws.send_json({"type": "error", "message": "Token missing user_id"})
+                    continue
+            except (jwt.ExpiredSignatureError, jwt.InvalidTokenError) as e:
+                await ws.send_json({"type": "error", "message": f"Auth failed: {e}"})
+                continue
+
+            query = (data.get("query") or "").strip()
+            if not query:
+                await ws.send_json({"type": "error", "message": "Empty query"})
+                continue
+
+            conv_id = (data.get("conversation_id") or "default").strip()
+            history_key = f"uid:{rbac_user_id}:conv:{conv_id}"
+
+            conversation_history = get_conversation_history(history_key)
+            conversation_history.append({"role": "user", "content": query})
+
+            # Fetch user info
+            with pg_conn() as conn:
+                user_profile = fetch_user_profile(conn, rbac_user_id)
+                user_name = (
+                    user_profile.get("full_name_en")
+                    or user_profile.get("full_name_ar")
+                    or "Unknown User"
+                )
+                user_role = user_profile.get("designation") or ""
+                user_email = user_profile.get("email") or ""
+                user_contact_no = user_profile.get("contact_no") or ""
+                available_tools = build_available_tools(conn, rbac_user_id)
+
+            # Stream response
+            assistant_response = ""
+            tool_results_for_chart = []
+
+            try:
+                for chunk in run_chatbot_graph(
+                    query=query,
+                    conversation_history=conversation_history,
+                    available_tools=available_tools,
+                    user_id=rbac_user_id,
+                    user_name=user_name,
+                    user_role=user_role,
+                    user_email=user_email,
+                    user_contact_no=user_contact_no,
+                    client=client,
+                    model=cfg.AZURE_OPENAI_DEPLOYMENT,
+                    pg_conn_fn=pg_conn,
+                    policy_cfg=POLICY_CFG,
+                    emb=emb,
+                    tool_results_collector=tool_results_for_chart,
+                ):
+                    assistant_response += chunk
+                    plain = re.sub(r"<[^>]*>", "", chunk)
+                    if plain.strip():
+                        await ws.send_json({"type": "chunk", "content": plain})
+
+            except Exception as e:
+                logger.error(f"WS tool response error: {e}")
+                assistant_response = "I encountered an error processing your request."
+                await ws.send_json({"type": "error", "message": assistant_response})
+
+            # Save history
+            conversation_history.append(
+                {"role": "assistant", "content": assistant_response}
+            )
+            save_conversation_history(history_key, conversation_history)
+
+            # Chart detection
+            chart_data = None
+            try:
+                chart_data = detect_chart_opportunity(
+                    query, tool_results_for_chart, assistant_response
+                )
+            except Exception as e:
+                logger.error(f"WS chart detection error: {e}")
+
+            # Send final result
+            await ws.send_json({
+                "type": "done",
+                "html": assistant_response,
+                "chart_data": json.loads(
+                    json.dumps(chart_data, default=str, ensure_ascii=False)
+                ) if chart_data else None,
+            })
+
+    except WebSocketDisconnect:
+        logger.info("WebSocket client disconnected")
+    except Exception as e:
+        logger.error(f"WebSocket error: {e}")
+        try:
+            await ws.close()
+        except Exception:
+            pass
+
+
+# ────────────────────────────────────────────────────────────────────────────────
+# LOGIN / SESSIONS (kept for testing UI)
 # ────────────────────────────────────────────────────────────────────────────────
 credentials = {"hypernym1": "hyper@chatbot", "hypernym2": "hyper@chatbot"}
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=1)
+SESSION_LIFETIME = timedelta(hours=1)
 
 
 def init_db():
@@ -386,6 +612,15 @@ def remove_session(username):
     conn.close()
 
 
+def cleanup_expired_sessions():
+    expiration_time = datetime.now() - SESSION_LIFETIME
+    conn = sqlite3.connect("sessions.db")
+    cur = conn.cursor()
+    cur.execute("DELETE FROM active_sessions WHERE last_active < ?", (expiration_time,))
+    conn.commit()
+    conn.close()
+
+
 def count_active_sessions():
     cleanup_expired_sessions()
     conn = sqlite3.connect("sessions.db")
@@ -406,100 +641,90 @@ def is_user_logged_in(username):
     return r is not None
 
 
-def cleanup_expired_sessions():
-    expiration_time = datetime.now() - app.config["PERMANENT_SESSION_LIFETIME"]
-    conn = sqlite3.connect("sessions.db")
-    cur = conn.cursor()
-    cur.execute("DELETE FROM active_sessions WHERE last_active < ?", (expiration_time,))
-    conn.commit()
-    conn.close()
+@app.get("/", response_class=HTMLResponse)
+async def login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request, "error_message": None})
 
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if "username" not in session or not is_user_logged_in(session["username"]):
-            flash("Please log in to access this page.")
-            return redirect(url_for("login"))
-        return f(*args, **kwargs)
-
-    return decorated_function
-
-
-@app.route("/", methods=["GET", "POST"])
-def login():
-    init_db()
+@app.post("/", response_class=HTMLResponse)
+async def login_submit(request: Request, username: str = Form(...), password: str = Form(...)):
     if count_active_sessions() >= 2:
-        flash(
-            "Maximum number of users are currently logged in. "
-            "Please wait until someone logs out."
+        return templates.TemplateResponse(
+            "login.html",
+            {"request": request, "error_message": "Maximum number of users are currently logged in. Please wait."},
         )
-        return render_template("login.html")
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        if credentials.get(username) == password:
-            if is_user_logged_in(username):
-                flash("This user is already logged in from another session.")
-                return render_template("login.html")
-            session["username"] = username
-            session.permanent = True
-            add_session(username)
-            return redirect(url_for("index"))
-        else:
-            flash("Invalid credentials. Please try again.")
-            return render_template("login.html")
-    return render_template("login.html")
+
+    if credentials.get(username) != password:
+        return templates.TemplateResponse(
+            "login.html",
+            {"request": request, "error_message": "Invalid credentials. Please try again."},
+        )
+
+    if is_user_logged_in(username):
+        return templates.TemplateResponse(
+            "login.html",
+            {"request": request, "error_message": "This user is already logged in from another session."},
+        )
+
+    request.session["username"] = username
+    add_session(username)
+    return RedirectResponse(url="/home", status_code=303)
 
 
-@app.route("/logout")
-@login_required
-def logout():
-    username = session.pop("username", None)
+@app.get("/logout")
+async def logout(request: Request):
+    username = request.session.pop("username", None)
     if username:
         remove_session(username)
-    flash("You have been logged out.")
-    return redirect(url_for("login"))
+    return RedirectResponse(url="/", status_code=303)
 
 
-@app.route("/home")
-@login_required
-def index():
-    return render_template("index.html")
+@app.get("/home", response_class=HTMLResponse)
+async def index(request: Request):
+    username = request.session.get("username")
+    if not username or not is_user_logged_in(username):
+        return RedirectResponse(url="/", status_code=303)
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 # ────────────────────────────────────────────────────────────────────────────────
 # DOCS ROUTES
 # ────────────────────────────────────────────────────────────────────────────────
-@app.route("/documents")
-@login_required
-def list_documents():
-    if session.get("username") == "hypernym1":
-        document_list = documents.fetch_documents()
-        return render_template("documents.html", documents=document_list)
-    else:
-        return "Unauthorized", 401
+@app.get("/documents", response_class=HTMLResponse)
+async def list_documents_page(request: Request):
+    username = request.session.get("username")
+    if not username or not is_user_logged_in(username):
+        return RedirectResponse(url="/", status_code=303)
+    if username != "hypernym1":
+        return HTMLResponse("Unauthorized", status_code=401)
+    document_list = documents.fetch_documents()
+    return templates.TemplateResponse(
+        "documents.html", {"request": request, "documents": document_list}
+    )
 
 
-@app.route("/download/<int:document_id>")
-def download_document(document_id):
+@app.get("/download/{document_id}")
+async def download_document(document_id: int):
     document = documents.get_document_path(document_id)
     if document:
         document_name, file_path = document
-        return send_file(file_path, as_attachment=True)
-    return "Document not found", 404
+        return FileResponse(file_path, filename=document_name)
+    return HTMLResponse("Document not found", status_code=404)
 
 
 # ────────────────────────────────────────────────────────────────────────────────
-# START BACKGROUND THREADS
+# STARTUP
 # ────────────────────────────────────────────────────────────────────────────────
-# Initial load of education data into SQLite (non-blocking)
+init_db()
+
+
 def _startup_edu_load():
     try:
         load_excel_to_sqlite(EDU_CFG)
         logger.info("[Startup] Education SQLite tables initialized.")
     except Exception as e:
         logger.warning(f"[Startup] Education table init failed (will retry): {e}")
+
 
 threading.Thread(target=_startup_edu_load, daemon=True).start()
 threading.Thread(target=background_education_rebuilder, daemon=True).start()
@@ -509,5 +734,7 @@ threading.Thread(target=background_policy_rebuilder, daemon=True).start()
 # MAIN
 # ────────────────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    logger.info("Starting EHCD Chatbot (tool-based architecture)")
-    app.run(host="0.0.0.0", port=8080)
+    import uvicorn
+
+    logger.info("Starting EHCD Chatbot (LangGraph + FastAPI)")
+    uvicorn.run(app, host="0.0.0.0", port=8080)

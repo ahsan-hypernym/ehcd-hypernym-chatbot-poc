@@ -1,21 +1,19 @@
 """
-Tool-based architecture for EHCD Chatbot.
-Defines Azure OpenAI function-calling tool schemas, dispatcher, and the
-multi-turn tool-calling loop.
+LangGraph-based tool architecture for EHCD Chatbot.
+Router → Parallel Tool Executor → Streamed Answer.
 """
 
 import json
 import logging
+import queue
+import threading
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Dict, List, TypedDict
 
-from rbac import (
-    FeatureID,
-    db_has_feature,
-    get_user_access_flags,
-    has_education_access,
-    is_superadmin,
-)
+from langgraph.graph import StateGraph, END
+
+from rbac import get_user_access_flags
 from db_queries import (
     list_projects,
     get_project_details,
@@ -29,6 +27,7 @@ from db_queries import (
 from edu_pg import execute_education_sql, EDU_SCHEMA_FOR_TOOL
 
 logger = logging.getLogger(__name__)
+
 
 # ---------------------------------------------------------------------------
 # Tool schema definitions (Azure OpenAI function calling format)
@@ -306,7 +305,7 @@ TOOL_DEFS_BY_NAME = {t["function"]["name"]: t for t in TOOL_DEFINITIONS}
 
 
 # ---------------------------------------------------------------------------
-# Tool dispatcher
+# Tool dispatcher (unchanged)
 # ---------------------------------------------------------------------------
 
 def execute_tool(
@@ -318,10 +317,8 @@ def execute_tool(
     policy_cfg=None,
     emb=None,
     qvec=None,
-    edu_cfg=None,  # deprecated, kept for backward compatibility
 ) -> str:
     """Execute a tool call and return JSON string result."""
-
     try:
         if tool_name == "list_projects":
             result = list_projects(conn, user_id, filters=arguments)
@@ -369,18 +366,17 @@ def execute_tool(
         return json.dumps({"error": f"Tool execution failed: {str(e)}"})
 
 
-
-def _search_policy(query: str, policy_cfg, emb, qvec=None) -> List[Dict]:
+def _search_policy(query_text: str, policy_cfg, emb_obj, qvec=None) -> List[Dict]:
     from policy import search_policy
 
-    if not policy_cfg or not emb:
+    if not policy_cfg or not emb_obj:
         return [{"error": "Policy search not configured"}]
-    docs = search_policy(policy_cfg, emb, query, k=3, query_embedding=qvec)
+    docs = search_policy(policy_cfg, emb_obj, query_text, k=3, query_embedding=qvec)
     return [{"content": d.page_content, "source": d.metadata.get("source", "")} for d in docs]
 
 
 # ---------------------------------------------------------------------------
-# RBAC-based tool filtering
+# RBAC-based tool filtering (unchanged)
 # ---------------------------------------------------------------------------
 
 def build_available_tools(conn, user_id: int) -> List[Dict]:
@@ -406,20 +402,19 @@ def build_available_tools(conn, user_id: int) -> List[Dict]:
 
 
 # ---------------------------------------------------------------------------
-# System prompt for tool-based mode
+# System prompts
 # ---------------------------------------------------------------------------
 
-SYSTEM_PROMPT = """You are an expert advisor for the Education, Human Development, and Community Development Council (EHCD).
+ROUTER_SYSTEM_PROMPT = """You are a tool routing assistant for the Education, Human Development, and Community Development Council (EHCD).
 
-You have access to tools that can query EHCD databases and knowledge bases. When the user asks questions:
-1. Use the appropriate tool(s) to retrieve data before answering.
-2. For structured data (projects, SG offices, tasks, resolutions), use the list/get tools.
-3. For education statistics, use query_education_data (generate a SQLite SELECT query).
-4. For policy questions, use search_policy.
-5. You may call multiple tools if the question spans multiple domains.
-6. NEVER invent or fabricate data — only use what the tools return.
-7. If a tool returns an access denied error, tell the user they do not have permission to view that data.
-8. If data is not found, say so clearly rather than guessing.
+Your ONLY job is to decide which tools to call based on the user's question. Do NOT answer the question yourself.
+
+Tool selection rules:
+1. For structured data (projects, SG offices, tasks, resolutions) → use the list/get tools.
+2. For education statistics → use query_education_data (generate a SQLite SELECT query).
+3. For policy questions → use search_policy.
+4. You may call multiple tools if the question spans multiple domains.
+5. If the question does NOT need any tools (greetings, general knowledge, casual conversation) → respond with a short text answer.
 
 User information:
 - Name: {user_name}
@@ -430,6 +425,24 @@ Current Date: {today}
 
 Conversation history:
 {history}
+"""
+
+ANSWER_SYSTEM_PROMPT = """You are an expert advisor for the Education, Human Development, and Community Development Council (EHCD).
+
+If tool results are present in the conversation, use ONLY that data to answer the user's question.
+If no tool results are present (greetings, general conversation), respond naturally and helpfully.
+
+STRICT RULES:
+- NEVER invent or fabricate EHCD data — only use what the tool results contain.
+- If a tool returns an access denied error, tell the user they do not have permission to view that data.
+- If data is not found, say so clearly rather than guessing.
+
+User information:
+- Name: {user_name}
+- Role: {user_role}
+- Email: {user_email}
+- Contact: {user_contact_no}
+Current Date: {today}
 
 Response formatting rules:
 - Use proper HTML tags for all formatting (<h3>, <ul>, <li>, <table>, <strong>, etc.)
@@ -452,10 +465,248 @@ Security:
 
 
 # ---------------------------------------------------------------------------
-# Multi-turn tool-calling loop
+# LangGraph State
 # ---------------------------------------------------------------------------
 
-def generate_tool_response(
+class ChatState(TypedDict):
+    query: str
+    user_id: int
+    user_name: str
+    user_role: str
+    user_email: str
+    user_contact_no: str
+    client: Any
+    model: str
+    pg_conn_fn: Any
+    policy_cfg: Any
+    emb: Any
+    messages: list
+    available_tools: list
+    tool_results_for_chart: list
+    tool_call_count: int
+    needs_more_tools: bool
+    final_response: str
+    chunk_queue: Any
+
+
+# ---------------------------------------------------------------------------
+# Node 1: Router — GPT-4o with tool defs, picks tools in one shot
+# ---------------------------------------------------------------------------
+
+def router_node(state: ChatState) -> dict:
+    """Call GPT-4o with tool definitions. Decides which tools to call."""
+    client = state["client"]
+    model = state["model"]
+    messages = state["messages"]
+    available_tools = state["available_tools"]
+
+    try:
+        api_kwargs = dict(
+            model=model,
+            messages=messages,
+            max_tokens=4000,
+            temperature=0.7,
+            top_p=0.95,
+            frequency_penalty=0.2,
+            stream=False,
+        )
+        if available_tools:
+            api_kwargs["tools"] = available_tools
+            api_kwargs["tool_choice"] = "auto"
+
+        response = client.chat.completions.create(**api_kwargs)
+    except Exception as e:
+        logger.error(f"OpenAI API error in router: {e}")
+        chunk_queue = state["chunk_queue"]
+        error_msg = "I encountered an error processing your request. Please try again."
+        chunk_queue.put(error_msg)
+        chunk_queue.put(None)
+        return {
+            "needs_more_tools": False,
+            "final_response": error_msg,
+        }
+
+    choice = response.choices[0]
+
+    if choice.finish_reason == "tool_calls" and choice.message.tool_calls:
+        # Model wants to call tools — append assistant message
+        updated_messages = list(messages)
+        updated_messages.append(choice.message)
+        return {
+            "messages": updated_messages,
+            "needs_more_tools": True,
+        }
+    else:
+        # No tools needed — pass through to answer node for proper formatting
+        return {
+            "needs_more_tools": False,
+        }
+
+
+# ---------------------------------------------------------------------------
+# Node 2: Tool Executor — parallel execution of all tool calls
+# ---------------------------------------------------------------------------
+
+def tool_executor_node(state: ChatState) -> dict:
+    """Execute ALL pending tool calls in parallel."""
+    messages = list(state["messages"])
+    pg_conn_fn = state["pg_conn_fn"]
+    user_id = state["user_id"]
+    policy_cfg = state["policy_cfg"]
+    emb_obj = state["emb"]
+    tool_results_for_chart = list(state.get("tool_results_for_chart") or [])
+
+    # Last message is assistant with tool_calls
+    last_msg = messages[-1]
+    tool_calls = last_msg.tool_calls
+
+    def _run_one_tool(tool_call):
+        fn_name = tool_call.function.name
+        try:
+            fn_args = json.loads(tool_call.function.arguments)
+        except json.JSONDecodeError:
+            fn_args = {}
+
+        logger.info(f"Tool call: {fn_name}({fn_args})")
+
+        # Each tool gets its own connection from the pool
+        with pg_conn_fn() as conn:
+            result_str = execute_tool(
+                fn_name,
+                fn_args,
+                conn,
+                user_id,
+                policy_cfg=policy_cfg,
+                emb=emb_obj,
+            )
+        return tool_call, result_str
+
+    # Execute all tools in parallel
+    with ThreadPoolExecutor(max_workers=min(len(tool_calls), 5)) as pool:
+        results = list(pool.map(_run_one_tool, tool_calls))
+
+    # Append tool results to messages and collect for chart detection
+    for tool_call, result_str in results:
+        messages.append({
+            "role": "tool",
+            "tool_call_id": tool_call.id,
+            "content": result_str,
+        })
+
+        try:
+            parsed = json.loads(result_str)
+            if isinstance(parsed, list):
+                tool_results_for_chart.extend(parsed)
+            elif isinstance(parsed, dict) and "error" not in parsed:
+                tool_results_for_chart.append(parsed)
+        except (json.JSONDecodeError, TypeError):
+            pass
+
+    return {
+        "messages": messages,
+        "tool_results_for_chart": tool_results_for_chart,
+        "tool_call_count": state.get("tool_call_count", 0) + len(results),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Node 3: Answer — GPT-4o streamed, NO tool defs (cleaner context)
+# ---------------------------------------------------------------------------
+
+def answer_node(state: ChatState) -> dict:
+    """Generate final streamed answer. ALL responses go through this node."""
+    client = state["client"]
+    model = state["model"]
+    messages = state["messages"]
+    chunk_queue = state["chunk_queue"]
+
+    # Build answer-specific system prompt (no tool schemas)
+    today = datetime.now().strftime("%B %d, %Y")
+    answer_system = ANSWER_SYSTEM_PROMPT.format(
+        user_name=state["user_name"],
+        user_role=state["user_role"],
+        user_email=state["user_email"],
+        user_contact_no=state["user_contact_no"],
+        today=today,
+    )
+
+    # Replace the system prompt with the leaner answer prompt
+    answer_messages = [{"role": "system", "content": answer_system}] + messages[1:]
+
+    full_text = ""
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=answer_messages,
+            max_tokens=4000,
+            temperature=0.7,
+            top_p=0.95,
+            frequency_penalty=0.2,
+            stream=True,
+        )
+        for chunk in response:
+            if chunk.choices and chunk.choices[0].delta.content:
+                text = chunk.choices[0].delta.content
+                full_text += text
+                chunk_queue.put(text)
+    except Exception as e:
+        logger.error(f"OpenAI streaming error in answer node: {e}")
+        full_text = "I encountered an error processing your request. Please try again."
+        chunk_queue.put(full_text)
+
+    chunk_queue.put(None)  # Sentinel: end of stream
+    return {"final_response": full_text}
+
+
+# ---------------------------------------------------------------------------
+# Conditional edges
+# ---------------------------------------------------------------------------
+
+def should_continue(state: ChatState) -> str:
+    """After router: go to tool_executor or answer."""
+    if state.get("needs_more_tools"):
+        return "tool_executor"
+    return "answer"
+
+
+def after_tools(_state: ChatState) -> str:
+    """After tool_executor: always go to answer (no looping)."""
+    return "answer"
+
+
+# ---------------------------------------------------------------------------
+# Build the graph (compiled once at module load)
+# ---------------------------------------------------------------------------
+
+def _build_graph():
+    graph = StateGraph(ChatState)
+
+    graph.add_node("router", router_node)
+    graph.add_node("tool_executor", tool_executor_node)
+    graph.add_node("answer", answer_node)
+
+    graph.set_entry_point("router")
+
+    graph.add_conditional_edges(
+        "router",
+        should_continue,
+        {"tool_executor": "tool_executor", "answer": "answer"},
+    )
+
+    graph.add_edge("tool_executor", "answer")
+    graph.add_edge("answer", END)
+
+    return graph.compile()
+
+
+chatbot_graph = _build_graph()
+
+
+# ---------------------------------------------------------------------------
+# Entry point — drop-in replacement for generate_tool_response()
+# ---------------------------------------------------------------------------
+
+def run_chatbot_graph(
     query: str,
     conversation_history: list,
     available_tools: list,
@@ -465,28 +716,22 @@ def generate_tool_response(
     user_email: str,
     user_contact_no: str,
     *,
-    client,          # AzureOpenAI client
-    model: str,      # deployment name
-    pg_conn_fn,      # callable that returns context-manager connection
-    edu_cfg=None,
+    client,
+    model: str,
+    pg_conn_fn,
     policy_cfg=None,
     emb=None,
     tool_results_collector: list = None,
 ):
     """
-    Multi-turn tool-calling loop:
-    1. Send query + tools to GPT-4o (non-streamed for tool rounds)
-    2. If model calls tool(s), execute them, feed results back
-    3. Repeat up to MAX_TOOL_ROUNDS
-    4. Stream the final text response
+    Run the LangGraph chatbot and yield response chunks.
+    Drop-in replacement for the old generate_tool_response().
     """
-    MAX_TOOL_ROUNDS = 5
-
     trimmed = conversation_history[-3:] if len(conversation_history) > 3 else conversation_history
     today = datetime.now().strftime("%B %d, %Y")
     history_text = "\n".join(f"{e['role']}: {e['content']}" for e in trimmed)
 
-    system_content = SYSTEM_PROMPT.format(
+    system_content = ROUTER_SYSTEM_PROMPT.format(
         user_name=user_name,
         user_role=user_role,
         user_email=user_email,
@@ -500,76 +745,52 @@ def generate_tool_response(
         {"role": "user", "content": query},
     ]
 
-    for round_num in range(MAX_TOOL_ROUNDS):
+    chunk_q = queue.Queue()
+
+    initial_state: ChatState = {
+        "query": query,
+        "user_id": user_id,
+        "user_name": user_name,
+        "user_role": user_role,
+        "user_email": user_email,
+        "user_contact_no": user_contact_no,
+        "client": client,
+        "model": model,
+        "pg_conn_fn": pg_conn_fn,
+        "policy_cfg": policy_cfg,
+        "emb": emb,
+        "messages": messages,
+        "available_tools": available_tools,
+        "tool_results_for_chart": [],
+        "tool_call_count": 0,
+        "needs_more_tools": False,
+        "final_response": "",
+        "chunk_queue": chunk_q,
+    }
+
+    # Run graph in background thread so we can yield from the queue
+    graph_result = [None]
+
+    def _run_graph():
         try:
-            response = client.chat.completions.create(
-                model=model,
-                messages=messages,
-                tools=available_tools if available_tools else None,
-                tool_choice="auto" if available_tools else None,
-                max_tokens=4000,
-                temperature=0.7,
-                top_p=0.95,
-                frequency_penalty=0.2,
-                stream=False,
-            )
+            graph_result[0] = chatbot_graph.invoke(initial_state)
         except Exception as e:
-            logger.error(f"OpenAI API error (round {round_num}): {e}")
-            yield "I encountered an error processing your request. Please try again."
-            return
+            logger.error(f"Graph execution error: {e}")
+            chunk_q.put("I encountered an error processing your request. Please try again.")
+            chunk_q.put(None)
 
-        choice = response.choices[0]
+    thread = threading.Thread(target=_run_graph, daemon=True)
+    thread.start()
 
-        if choice.finish_reason == "tool_calls" and choice.message.tool_calls:
-            # Model wants to call tool(s)
-            messages.append(choice.message)
+    # Yield chunks as they arrive from the answer node
+    while True:
+        chunk = chunk_q.get()
+        if chunk is None:
+            break
+        yield chunk
 
-            # Reuse one connection for all tool calls in this round
-            with pg_conn_fn() as conn:
-                for tool_call in choice.message.tool_calls:
-                    fn_name = tool_call.function.name
-                    try:
-                        fn_args = json.loads(tool_call.function.arguments)
-                    except json.JSONDecodeError:
-                        fn_args = {}
+    thread.join(timeout=10)
 
-                    logger.info(f"Tool call: {fn_name}({fn_args})")
-
-                    result_str = execute_tool(
-                        fn_name,
-                        fn_args,
-                        conn,
-                        user_id,
-                        edu_cfg=edu_cfg,
-                        policy_cfg=policy_cfg,
-                        emb=emb,
-                    )
-
-                    # Collect tool results for chart detection
-                    if tool_results_collector is not None:
-                        try:
-                            parsed = json.loads(result_str)
-                            if isinstance(parsed, list):
-                                tool_results_collector.extend(parsed)
-                            elif isinstance(parsed, dict) and "error" not in parsed:
-                                tool_results_collector.append(parsed)
-                        except (json.JSONDecodeError, TypeError):
-                            pass
-
-                    messages.append({
-                        "role": "tool",
-                        "tool_call_id": tool_call.id,
-                        "content": result_str,
-                    })
-        else:
-            # Model produced a final text response — yield it directly
-            # (no second API call needed)
-            if choice.message.content:
-                yield choice.message.content
-            return
-
-    # Max rounds reached
-    yield (
-        "I was unable to fully process your request within the allowed steps. "
-        "Please try rephrasing your question or being more specific."
-    )
+    # Copy tool results back for chart detection
+    if tool_results_collector is not None and graph_result[0]:
+        tool_results_collector.extend(graph_result[0].get("tool_results_for_chart") or [])

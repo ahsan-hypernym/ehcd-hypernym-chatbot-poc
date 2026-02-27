@@ -1,22 +1,21 @@
 
 FROM python:3.12-slim
 
+# Install curl for healthcheck
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+
 # Set a working directory inside the container
 WORKDIR /app
 
-# Copy the current directory contents into the container
-COPY . .
-
-# Install required packages
+# Copy requirements first for better layer caching
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port your Flask app runs on
+# Copy the rest of the application
+COPY . .
+
+# Expose the port the app runs on
 EXPOSE 8080
 
-# Set environment variables for Flask
-ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_ENV=production
-
-# Command to run the Flask app
-CMD ["flask", "run", "--host=0.0.0.0", "--port=8080"]
+# Command to run the FastAPI app with uvicorn
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]

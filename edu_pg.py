@@ -10,6 +10,7 @@ import json
 import time
 import sqlite3
 import logging
+import datetime
 import threading
 from typing import Any, Dict, List, Optional
 
@@ -227,6 +228,20 @@ IMPORTANT NOTES:
 # Load Excel → SQLite
 # ---------------------------------------------------------------------------
 
+def _sqlite_safe(v):
+    """Convert a value to a type SQLite can bind (str, int, float, bytes, None)."""
+    if isinstance(v, str):
+        return v
+    try:
+        if pd.isna(v):
+            return None
+    except (TypeError, ValueError):
+        pass
+    if isinstance(v, (pd.Timestamp, datetime.datetime, datetime.date)):
+        return str(v)
+    return v
+
+
 def _normalize_col_for_sql(col: str) -> str:
     """Normalize column name for SQL (lowercase, underscores)."""
     if not col:
@@ -250,7 +265,8 @@ def load_excel_to_sqlite(cfg: TabularConfig) -> bool:
     # Throttle check
     try:
         if os.path.exists(stamp_file):
-            last = int(open(stamp_file).read().strip() or "0")
+            with open(stamp_file) as f:
+                last = int(f.read().strip() or "0")
             if (now - last) < cfg.throttle_seconds and os.path.exists(EDU_DB_PATH):
                 return False
     except Exception:
@@ -273,7 +289,8 @@ def load_excel_to_sqlite(cfg: TabularConfig) -> bool:
             changed = True
 
     if not changed and os.path.exists(EDU_DB_PATH):
-        open(stamp_file, "w").write(str(now))
+        with open(stamp_file, "w") as f:
+            f.write(str(now))
         logger.info("[EduPG] Education SQLite up-to-date.")
         return False
 
@@ -324,7 +341,7 @@ def load_excel_to_sqlite(cfg: TabularConfig) -> bool:
                 if not df.empty:
                     placeholders = ", ".join(["?"] * len(df.columns))
                     insert_sql = f'INSERT INTO "{table_name}" ({", ".join(f"{chr(34)}{c}{chr(34)}" for c in df.columns)}) VALUES ({placeholders})'
-                    rows = [tuple(None if pd.isna(v) else v for v in row) for row in df.itertuples(index=False, name=None)]
+                    rows = [tuple(_sqlite_safe(v) for v in row) for row in df.itertuples(index=False, name=None)]
                     conn.executemany(insert_sql, rows)
 
                 tables_loaded += 1
@@ -334,14 +351,14 @@ def load_excel_to_sqlite(cfg: TabularConfig) -> bool:
     except Exception as e:
         logger.error(f"[EduPG] Failed to load tables: {e}")
         conn.rollback()
-        conn.close()
         raise
     finally:
         conn.close()
 
     # Update hashes and stamp
     _save_hashes(cfg.hash_json, now_sha)
-    open(stamp_file, "w").write(str(now))
+    with open(stamp_file, "w") as f:
+        f.write(str(now))
     logger.info(f"[EduPG] Education SQLite loaded: {tables_loaded} tables from {len(paths)} files.")
 
     # Reset thread-local connections so they pick up the new data
