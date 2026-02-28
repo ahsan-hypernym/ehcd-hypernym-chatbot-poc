@@ -1,8 +1,3 @@
-"""
-EHCD Hypernym Chatbot — FastAPI Application
-LangGraph-based architecture with Azure OpenAI function calling.
-"""
-
 import os
 import json
 import re
@@ -294,7 +289,7 @@ def _create_test_token(user_id: int) -> str:
     """Generate a test JWT token for development/testing."""
     from datetime import timezone
     payload = {
-        "sub": user_id,
+        "user_id": user_id,
         "exp": datetime.now(timezone.utc) + timedelta(hours=cfg.JWT_EXPIRY_HOURS),
         "iat": datetime.now(timezone.utc),
     }
@@ -303,7 +298,10 @@ def _create_test_token(user_id: int) -> str:
 
 def _decode_jwt(token: str) -> dict:
     """Decode and verify a JWT token. Raises on invalid/expired."""
-    return jwt.decode(token, cfg.JWT_SECRET, algorithms=[cfg.JWT_ALGORITHM])
+    return jwt.decode(
+        token, cfg.JWT_SECRET, algorithms=[cfg.JWT_ALGORITHM],
+        options={"verify_sub": False},
+    )
 
 
 def _extract_user_id(payload: dict) -> int | None:
@@ -327,11 +325,7 @@ def _extract_user_id(payload: dict) -> int | None:
 
 # ── Test endpoint: generate a token for testing (disable in production) ──
 # @app.post("/api/test/token")
-# async def generate_test_token(user_id: int = 151):
-#     """
-#     DEV ONLY: Generate a test JWT for a given user_id.
-#     Remove or disable this in production.
-#     """
+# async def generate_test_token(user_id: int = 1):
 #     token = _create_test_token(user_id)
 #     return {"access_token": token, "user_id": user_id}
 
@@ -346,8 +340,9 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         return user_id
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token expired")
-    except jwt.InvalidTokenError:
-        raise HTTPException(status_code=401, detail="Invalid token")
+    except jwt.InvalidTokenError as e:
+        logger.error(f"[JWT] InvalidTokenError: {e}")
+        raise HTTPException(status_code=401, detail=f"Invalid token: {e}")
 
 
 # ────────────────────────────────────────────────────────────────────────────────
