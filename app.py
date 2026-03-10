@@ -2,6 +2,7 @@ import os
 import json
 import re
 import time
+import asyncio
 import logging
 import sqlite3
 import threading
@@ -243,6 +244,36 @@ def save_conversation_history(user_key: str, history: list):
     trimmed = history[-MAX_HISTORY_MESSAGES:] if len(history) > MAX_HISTORY_MESSAGES else history
     redis_client.set(f"user_{user_key}_history", json.dumps(trimmed), ex=3600)
 
+def _strip_html_incremental(chunk: str, pending_tag: str) -> tuple[str, str]:
+    """
+    Strip HTML tags from streamed chunks while preserving partial tags across chunk boundaries.
+    """
+    if not chunk:
+        return "", pending_tag
+
+    data = f"{pending_tag}{chunk}" if pending_tag else chunk
+    out_chars = []
+    in_tag = False
+    tag_start = -1
+
+    for idx, ch in enumerate(data):
+        if in_tag:
+            if ch == ">":
+                in_tag = False
+                tag_start = -1
+            continue
+
+        if ch == "<":
+            in_tag = True
+            tag_start = idx
+            continue
+
+        out_chars.append(ch)
+
+    next_pending_tag = data[tag_start:] if in_tag and tag_start != -1 else ""
+    return "".join(out_chars), next_pending_tag
+
+
 
 # ────────────────────────────────────────────────────────────────────────────────
 # BACKGROUND INDEX BUILDERS (education & policy only)
@@ -385,6 +416,7 @@ async def handle_query(
     def generate():
         assistant_response = ""
         tool_results_for_chart = []
+        pending_tag = ""
 
         try:
             for chunk in run_chatbot_graph(
@@ -404,8 +436,9 @@ async def handle_query(
                 tool_results_collector=tool_results_for_chart,
             ):
                 assistant_response += chunk
-                plain_text_chunk = re.sub(r"<[^>]*>", "", chunk)
-                yield plain_text_chunk
+                plain_text_chunk, pending_tag = _strip_html_incremental(chunk, pending_tag)
+                if plain_text_chunk:
+                    yield plain_text_chunk
 
         except Exception as e:
             logger.error(f"Error in tool response generation: {e}")
@@ -505,36 +538,55 @@ async def websocket_chat(ws: WebSocket):
                 user_contact_no = user_profile.get("contact_no") or ""
                 available_tools = build_available_tools(conn, rbac_user_id)
 
-            # Stream response
+            # Stream response using async queue to avoid blocking the event loop
             assistant_response = ""
             tool_results_for_chart = []
+            pending_tag = ""
+            async_q = asyncio.Queue()
+            loop = asyncio.get_event_loop()
 
-            try:
-                for chunk in run_chatbot_graph(
-                    query=query,
-                    conversation_history=conversation_history,
-                    available_tools=available_tools,
-                    user_id=rbac_user_id,
-                    user_name=user_name,
-                    user_role=user_role,
-                    user_email=user_email,
-                    user_contact_no=user_contact_no,
-                    client=client,
-                    model=cfg.AZURE_OPENAI_DEPLOYMENT,
-                    pg_conn_fn=pg_conn,
-                    policy_cfg=POLICY_CFG,
-                    emb=emb,
-                    tool_results_collector=tool_results_for_chart,
-                ):
-                    assistant_response += chunk
-                    plain = re.sub(r"<[^>]*>", "", chunk)
-                    if plain.strip():
+            def _run_graph_sync():
+                """Run the blocking LangGraph generator in a thread, pushing chunks to async queue."""
+                try:
+                    for chunk in run_chatbot_graph(
+                        query=query,
+                        conversation_history=conversation_history,
+                        available_tools=available_tools,
+                        user_id=rbac_user_id,
+                        user_name=user_name,
+                        user_role=user_role,
+                        user_email=user_email,
+                        user_contact_no=user_contact_no,
+                        client=client,
+                        model=cfg.AZURE_OPENAI_DEPLOYMENT,
+                        pg_conn_fn=pg_conn,
+                        policy_cfg=POLICY_CFG,
+                        emb=emb,
+                        tool_results_collector=tool_results_for_chart,
+                    ):
+                        loop.call_soon_threadsafe(async_q.put_nowait, ("chunk", chunk))
+                except Exception as e:
+                    logger.error(f"WS tool response error: {e}")
+                    loop.call_soon_threadsafe(async_q.put_nowait, ("error", str(e)))
+                finally:
+                    loop.call_soon_threadsafe(async_q.put_nowait, ("done", None))
+
+            loop.run_in_executor(None, _run_graph_sync)
+
+            # Consume chunks asynchronously — each chunk is sent immediately
+            while True:
+                msg_type, msg_data = await async_q.get()
+                if msg_type == "done":
+                    break
+                elif msg_type == "error":
+                    assistant_response = "I encountered an error processing your request."
+                    await ws.send_json({"type": "error", "message": assistant_response})
+                    break
+                elif msg_type == "chunk":
+                    assistant_response += msg_data
+                    plain, pending_tag = _strip_html_incremental(msg_data, pending_tag)
+                    if plain:
                         await ws.send_json({"type": "chunk", "content": plain})
-
-            except Exception as e:
-                logger.error(f"WS tool response error: {e}")
-                assistant_response = "I encountered an error processing your request."
-                await ws.send_json({"type": "error", "message": assistant_response})
 
             # Save history
             conversation_history.append(

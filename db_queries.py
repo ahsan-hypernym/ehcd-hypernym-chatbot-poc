@@ -255,7 +255,7 @@ def list_sg_offices(conn, user_id: int, filters: dict = None) -> List[Dict[str, 
 
     if allowed_ids is not None:
         if not allowed_ids:
-            return []
+            return {"message": "You do not have access to any SG offices. Please contact your administrator to get access.", "data": []}
         conditions.append("s.id = ANY(%s)")
         params.append(allowed_ids)
 
@@ -278,6 +278,9 @@ def list_sg_offices(conn, user_id: int, filters: dict = None) -> List[Dict[str, 
     with conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, params)
         rows = cur.fetchall()
+
+    if not rows:
+        return {"message": "No SG offices found matching your criteria.", "data": []}
 
     result = []
     for r in rows:
@@ -398,7 +401,7 @@ def list_tasks(conn, user_id: int, filters: dict = None) -> List[Dict[str, Any]]
 
     if allowed_ids is not None:
         if not allowed_ids:
-            return []
+            return {"message": "You do not have access to any tasks. Please contact your administrator to get access.", "data": []}
         conditions.append("t.id = ANY(%s)")
         params.append(allowed_ids)
 
@@ -545,7 +548,7 @@ def list_resolutions(conn, user_id: int, filters: dict = None) -> List[Dict[str,
 
     if allowed_ids is not None:
         if not allowed_ids:
-            return []
+            return {"message": "You do not have access to any resolutions. Please contact your administrator to get access.", "data": []}
         conditions.append("r.id = ANY(%s)")
         params.append(allowed_ids)
 

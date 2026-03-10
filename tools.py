@@ -415,6 +415,8 @@ Tool selection rules:
 3. For policy questions → use search_policy.
 4. You may call multiple tools if the question spans multiple domains.
 5. If the question does NOT need any tools (greetings, general knowledge, casual conversation) → respond with a short text answer.
+6. If tool results are already present in the conversation from previous calls and they contain enough data to answer the question, do NOT call more tools — just respond with a short text so the answer node can format the full response.
+7. For cross-module queries (e.g. "tasks in SG office X"), you may need multiple rounds: first get the SG office details to find its entities, then query tasks filtered by those entities. Call the tools you need step by step.
 
 User information:
 - Name: {user_name}
@@ -669,9 +671,12 @@ def should_continue(state: ChatState) -> str:
     return "answer"
 
 
-def after_tools(_state: ChatState) -> str:
-    """After tool_executor: always go to answer (no looping)."""
-    return "answer"
+def after_tools(state: ChatState) -> str:
+    """After tool_executor: route back to router for multi-step reasoning,
+    or go to answer if we've already done enough rounds (max 3)."""
+    if state.get("tool_call_count", 0) >= 8:
+        return "answer"
+    return "router"
 
 
 # ---------------------------------------------------------------------------
@@ -693,7 +698,11 @@ def _build_graph():
         {"tool_executor": "tool_executor", "answer": "answer"},
     )
 
-    graph.add_edge("tool_executor", "answer")
+    graph.add_conditional_edges(
+        "tool_executor",
+        after_tools,
+        {"router": "router", "answer": "answer"},
+    )
     graph.add_edge("answer", END)
 
     return graph.compile()
